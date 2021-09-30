@@ -1,54 +1,47 @@
-/**
- * @license
- * Copyright (c) 2014, 2021, Oracle and/or its affiliates.
- * Licensed under The Universal Permissive License (UPL), Version 1.0
- * as shown at https://oss.oracle.com/licenses/upl/
- * @ignore
- */
-/*
- * Your dashboard ViewModel code goes here
- */
-define(['../accUtils'],
- function(accUtils) {
-    function DashboardViewModel() {
-      // Below are a set of the ViewModel methods invoked by the oj-module component.
-      // Please reference the oj-module jsDoc for additional information.
-
-      /**
-       * Optional ViewModel method invoked after the View is inserted into the
-       * document DOM.  The application can put logic that requires the DOM being
-       * attached here.
-       * This method might be called multiple times - after the View is created
-       * and inserted into the DOM and after the View is reconnected
-       * after being disconnected.
-       */
-      this.connected = () => {
-        accUtils.announce('Dashboard page loaded.', 'assertive');
-        document.title = "Dashboard";
-        // Implement further logic if needed
-      };
-
-      /**
-       * Optional ViewModel method invoked after the View is disconnected from the DOM.
-       */
-      this.disconnected = () => {
-        // Implement if needed
-      };
-
-      /**
-       * Optional ViewModel method invoked after transition to the new View is complete.
-       * That includes any possible animation between the old and the new View.
-       */
-      this.transitionCompleted = () => {
-        // Implement if needed
-      };
-    }
-
-    /*
-     * Returns an instance of the ViewModel providing one instance of the ViewModel. If needed,
-     * return a constructor for the ViewModel so that the ViewModel is constructed
-     * each time the view is displayed.
-     */
-    return DashboardViewModel;
+require(["require", "exports", "knockout", "ojs/ojbootstrap", "ojs/ojknockout", "ojs/ojfilepicker", "ojs/ojinputtext", "ojs/ojlabel", "ojs/ojcheckboxset"], function (require, exports, ko, ojbootstrap_1) {
+  "use strict";
+  
+  class BasicModel {
+      constructor() {
+          this.disabled = ko.observableArray();
+          this.isDisabled = ko.pureComputed(() => {
+              return this.disabled()[0] === "disable" ? true : false;
+          });
+          this.invalidMessage = ko.observable("");
+          this.invalidListener = (event) => {
+              this.fileNames([]);
+              this.invalidMessage("{severity: '" +
+                  event.detail.messages[0].severity +
+                  "', summary: '" +
+                  event.detail.messages[0].summary +
+                  "'}");
+              const promise = event.detail.until;
+              if (promise) {
+                  promise.then(() => {
+                      this.invalidMessage("");
+                  });
+              }
+          };
+          this.acceptStr = ko.observable("application/json");
+          this.acceptArr = ko.pureComputed(() => {
+              const accept = this.acceptStr();
+              return accept ? accept.split(",") : [];
+          });
+          this.fileNames = ko.observable([]);
+          this.selectListener = (event) => {
+              this.invalidMessage("");
+              const files = event.detail.files;
+              this.fileNames(Array.prototype.map.call(files, (file) => {
+                  const fr = new FileReader();
+                  fr.readAsText(file);
+                  return file.name;
+              }));
+          };
+      }
   }
-);
+
+  ko.cleanNode(document.getElementById("parentContainer"));
+  ojbootstrap_1.whenDocumentReady().then(() => {
+      ko.applyBindings(new BasicModel(), document.getElementById("parentContainer"));
+  });
+});

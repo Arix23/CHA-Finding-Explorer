@@ -1,0 +1,221 @@
+[
+    {
+        "id": "CHA_PRIV_NW_PATH_X",
+        "name": "Private Network Traffic",
+        "t1": "2021-08-15 22:08:10",
+        "t2": "",
+        "descr": "The Cluster Health Advisor (CHA) detected an abrupt, significant decrease in message traffic on the Cluster Interconnect.",
+        "cause": "The decrease in traffic on the private interconnect was probably caused by a problem with the underlying network.",
+        "action": "Check for network link or connectivity failures in the system message logs.",
+        "belief": 63.397949,
+        "evidence": [
+            {
+                "signal": "db_fg_wait_ratio",
+                "state": "HIGH",
+                "at_least_since": "2021-08-15 15:40:20"
+            }
+        ],
+        "instance": "diarac1",
+        "db": "diarac",
+        "onhost": "dbm02dbadm01",
+        "from": "2021-08-15 15:40:20",
+        "to": "2021-08-16 15:38:07",
+        "hash": "bceb35f82451c794e169e351726935aeb4503f4950f8264aa4a7146eb5ef88c2"
+    },
+    {
+        "id": "CHA_GC_HANG",
+        "name": "Global Cache Message Request Hang",
+        "t1": "2021-08-15 22:08:10",
+        "t2": "",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. The global cache messages are taking a long time.",
+        "cause": "CHA detected that global cache requests were not completed and were blocking database sessions, because the requested data block was pinned on another instance of this cluster. The remote pinning process was starved of cpu or memory, or blocked by another process. It is also possible that there was a network issue or reconfiguration.",
+        "action": "Check whether incidents related to cpu, memory or network were detected and diagnosed by CHA on other nodes and instances in the cluster. Verify whether any hangs were detected by the Hang Manager ( DIA0 ), and look for any process stalls detected by LMHB.",
+        "belief": 51.977318,
+        "instance": "diarac1",
+        "db": "diarac",
+        "onhost": "dbm02dbadm01",
+        "from": "2021-08-15 15:40:20",
+        "to": "2021-08-16 15:38:07",
+        "hash": "cdeeba410be6ee32d08734ea0a3e4f1952af4fdcdaa4cacda3461dea78a6bf45"
+    },
+    {
+        "id": "CHA_PRIV_NW_PATH_X",
+        "name": "Private Network Traffic",
+        "t1": "2021-08-16 03:08:25",
+        "t2": "",
+        "descr": "The Cluster Health Advisor (CHA) detected an abrupt, significant decrease in message traffic on the Cluster Interconnect.",
+        "cause": "The decrease in traffic on the private interconnect was probably caused by a problem with the underlying network.",
+        "action": "Check for network link or connectivity failures in the system message logs.",
+        "belief": 63.397949,
+        "evidence": [
+            {
+                "signal": "db_fg_wait_ratio",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:25",
+                "fd": "db_fg_wait_ratio",
+                "value": "99.8000"
+            }
+        ],
+        "instance": "diarac3",
+        "db": "diarac",
+        "onhost": "dbm02dbadm03",
+        "from": "2021-08-16 02:44:55",
+        "to": "2021-08-16 03:39:07",
+        "hash": "f50e76ad9d22452e4f2fdd931f7d3131f13da0051262bdfb2e87cc7ccc940bb2"
+    },
+    {
+        "id": "CHA_GC_HANG",
+        "name": "Global Cache Message Request Hang",
+        "t1": "2021-08-16 03:08:25",
+        "t2": "",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. The global cache messages are taking a long time.",
+        "cause": "CHA detected that global cache requests were not completed and were blocking database sessions, because the requested data block was pinned on another instance of this cluster. The remote pinning process was starved of cpu or memory, or blocked by another process. It is also possible that there was a network issue or reconfiguration.",
+        "action": "Check whether incidents related to cpu, memory or network were detected and diagnosed by CHA on other nodes and instances in the cluster. Verify whether any hangs were detected by the Hang Manager ( DIA0 ), and look for any process stalls detected by LMHB.",
+        "belief": 51.977318,
+        "instance": "diarac3",
+        "db": "diarac",
+        "onhost": "dbm02dbadm03",
+        "from": "2021-08-16 02:44:55",
+        "to": "2021-08-16 03:39:07",
+        "hash": "5ce0fd119cf28c044b8838f9100ffd5e4a3f477507e1643eddcaa385527291c6"
+    },
+    {
+        "id": "CHA_PRIV_NW_PATH_X",
+        "name": "Private Network Traffic",
+        "t1": "2021-08-16 03:08:35",
+        "t2": "2021-08-16 03:10:55",
+        "descr": "The Cluster Health Advisor (CHA) detected an abrupt, significant decrease in message traffic on the Cluster Interconnect.",
+        "cause": "The decrease in traffic on the private interconnect was probably caused by a problem with the underlying network.",
+        "action": "Check for network link or connectivity failures in the system message logs.",
+        "belief": 50.386005,
+        "evidence": [
+            {
+                "signal": "db_fg_wait_ratio",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:45",
+                "fd": "db_fg_wait_ratio",
+                "value": "98.8000"
+            },
+            {
+                "signal": "enq_cf_contention",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:35",
+                "fd": "enq_cf_contention",
+                "value": "9.87207E06"
+            }
+        ],
+        "instance": "diarac1",
+        "db": "diarac",
+        "onhost": "dbm02dbadm01",
+        "from": "2021-08-15 15:40:20",
+        "to": "2021-08-16 15:38:07",
+        "hash": "6477f4b817e24041383b8e71982fbec57a36982f2f88db659a937dc43fb32593"
+    },
+    {
+        "id": "CHA_CFENQ_HANG",
+        "name": "Control File Enqueue Wait Hang",
+        "t1": "2021-08-16 03:08:35",
+        "t2": "2021-08-16 03:10:55",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. Some processes are waiting for the Control File enqueue for several seconds.",
+        "cause": "The Cluster Health Advisor (CHA) detected that a background process has been waiting several seconds for a Control File enqueue because the Log Writer, Archiver or Checkpoint process on another node is unresponsive, blocked by other processes, or is waiting for CPU or memory.",
+        "action": "Check whether incidents are detected and diagnosed on other nodes and instances in the cluster using the command 'chactl query diagnosis'. Look for reports of any issues detected by the Hang Manager in the DIA0 trace file and follow the suggestions to resolve those problems.",
+        "belief": 52.03091,
+        "evidence": [
+            {
+                "signal": "enq_cf_contention",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:35",
+                "fd": "enq_cf_contention",
+                "value": "9.87207E06"
+            }
+        ],
+        "instance": "diarac1",
+        "db": "diarac",
+        "onhost": "dbm02dbadm01",
+        "from": "2021-08-15 15:40:20",
+        "to": "2021-08-16 15:38:07",
+        "hash": "43d71b037c72fdf77efd2a0afb30594346bfb6d87533f2a8a3e059ed745fc80d"
+    },
+    {
+        "id": "CHA_GC_HANG",
+        "name": "Global Cache Message Request Hang",
+        "t1": "2021-08-16 03:08:35",
+        "t2": "2021-08-16 03:10:15",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. The global cache messages are taking a long time.",
+        "cause": "CHA detected that global cache requests were not completed and were blocking database sessions, because the requested data block was pinned on another instance of this cluster. The remote pinning process was starved of cpu or memory, or blocked by another process. It is also possible that there was a network issue or reconfiguration.",
+        "action": "Check whether incidents related to cpu, memory or network were detected and diagnosed by CHA on other nodes and instances in the cluster. Verify whether any hangs were detected by the Hang Manager ( DIA0 ), and look for any process stalls detected by LMHB.",
+        "belief": 51.977318,
+        "instance": "diarac2",
+        "db": "diarac",
+        "onhost": "dbm02dbadm02",
+        "from": "2021-08-16 03:04:32",
+        "to": "2021-08-16 03:39:41",
+        "hash": "25131050bc166c2d3df5a5c9aa07cbc55d22a7b52b30a019c07327f4bea2d9e4"
+    },
+    {
+        "id": "CHA_PRIV_NW_PATH_X",
+        "name": "Private Network Traffic",
+        "t1": "2021-08-16 03:08:35",
+        "t2": "2021-08-16 03:14:50",
+        "descr": "The Cluster Health Advisor (CHA) detected an abrupt, significant decrease in message traffic on the Cluster Interconnect.",
+        "cause": "The decrease in traffic on the private interconnect was probably caused by a problem with the underlying network.",
+        "action": "Check for network link or connectivity failures in the system message logs.",
+        "belief": 63.397949,
+        "evidence": [
+            {
+                "signal": "db_fg_wait_ratio",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:35",
+                "fd": "db_fg_wait_ratio",
+                "value": "98.2000"
+            }
+        ],
+        "instance": "diarac2",
+        "db": "diarac",
+        "onhost": "dbm02dbadm02",
+        "from": "2021-08-16 03:04:32",
+        "to": "2021-08-16 03:39:41",
+        "hash": "bcc427664f27bc89b0df76f53ea2f6864779d9e820bf15c11f78a44c2ab13951"
+    },
+    {
+        "id": "CHA_CFENQ_HANG",
+        "name": "Control File Enqueue Wait Hang",
+        "t1": "2021-08-16 03:08:40",
+        "t2": "2021-08-16 03:14:50",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. Some processes are waiting for the Control File enqueue for several seconds.",
+        "cause": "The Cluster Health Advisor (CHA) detected that a background process has been waiting several seconds for a Control File enqueue because the Log Writer, Archiver or Checkpoint process on another node is unresponsive, blocked by other processes, or is waiting for CPU or memory.",
+        "action": "Check whether incidents are detected and diagnosed on other nodes and instances in the cluster using the command 'chactl query diagnosis'. Look for reports of any issues detected by the Hang Manager in the DIA0 trace file and follow the suggestions to resolve those problems.",
+        "belief": 50.086777,
+        "evidence": [
+            {
+                "signal": "enq_cf_contention",
+                "state": "HIGH",
+                "since": "2021-08-16 03:08:40",
+                "fd": "enq_cf_contention",
+                "value": "7.57559E06"
+            }
+        ],
+        "instance": "diarac2",
+        "db": "diarac",
+        "onhost": "dbm02dbadm02",
+        "from": "2021-08-16 03:04:32",
+        "to": "2021-08-16 03:39:41",
+        "hash": "c5fd24cd452d6547cf86dc0c3049dd453a4d2404c35c3cd80b5fcbfd5d69c06c"
+    },
+    {
+        "id": "CHA_GC_HANG",
+        "name": "Global Cache Message Request Hang",
+        "t1": "2021-08-16 03:08:45",
+        "t2": "2021-08-16 03:10:25",
+        "descr": "The Cluster Health Advisor (CHA) detected a hang. The global cache messages are taking a long time.",
+        "cause": "CHA detected that global cache requests were not completed and were blocking database sessions, because the requested data block was pinned on another instance of this cluster. The remote pinning process was starved of cpu or memory, or blocked by another process. It is also possible that there was a network issue or reconfiguration.",
+        "action": "Check whether incidents related to cpu, memory or network were detected and diagnosed by CHA on other nodes and instances in the cluster. Verify whether any hangs were detected by the Hang Manager ( DIA0 ), and look for any process stalls detected by LMHB.",
+        "belief": 53.338387,
+        "instance": "diarac1",
+        "db": "diarac",
+        "onhost": "dbm02dbadm01",
+        "from": "2021-08-15 15:40:20",
+        "to": "2021-08-16 15:38:07",
+        "hash": "57a294f89a568de04eeae8d76be8d1f7c74d623d5286d82488e2dc6b9242d2fe"
+    }
+]
