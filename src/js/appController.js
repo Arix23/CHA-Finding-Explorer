@@ -35,13 +35,13 @@ define(['knockout', 'ojs/ojcontext', 'ojs/ojmodule-element-utils', 'ojs/ojknocko
 
       let navData = [
         { path: '', redirect: 'dashboard' },
-        { path: 'dashboard', detail: { label: 'Dashboard', iconClass: 'oj-ux-ico-bar-chart' } },
-        { path: 'incidents', detail: { label: 'Details', iconClass: 'oj-ux-ico-fire' } },
-        { path: 'customers', detail: { label: 'Concurrent Problem Count', iconClass: 'oj-ux-ico-contact-group' } },
-        { path: 'about', detail: { label: 'Problem Frequency', iconClass: 'oj-ux-ico-information-s' } },
-        { path: 'dashboard', detail: { label: 'Problem Details', iconClass: 'oj-ux-ico-information-s' } },
-        { path: 'incidents', detail: { label: 'Target Details', iconClass: 'oj-ux-ico-information-s' } },
-        { path: 'customers', detail: { label: 'Filters', iconClass: 'oj-ux-ico-information-s' } }
+        { path: 'dashboard', detail: { label: 'Dashboard', iconClass: 'oj-ux-ico-dashboard' } },
+        { path: 'details', detail: { label: 'Details', iconClass: 'oj-ux-ico-file-view-details' } },
+        { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count', iconClass: 'oj-ux-ico-bar-chart' } },
+        { path: 'problemFrequency', detail: { label: 'Problem Frequency', iconClass: 'oj-ux-ico-type-time-input' } },
+        { path: 'problemDetails', detail: { label: 'Problem Details', iconClass: 'oj-ux-ico-warning-s' } },
+        { path: 'targetDetails', detail: { label: 'Target Details', iconClass: 'oj-ux-ico-dashboard-20' } },
+        { path: 'filters', detail: { label: 'Filters', iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
       ];
 
       // Router setup
