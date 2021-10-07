@@ -4,17 +4,22 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Dashboard</h1>
+  <h1>Dashboard Content Area</h1>
   <div>
-    <div id="sampleDemo" class="demo-padding demo-container">
+      To change the content of this section, you will make edits to the dashboard.html file located in the /ts/views folder.
+
       <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+                  
         <div id="parentContainer" class="oj-sm-padding-1x">
           <oj-file-picker accept="[[acceptArr]]" 
-                          selection-mode="single" 
+                          selection-mode="[[multipleStr]]" 
                           on-oj-select='[[selectListener]]' 
                           disabled='[[isDisabled]]'
                           on-oj-invalid-select='[[invalidListener]]'>
           </oj-file-picker> 
+         
+          <div class="oj-sm-padding-1x-top"></div>
+          
          
          
           <div class="oj-sm-padding-1x-top">Selected files:
@@ -25,8 +30,5 @@
             <oj-bind-text value="[[invalidMessage]]"></oj-bind-text>
           </div>
         </div>
-        
-        
-      </div>
   </div>
 </div>
