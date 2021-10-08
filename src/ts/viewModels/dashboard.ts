@@ -14,11 +14,17 @@ class DashboardViewModel {
   
 
   constructor() {
-
+    if (this.jsonFile!=null){
+      this.numberProblems = ko.observable(this.jsonFile.length);
+    }
+    
 
   
   }
   jsonFile : ko.Observable<JSON> = jsonFilex.jsonFile;
+  numberProblems : ko.Observable<number> = ko.observable(0);
+  
+  
   multiple : ko.ObservableArray<string> = ko.observableArray(["single"]);
     multipleStr : ko.Computed<string> = ko.pureComputed(() => {
       return this.multiple()[0] ? "multiple" : "single";
@@ -85,6 +91,7 @@ class DashboardViewModel {
   connected(): void {
     AccUtils.announce("Dashboard page loaded.");
     document.title = "Dashboard";
+    console.log(this.jsonFile);
     // implement further logic if needed
   }
 
