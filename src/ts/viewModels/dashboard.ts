@@ -8,13 +8,17 @@ import "ojs/ojfilepicker";
 import "ojs/ojinputtext";
 import "ojs/ojlabel";
 import "ojs/ojcheckboxset";
+
+
 class DashboardViewModel {
   
 
   constructor() {
 
-  }
 
+  
+  }
+  jsonFile : ko.Observable<JSON> = jsonFilex.jsonFile;
   multiple : ko.ObservableArray<string> = ko.observableArray(["single"]);
     multipleStr : ko.Computed<string> = ko.pureComputed(() => {
       return this.multiple()[0] ? "multiple" : "single";
@@ -55,13 +59,16 @@ class DashboardViewModel {
           var fileReader = new FileReader();
           fileReader.readAsText(file);
           fileReader.onload=function(){
-            console.log(fileReader.result.toString());
+            //console.log(fileReader.result.toString());
             jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
             
-            console.log(jsonFilex.jsonFile);
+            //console.log(jsonFilex.jsonFile[0].id);
+            //console.log(jsonFilex.jsonFile);
           }
+          
           return file.name;
         })
+        
       );
     };
   
