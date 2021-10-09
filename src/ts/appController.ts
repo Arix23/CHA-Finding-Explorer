@@ -8,6 +8,7 @@ import ModuleRouterAdapter = require("ojs/ojmodulerouter-adapter");
 import KnockoutRouterAdapter = require("ojs/ojknockoutrouteradapter");
 import UrlParamAdapter = require("ojs/ojurlparamadapter");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
+import "ojs/ojmodule-element";
 import "ojs/ojknockout";
 import "ojs/ojmodule-element";
 import { ojNavigationList } from "ojs/ojnavigationlist";
@@ -24,7 +25,8 @@ interface CoreRouterDetail {
 // }
 
 class RootViewModel {
-  jsonFile: JSON;
+  
+  public jsonFile: ko.Observable<JSON>;
   manner: ko.Observable<string>;
   message: ko.Observable<string|undefined>;
   smScreen: ko.Observable<boolean>;
@@ -68,7 +70,7 @@ class RootViewModel {
     }
 
     const navData = [
-      { path: '', redirect: 'dashboard' },
+        { path: "", redirect: 'dashboard' },
         { path: 'dashboard', detail: { label: 'Dashboard', iconClass: 'oj-ux-ico-dashboard' } },
         { path: 'details', detail: { label: 'Details', iconClass: 'oj-ux-ico-file-view-details' } },
         { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count', iconClass: 'oj-ux-ico-bar-chart' } },
@@ -117,7 +119,7 @@ class RootViewModel {
     this.appName = ko.observable("CHA Finding Explorer");
     // user Info used in Global Navigation area
 
-    this.userLogin = ko.observable("");
+    this.userLogin = ko.observable("AAAAA");
     // footer
     this.footerLinks = [
       {name: 'About Oracle', linkId: 'aboutOracle', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about'},
@@ -142,4 +144,3 @@ class RootViewModel {
 }
 
 export default new RootViewModel();
-//export string jsonFile;

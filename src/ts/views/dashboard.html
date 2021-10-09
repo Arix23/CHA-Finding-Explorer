@@ -3,32 +3,54 @@
  Licensed under The Universal Permissive License (UPL), Version 1.0
  as shown at https://oss.oracle.com/licenses/upl/
  -->
-<div class="oj-hybrid-padding">
-  <h1>Dashboard Content Area</h1>
-  <div>
-      To change the content of this section, you will make edits to the dashboard.html file located in the /ts/views folder.
-
-      <div id="componentDemoContent" style="width: 1px; min-width: 100%;">
-                  
-        <div id="parentContainer" class="oj-sm-padding-1x">
-          <oj-file-picker accept="[[acceptArr]]" 
-                          selection-mode="[[multipleStr]]" 
-                          on-oj-select='[[selectListener]]' 
-                          disabled='[[isDisabled]]'
-                          on-oj-invalid-select='[[invalidListener]]'>
-          </oj-file-picker> 
-         
-          <div class="oj-sm-padding-1x-top"></div>
-          
-         
-         
-          <div class="oj-sm-padding-1x-top">Selected files:
-              <oj-bind-text value="[[fileNames]]"></oj-bind-text>
-          </div>
-         
-          <div class="oj-sm-padding-1x-top">Invalid Message Content:
-            <oj-bind-text value="[[invalidMessage]]"></oj-bind-text>
-          </div>
+    <oj-bind-if test="[[numberProblems]]">
+      <h1>Filters</h1>
+      <br>
+      <div class="oj-flex">
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Number of Problems: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
         </div>
-  </div>
-</div>
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Most Frequent Error: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </div>
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Target with most errors: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </div>
+      </div>
+      <div class="oj-flex">
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Number of Problems: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </div>
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Most Frequent Error: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </div>
+        <div class="oj-sm-4 oj-flex-item">
+          <h1> Target with most errors: </h1>
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </div>
+      </div>
+    </oj-bind-if>
+    
+    
+    <oj-bind-if test="[[jsonFile === null]]">
+      <div id="parentContainer" class="oj-sm-padding-1x">
+        <h1> New Analysis </h1>
+        <oj-file-picker accept="[[acceptArr]]" selection-mode="[[multipleStr]]" on-oj-select='[[selectListener]]'
+          disabled='[[isDisabled]]' on-oj-invalid-select='[[invalidListener]]'>
+        </oj-file-picker>
+    
+    
+        <div class="oj-sm-padding-1x-top"></div>
+    
+    
+        <div class="oj-sm-padding-1x-top">Selected files:
+          <oj-bind-text value="[[fileNames]]"></oj-bind-text>
+        </div>
+    </oj-bind-if>
+
+    
