@@ -1,4 +1,7 @@
 import * as AccUtils from "../accUtils";
+
+
+
 class TargetDetailsViewModel {
 
   constructor() {

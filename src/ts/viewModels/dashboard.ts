@@ -9,8 +9,50 @@ import "ojs/ojinputtext";
 import "ojs/ojlabel";
 import "ojs/ojcheckboxset";
 
+//imports barra de filtros
+import Message = require("ojs/ojmessaging");
+import ArrayDataProvider = require("ojs/ojarraydataprovider");
+import "ojs/ojknockout";
+import "ojs/ojselectcombobox";
+import "ojs/ojformlayout";
+
+
+import * as Bootstrap from "ojs/ojbootstrap";
+import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
+import * as ResponsiveUtils from "ojs/ojresponsiveutils";
+import { ojDatePicker } from "ojs/ojdatetimepicker";
+import "ojs/ojdatetimepicker";
+import "ojs/ojlabel";
+import "ojs/ojformlayout";
+import "ojs/ojtimezonedata";
+
 
 class DashboardViewModel {
+
+  // Problems
+  private readonly browsers = [
+    { value: "Private Network Trafficer", label: "Private Network Traffic" },
+    { value: "Firefox", label: "Firefox" },
+    { value: "Chrome", label: "Chrome" },
+    { value: "Opera", label: "Opera" },
+    { value: "Safari", label: "Safari" },
+  ];
+  readonly browsersDP = new ArrayDataProvider(this.browsers, {
+    keyAttributes: "value",
+  });
+
+  // Date picker
+  timeFullConverter: IntlDateTimeConverter;
+    error: Message[];
+    warning: Message[];
+    info: Message[];
+    confirmation: Message[];
+    value: ko.Observable<string>;
+    numberOfMonths: number;
+    datePickerMonths: ojDatePicker["datePicker"];
+    largeScreenMatch: MediaQueryList;
+    datePickerWeek: ojDatePicker["datePicker"];
+    timePicker: object;
   
 
   constructor() {

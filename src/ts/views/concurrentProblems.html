@@ -4,7 +4,47 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Customers Content Area</h1>
+
+  <!-- barra de filtros -->
+  <div class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
+
+    <oj-button id="restart" class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
+      <span slot="startIcon" class="oj-ux-ico-refresh"></span>
+    </oj-button>
+
+    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+      <oj-input-date-time label-hint="From:" autocomplete="off"></oj-input-date-time>
+
+    </div>
+    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+      <oj-input-date-time label-hint="To:" autocomplete="off"></oj-input-date-time>
+
+    </div>
+
+    <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
+      <oj-select-many value='[[ ["Private Network Traffic"] ]]' label-hint="Problems" label-edge="inside">
+        <oj-option value="Private Network Traffic">Private Network Traffic</oj-option>
+        <oj-option value="Firefox">Firefox</oj-option>
+        <oj-option value="Chrome">Chrome</oj-option>
+        <oj-option value="Opera">Opera</oj-option>
+        <oj-option value="Safari">Safari</oj-option>
+      </oj-select-many>
+
+    </div>
+
+    <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
+      <oj-select-many value='[[ ["dbm02dbadm01"] ]]' label-hint="Target" label-edge="inside">
+        <oj-option value="dbm02dbadm01">dbm02dbadm01</oj-option>
+        <oj-option value="Firefox">Firefox</oj-option>
+        <oj-option value="Chrome">Chrome</oj-option>
+        <oj-option value="Opera">Opera</oj-option>
+        <oj-option value="Safari">Safari</oj-option>
+      </oj-select-many>
+
+    </div>
+  </div>
+
+  <h1>Concurrent Problem Count</h1>
   <div>
       To change the content of this section, you will make edits to the customers.html file located in the /ts/views folder.
   </div>
