@@ -121,12 +121,12 @@
               </oj-toolbar>
             </div>
           </div>
-          <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+          <div  class="oj-web-applayout-max-width oj-web-applayout-navbar">
             
           </div>
         </header>
-        <div class="oj-flex oj-web-applayout-content">
-          <div class="oj-flex-item">
+        <div role="navigation" class="oj-flex oj-web-applayout-content  oj-web-applayout-navbar " >
+          <div class="oj-md-2 oj-lg-3 oj-xl-2 oj-flex-item">
             <oj-navigation-list id="navTabBar"
                                 class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataProvider]]"
@@ -135,13 +135,20 @@
                                 selection="{{selection.path}}">
            </oj-navigation-list>
           </div>
-          <div class="oj-flex-item">
-            <oj-module role="main" class="oj-web-applayout-min-width " config="[[moduleAdapter.koObservableConfig]]">
+          <div class="oj-md-8 oj-lg-8 oj-xl-8 oj-flex-item">
+            <oj-module role="main" class="oj-web-applayout-max-width " config="[[moduleAdapter.koObservableConfig]]">
             </oj-module>
+
+            
           </div>
           
+          
         </div>
-        
+        <!-- <div class="oj-flex">
+          <div class="oj-md-6 oj-lg-2 oj-xl-8 oj-flex-item">A</div>
+          <div class="oj-md-3 oj-lg-4 oj-xl-2 oj-flex-item">B</div>
+          <div class="oj-md-3 oj-lg-6 oj-xl-2 oj-flex-item">C</div>
+        </div> -->
         
         <footer class="oj-web-applayout-footer" role="contentinfo">
           <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
