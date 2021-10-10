@@ -1,8 +1,55 @@
 import * as AccUtils from "../accUtils";
+import * as ko from "knockout";
+import * as Bootstrap from "ojs/ojbootstrap";
+import Message = require("ojs/ojmessaging");
+import "ojs/ojknockout";
+import "ojs/ojformlayout";
+import "ojs/ojslider";
 
+//imports barra de filtros
+import ArrayDataProvider = require("ojs/ojarraydataprovider");
+import "ojs/ojknockout";
+import "ojs/ojselectcombobox";
+import "ojs/ojformlayout";
+
+import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
+import * as ResponsiveUtils from "ojs/ojresponsiveutils";
+import { ojDatePicker } from "ojs/ojdatetimepicker";
+import "ojs/ojdatetimepicker";
+import "ojs/ojlabel";
+import "ojs/ojformlayout";
+import "ojs/ojtimezonedata";
 
 
 class TargetDetailsViewModel {
+
+  //slider
+  isSmall: ko.Observable<boolean>;
+  columns: ko.Computed<number>;
+  error: Message[];
+  warning: Message[];
+  info: Message[];
+  confirmation: Message[];
+
+  // Problems
+  private readonly browsers = [
+    { value: "Private Network Trafficer", label: "Private Network Traffic" },
+    { value: "Firefox", label: "Firefox" },
+    { value: "Chrome", label: "Chrome" },
+    { value: "Opera", label: "Opera" },
+    { value: "Safari", label: "Safari" },
+  ];
+  readonly browsersDP = new ArrayDataProvider(this.browsers, {
+    keyAttributes: "value",
+  });
+
+  // Date picker
+  timeFullConverter: IntlDateTimeConverter;
+  numberOfMonths: number;
+  datePickerMonths: ojDatePicker["datePicker"];
+  largeScreenMatch: MediaQueryList;
+  datePickerWeek: ojDatePicker["datePicker"];
+  timePicker: object;
 
   constructor() {
 

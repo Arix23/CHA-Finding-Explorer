@@ -43,84 +43,84 @@ class DashboardViewModel {
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
-    error: Message[];
-    warning: Message[];
-    info: Message[];
-    confirmation: Message[];
-    value: ko.Observable<string>;
-    numberOfMonths: number;
-    datePickerMonths: ojDatePicker["datePicker"];
-    largeScreenMatch: MediaQueryList;
-    datePickerWeek: ojDatePicker["datePicker"];
-    timePicker: object;
-  
+  error: Message[];
+  warning: Message[];
+  info: Message[];
+  confirmation: Message[];
+  value: ko.Observable<string>;
+  numberOfMonths: number;
+  datePickerMonths: ojDatePicker["datePicker"];
+  largeScreenMatch: MediaQueryList;
+  datePickerWeek: ojDatePicker["datePicker"];
+  timePicker: object;
+
 
   constructor() {
-    if (this.jsonFile!=null){
+    if (this.jsonFile != null) {
       this.numberProblems = ko.observable(this.jsonFile.length);
     }
-    
 
-  
+
+
   }
-  jsonFile : ko.Observable<JSON> = jsonFilex.jsonFile;
-  numberProblems : ko.Observable<number> = ko.observable(0);
-  
-  
-  multiple : ko.ObservableArray<string> = ko.observableArray(["single"]);
-    multipleStr : ko.Computed<string> = ko.pureComputed(() => {
-      return this.multiple()[0] ? "multiple" : "single";
-    });
-    disabled : ko.ObservableArray<string> = ko.observableArray();
-    isDisabled : ko.Computed<boolean> = ko.pureComputed(() => {
-      return this.disabled()[0] === "disable" ? true : false;
-    });
-    invalidMessage : ko.Observable<string> = ko.observable("");
-    invalidListener = (event : FilePickerElement.ojInvalidSelect) => {
-      this.fileNames([]);
-      this.invalidMessage(
-        "{severity: '" +
-          event.detail.messages[0].severity +
-          "', summary: '" +
-          event.detail.messages[0].summary +
-          "'}"
-      );
-      const promise = event.detail.until;
-  
-      if (promise) {
-        promise.then(() => {
-          this.invalidMessage("");
-        });
-      }
-    };
-    acceptStr : ko.Observable<string> = ko.observable("application/json");
-    acceptArr : ko.Computed<string[]> = ko.pureComputed(() => {
-      const accept = this.acceptStr();
-      return accept ? accept.split(",") : [];
-    });
-    fileNames : ko.Observable<string[]> = ko.observable([]);
-    selectListener = (event : FilePickerElement.ojSelect) => {
-      this.invalidMessage("");
-      const files = event.detail.files;
-      this.fileNames(
-        Array.prototype.map.call(files, (file) => {
-          var fileReader = new FileReader();
-          fileReader.readAsText(file);
-          fileReader.onload=function(){
-            //console.log(fileReader.result.toString());
-            jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
-            
-            //console.log(jsonFilex.jsonFile[0].id);
-            //console.log(jsonFilex.jsonFile);
-          }
-          
-          return file.name;
-        })
-        
-      );
-    };
-  
-  
+  jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
+  numberProblems: ko.Observable<number> = ko.observable(0);
+
+
+  multiple: ko.ObservableArray<string> = ko.observableArray(["single"]);
+  multipleStr: ko.Computed<string> = ko.pureComputed(() => {
+    return this.multiple()[0] ? "multiple" : "single";
+  });
+  disabled: ko.ObservableArray<string> = ko.observableArray();
+  isDisabled: ko.Computed<boolean> = ko.pureComputed(() => {
+    return this.disabled()[0] === "disable" ? true : false;
+  });
+  invalidMessage: ko.Observable<string> = ko.observable("");
+  invalidListener = (event: FilePickerElement.ojInvalidSelect) => {
+    this.fileNames([]);
+    this.invalidMessage(
+      "{severity: '" +
+      event.detail.messages[0].severity +
+      "', summary: '" +
+      event.detail.messages[0].summary +
+      "'}"
+    );
+    const promise = event.detail.until;
+
+    if (promise) {
+      promise.then(() => {
+        this.invalidMessage("");
+      });
+    }
+  };
+  acceptStr: ko.Observable<string> = ko.observable("application/json");
+  acceptArr: ko.Computed<string[]> = ko.pureComputed(() => {
+    const accept = this.acceptStr();
+    return accept ? accept.split(",") : [];
+  });
+  fileNames: ko.Observable<string[]> = ko.observable([]);
+  selectListener = (event: FilePickerElement.ojSelect) => {
+    this.invalidMessage("");
+    const files = event.detail.files;
+    this.fileNames(
+      Array.prototype.map.call(files, (file) => {
+        var fileReader = new FileReader();
+        fileReader.readAsText(file);
+        fileReader.onload = function () {
+          //console.log(fileReader.result.toString());
+          jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
+
+          //console.log(jsonFilex.jsonFile[0].id);
+          //console.log(jsonFilex.jsonFile);
+        }
+
+        return file.name;
+      })
+
+    );
+  };
+
+
 
   /**
    * Optional ViewModel method invoked after the View is inserted into the
