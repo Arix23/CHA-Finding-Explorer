@@ -19,5 +19,5 @@
   "sassVer": "5.0.0",
   "defaultTheme": "redwood",
   "architecture": "mvvm",
-  "generatorVersion": "11.1.0"
+  "generatorVersion": "11.0.1"
 }

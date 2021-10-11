@@ -47,7 +47,7 @@ class DetailsViewModel {
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
 
-  
+
 
   constructor() {
 
@@ -65,6 +65,8 @@ class DetailsViewModel {
     AccUtils.announce("Details page loaded.");
     document.title = "Details";
     console.log(jsonFilex.jsonFile);
+    //console.log(jsonFilex.jsonFile[0]);
+    //console.log(jsonFilex.jsonFile[0].id);
     // implement further logic if needed
   }
 
