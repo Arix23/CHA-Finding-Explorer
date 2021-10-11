@@ -47,8 +47,25 @@
   <h1>Problem Frequency </h1>
   <div>
 
-    oa soi aro
+    <div id='chart-container'>
+      <oj-chart
+        id="barChart"
+        type="bar"
+        orientation="[[orientationValue]]"
+        data="[[dataProvider]]"
+        animation-on-display="auto"
+        animation-on-data-change="auto"
+        hover-behavior="dim">
 
+        <template slot='itemTemplate' data-oj-as='item'>
+          <oj-chart-item
+            value='[[item.data.count]]'
+            group-id='[[ [item.data.name] ]]'
+            series-id='[[ [item.data.name] ]]'>
+          </oj-chart-item>
+        </template>
+      </oj-chart>
+    </div>
   </div>
 
 
