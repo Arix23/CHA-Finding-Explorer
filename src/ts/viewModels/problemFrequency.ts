@@ -55,7 +55,6 @@ class ProblemFrequencyViewModel {
     timePicker: object;
 
   readonly orientationValue = ko.observable("vertical");
-  //dataProvider: ArrayDataProvider;
   problemCount = new Map();
   dataProvider : ArrayDataProvider<any, any>;
   /*dataProvider = new ArrayDataProvider(this.problemCount, {
@@ -78,37 +77,29 @@ class ProblemFrequencyViewModel {
     document.title = "Problem Frequency";
     // implement further logic if needed
     // creates a map {problem, count}
-    //let problemCount = new Map();
+
     let problemArray: Array<{name: string, count: number, group: string}> = [];
     for (let item in jsonFilex.jsonFile){
       if (this.problemCount.has(jsonFilex.jsonFile[item].name)){
         let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
         this.problemCount.set(jsonFilex.jsonFile[item].name, count);
-        console.log(jsonFilex.jsonFile[item].name);
-        console.log(count);
       }
       else {
         this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
-        console.log(jsonFilex.jsonFile[item].name);
       }
     }
 
     let i = 0;
     this.problemCount.forEach((value: number, key: string) => {
       problemArray.push({ name: key, count: value , group: "A"});
-      console.log(key, value);
-      console.log(problemArray[i]);
       i = i + 1;
     });
 
     let jsonCount = JSON.stringify(problemArray);
-    console.log(jsonCount);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-    console.log(this.dataProvider.data);
 
     document.getElementById("chart-container");
-    //console.log(this.problemCount);
 
   }
 
