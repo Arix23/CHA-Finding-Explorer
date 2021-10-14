@@ -15,6 +15,7 @@ import { ojNavigationList } from "ojs/ojnavigationlist";
 import { ojModule } from "ojs/ojmodule-element";
 import Context = require("ojs/ojcontext");
 
+
 interface CoreRouterDetail {
   label: string;
   iconClass: string;
@@ -31,7 +32,7 @@ class RootViewModel {
   message: ko.Observable<string|undefined>;
   smScreen: ko.Observable<boolean>;
   mdScreen: ko.Observable<boolean>;
-  router: CoreRouter<CoreRouterDetail>;
+  public router: CoreRouter<CoreRouterDetail>;
   moduleAdapter: ModuleRouterAdapter<CoreRouterDetail>;
   navDataProvider: ojNavigationList<string, CoreRouter.CoreRouterState<CoreRouterDetail>>["data"];
   drawerParams: {
@@ -119,7 +120,7 @@ class RootViewModel {
     this.appName = ko.observable("CHA Finding Explorer");
     // user Info used in Global Navigation area
 
-    this.userLogin = ko.observable("AAAAA");
+    this.userLogin = ko.observable("");
     // footer
     this.footerLinks = [
       {name: 'About Oracle', linkId: 'aboutOracle', linkTarget:'http://www.oracle.com/us/corporate/index.html#menu-about'},

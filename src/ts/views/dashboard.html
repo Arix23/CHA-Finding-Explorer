@@ -5,81 +5,98 @@
  -->
 
 <oj-bind-if test="[[numberProblems]]">
-  <!-- barra de filtros -->
-  <div
-    class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
 
-    <oj-button id="restart"
-      class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
-      <span slot="startIcon" class="oj-ux-ico-refresh"></span>
-    </oj-button>
-
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time label-hint="From:" autocomplete="off"></oj-input-date-time>
-
-    </div>
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time label-hint="To:" autocomplete="off"></oj-input-date-time>
-
-    </div>
-
-    <div
-      class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many value='[[ ["Private Network Traffic"] ]]' label-hint="Problems" label-edge="inside">
-        <oj-option value="Private Network Traffic">Private Network Traffic</oj-option>
-        <oj-option value="Firefox">Firefox</oj-option>
-        <oj-option value="Chrome">Chrome</oj-option>
-        <oj-option value="Opera">Opera</oj-option>
-        <oj-option value="Safari">Safari</oj-option>
-      </oj-select-many>
-
-    </div>
-
-    <div
-      class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many value='[[ ["dbm02dbadm01"] ]]' label-hint="Target" label-edge="inside">
-        <oj-option value="dbm02dbadm01">dbm02dbadm01</oj-option>
-        <oj-option value="Firefox">Firefox</oj-option>
-        <oj-option value="Chrome">Chrome</oj-option>
-        <oj-option value="Opera">Opera</oj-option>
-        <oj-option value="Safari">Safari</oj-option>
-      </oj-select-many>
-
-    </div>
-  </div>
   <br>
-  <div class="oj-flex">
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Number of Problems: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+  <div>
+    <div class="oj-flex">
+      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3> Number of Problems: </h3>
+          <h1>
+            <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
+      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3> Most Frequent Error: </h3>
+          <h1 id="dashboard-item">
+            <oj-bind-text value="[[mostFrequentProblem]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
+      
     </div>
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Most Frequent Error: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+    <div class="oj-flex">
+      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3 id="medium-prob">
+            Medium Probability Problems:
+            <oj-bind-text value="[[mediumProbQuantity]]"></oj-bind-text>
+          </h3>
+          <h3 id="high-prob">
+            High Probability Problems:
+            <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
+          </h3>
+        </center>
+      </div>
+      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3> Time with most errors: </h3>
+          <h1 id="dashboard-item">
+            <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
     </div>
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Target with most errors: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
-    </div>
-  </div>
-  <div class="oj-flex">
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Number of Problems: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
-    </div>
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Most Frequent Error: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
-    </div>
-    <div class="oj-sm-4 oj-flex-item">
-      <h1> Target with most errors: </h1>
-      <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+
+    <!-- //TARGETS DASHBOARD -->
+    <div class="oj-flex">
+      <div class="oj-sm-4 oj-md-4 oj-lg-4 oj-xl-4 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3> Database with most errors: </h3>
+          <h1 id="dashboard-item">
+            <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
+      <div class="oj-sm-4 oj-md-4 oj-lg-4 oj-xl-4 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h3> Instance with most errors: </h3>
+          <h1 id="dashboard-item">
+            <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
+      <div class="oj-sm-4 oj-md-4 oj-lg-4 oj-xl-4 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center oj-helper-overflow-wrap-anywhere">
+        <center>
+          <h3> OnHost with most errors: </h3>
+          <h1 id="dashboard-item">
+            <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
+          </h1>
+        </center>
+      </div>
     </div>
   </div>
 </oj-bind-if>
 
 
 <oj-bind-if test="[[jsonFile === null]]">
+  <center>
   <div id="parentContainer" class="oj-sm-padding-1x">
     <h1> New Analysis </h1>
     <oj-file-picker accept="[[acceptArr]]" selection-mode="[[multipleStr]]" on-oj-select='[[selectListener]]'
@@ -93,4 +110,5 @@
     <div class="oj-sm-padding-1x-top">Selected files:
       <oj-bind-text value="[[fileNames]]"></oj-bind-text>
     </div>
+  </center>
 </oj-bind-if>

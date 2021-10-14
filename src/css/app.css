@@ -14,3 +14,17 @@
   height: 1px;
   overflow: hidden;
 }
+
+#dashboard-item {
+  background-color: lightgray;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+#medium-prob{
+  background-color: rgba(251, 251, 122, 0.774);
+}
+
+#high-prob {
+  background-color: rgb(216, 84, 84);
+}
