@@ -105,7 +105,6 @@ class ProblemFrequencyViewModel {
     console.log(jsonCount);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-    console.log(this.dataProvider.data);
 
     document.getElementById("chart-container");
     //console.log(this.problemCount);

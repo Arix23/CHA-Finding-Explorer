@@ -25,6 +25,8 @@ import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
+import { oj } from "@oracle/oraclejet/dist/types";
+
 
 
 class DashboardViewModel {
@@ -58,6 +60,88 @@ class DashboardViewModel {
   constructor() {
     if (this.jsonFile != null) {
       this.numberProblems = ko.observable(this.jsonFile.length);
+      var map = new Map();
+      var databaseMaxCount = 0;
+      var instanceMaxCount = 0;
+      var onHostMaxCount = 0;
+      var problemMaxCount = 0;
+      var maxProblem = "Default";
+      var maxDataBase = "Default";
+      var maxInstance = "Default";
+      var maxOnHost = "Default";
+      var mediumProbProblems = 0;
+      var highProbProblems = 0;
+
+      //PROCESAMIENTO DEL JSON PARA OBTENER VALORES NECESARIOS PARA EL FUNCIONAMIENTO DEL DASHBOARD
+      for(var i = 0;i<this.jsonFile.length;i++){
+
+        //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
+        if(this.jsonFile[i].belief<75.0){
+          mediumProbProblems++;
+        } else{
+          highProbProblems++;
+        }
+
+        //GET MOST FREQUENT PROBLEM
+        if(map.has(this.jsonFile[i].name)){
+          map.set(this.jsonFile[i].name,map.get(this.jsonFile[i].name)+1)
+        } else{
+          map.set(this.jsonFile[i].name,1);
+        }
+        if(map.get(this.jsonFile[i].name)>problemMaxCount){
+          problemMaxCount= map.get(this.jsonFile[i].name);
+          maxProblem = this.jsonFile[i].name
+        }
+
+
+        //GET DB WITH MOST ERRORS
+
+        if(map.has(this.jsonFile[i].db)){
+          map.set(this.jsonFile[i].db,map.get(this.jsonFile[i].db)+1)
+        } else{
+          map.set(this.jsonFile[i].db,1);
+        }
+
+        if(map.get(this.jsonFile[i].db)>databaseMaxCount){
+          databaseMaxCount= map.get(this.jsonFile[i].db);
+          maxDataBase = this.jsonFile[i].db
+        }
+        
+
+        // GET HOST WITH MOST ERRORS
+        if(map.has(this.jsonFile[i].onhost)){
+          map.set(this.jsonFile[i].onhost,map.get(this.jsonFile[i].onhost)+1)
+        } else{
+          map.set(this.jsonFile[i].onhost,1);
+        }
+        if(map.get(this.jsonFile[i].onhost)>onHostMaxCount){
+          onHostMaxCount= map.get(this.jsonFile[i].onhost);
+          maxOnHost = this.jsonFile[i].onhost
+        }
+
+        //GET INSTANCE WITH MOST ERRORS
+
+        if(map.has(this.jsonFile[i].instance)){
+          map.set(this.jsonFile[i].instance,map.get(this.jsonFile[i].instance)+1)
+        } else{
+          map.set(this.jsonFile[i].instance,1);
+        }
+        if(map.get(this.jsonFile[i].instance)>instanceMaxCount){
+          instanceMaxCount= map.get(this.jsonFile[i].instance);
+          maxInstance = this.jsonFile[i].instance
+        }
+        
+
+        
+        
+
+      }
+      this.dataBaseMostProblems = ko.observable(maxDataBase);
+      this.instanceMostProblems = ko.observable(maxInstance);
+      this.onHostMostProblems = ko.observable(maxOnHost);
+      this.mostFrequentProblem = ko.observable(maxProblem);
+      this.mediumProbQuantity = ko.observable(mediumProbProblems);
+      this.highProbQuantity = ko.observable(highProbProblems);
     }
 
 
@@ -65,6 +149,12 @@ class DashboardViewModel {
   }
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
+  dataBaseMostProblems: ko.Observable<string> = ko.observable("Default");
+  instanceMostProblems: ko.Observable<string> = ko.observable("Default");
+  onHostMostProblems: ko.Observable<string> = ko.observable("Default");
+  mostFrequentProblem: ko.Observable<string> = ko.observable("Default");
+  mediumProbQuantity: ko.Observable<number> = ko.observable(0);
+  highProbQuantity: ko.Observable<number> = ko.observable(0);
 
 
   multiple: ko.ObservableArray<string> = ko.observableArray(["single"]);
@@ -109,11 +199,14 @@ class DashboardViewModel {
         fileReader.onload = function () {
           //console.log(fileReader.result.toString());
           jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
+          
+          
 
           //console.log(jsonFilex.jsonFile[0].id);
           //console.log(jsonFilex.jsonFile);
         }
-
+        
+        
         return file.name;
       })
 
@@ -133,7 +226,6 @@ class DashboardViewModel {
   connected(): void {
     AccUtils.announce("Dashboard page loaded.");
     document.title = "Dashboard";
-    console.log(this.jsonFile);
     // implement further logic if needed
   }
 
