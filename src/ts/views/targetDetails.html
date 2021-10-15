@@ -38,30 +38,83 @@
   </div>
 
   <br>
+<div class="oj-flex">
+  <div id="table-item"class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+    <div class="oj-flex">
+      <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+        Type:
+        <oj-select-single data="[[browsersDP]]"
+                value="CH"
+                label-hint="enabled"
+                label-edge="inside">
+              </oj-select-single>
+              Active problems in selected target:
+        </div>
+        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+          Select:
+          <oj-select-single data="[[browsersDP]]"
+                value="CH"
+                label-hint="enabled"
+                label-edge="inside">
+              </oj-select-single>
+              
+          </div>
+          
+          <oj-table id='table' aria-label='Departments Table'
+                                        data='[[dataProvider]]'
+                                        selection-mode='{"row": "multiple", "column": "multiple"}'
+                                        dnd='{"reorder": {"columns": "enabled"}}'
+                                        scroll-policy='loadMoreOnScroll'
+                                        scroll-policy-options='{"fetchSize": 10}'
+                                        columns='[{"headerText": "Name", 
+                                                   "field": "name",
+                                                   "headerClassName": "oj-sm-only-hide",
+                                                   "className": "oj-sm-only-hide",
+                                                   "resizable": "enabled"},
+                                                  {"headerText": "Count", 
+                                                   "field": "count",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "Database", 
+                                                   "field": "database",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "Instance", 
+                                                   "field": "instance",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "OnHost", 
+                                                   "field": "onhost",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "From", 
+                                                   "field": "from",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "To", 
+                                                   "field": "to",
+                                                   "resizable": "enabled"}]'
+                                        class='demo-table-container oj-bg-body'>
+        </oj-table>
+    </div>
+</div>
 
-  <div class="oj-flex">
-    <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
+    <div id="table-item" class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
       <div class="oj-flex">
-        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
+        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Type:
           <oj-select-single data="[[browsersDP]]"
                   value="CH"
                   label-hint="enabled"
                   label-edge="inside">
                 </oj-select-single>
-          
                 Active problems in selected target:
           </div>
-          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
+          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
             <oj-select-single data="[[browsersDP]]"
                   value="CH"
                   label-hint="enabled"
                   label-edge="inside">
                 </oj-select-single>
+                
             </div>
             
-            <center>
             <oj-table id='table' aria-label='Departments Table'
                                           data='[[dataProvider]]'
                                           selection-mode='{"row": "multiple", "column": "multiple"}'
@@ -75,33 +128,26 @@
                                                      "resizable": "enabled"},
                                                     {"headerText": "Count", 
                                                      "field": "count",
+                                                     "resizable": "enabled"},
+                                                     {"headerText": "Database", 
+                                                     "field": "database",
+                                                     "resizable": "enabled"},
+                                                     {"headerText": "Instance", 
+                                                     "field": "instance",
+                                                     "resizable": "enabled"},
+                                                     {"headerText": "OnHost", 
+                                                     "field": "onhost",
+                                                     "resizable": "enabled"},
+                                                     {"headerText": "From", 
+                                                     "field": "from",
+                                                     "resizable": "enabled"},
+                                                     {"headerText": "To", 
+                                                     "field": "to",
                                                      "resizable": "enabled"}]'
                                           class='demo-table-container oj-bg-body'>
           </oj-table>
-        </center>
-      </div>
-    </div>
-
-    <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
-      <div class="oj-flex">
-        <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
-          Type:
-          <oj-select-single data="[[browsersDP]]"
-                  value="CH"
-                  label-hint="enabled"
-                  label-edge="inside">
-                </oj-select-single>
-          </div>
-          <div class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 ">
-            Select:
-            <oj-select-single data="[[browsersDP]]"
-                  value="CH"
-                  label-hint="enabled"
-                  label-edge="inside">
-                </oj-select-single>
-                Active problems in selected target:
-            </div>
       </div>
   </div>
+</div>
 
 </div>

@@ -28,3 +28,13 @@
 #high-prob {
   background-color: rgb(216, 84, 84);
 }
+
+#table-item{
+  padding: 1em;
+  box-sizing:border-box;
+}
+
+#table-item>div {
+  /* border: 1px solid blue; */
+  flex: 1 1 auto;
+}
