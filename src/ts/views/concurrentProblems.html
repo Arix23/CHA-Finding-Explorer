@@ -46,6 +46,22 @@
 
   <h1>Concurrent Problem Count</h1>
   <div>
-      To change the content of this section, you will make edits to the customers.html file located in the /ts/views folder.
+      <div id='chart-container'>
+        <oj-chart id="lineChart"
+                type="line"
+                orientation="[[orientationValue]]"
+                data="[[dataProvider]]"
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                hover-behavior="dim">
+              <template slot='itemTemplate' data-oj-as='item'>
+                <oj-chart-item
+                  value='[[item.data.count]]'
+                  group-id='[[ [item.data.hour] ]]'
+                  series-id='[[item.data.series]]'>
+                </oj-chart-item>
+              </template>
+        </oj-chart>
+      </div>
   </div>
 </div>
