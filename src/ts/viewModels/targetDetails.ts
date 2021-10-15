@@ -5,12 +5,14 @@ import Message = require("ojs/ojmessaging");
 import "ojs/ojknockout";
 import "ojs/ojformlayout";
 import "ojs/ojslider";
+import "ojs/ojtable";
 
 //imports barra de filtros
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
+import "ojs/ojselectsingle";
 
 import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
@@ -19,9 +21,12 @@ import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
-
+import jsonFilex from "../appController";
 
 class TargetDetailsViewModel {
+
+  //Table
+  
 
   //slider
   isSmall: ko.Observable<boolean>;
@@ -31,17 +36,17 @@ class TargetDetailsViewModel {
   info: Message[];
   confirmation: Message[];
 
-  // Problems
+  // Select Target Type
   private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
+    { value: "Database", label: "Database" },
+    { value: "Instance", label: "Instance" },
+    { value: "OnHost", label: "OnHost" },
   ];
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
+
+
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -50,6 +55,9 @@ class TargetDetailsViewModel {
   largeScreenMatch: MediaQueryList;
   datePickerWeek: ojDatePicker["datePicker"];
   timePicker: object;
+
+  problemCount = new Map();
+  dataProvider : ArrayDataProvider<any, any>;
 
   constructor() {
 
@@ -67,6 +75,36 @@ class TargetDetailsViewModel {
     AccUtils.announce("Target Details page loaded.");
     document.title = "Target Details";
     // implement further logic if needed
+
+    let problemArray: Array<{name: string, count: number, database: string, instance: string, onhost: string, from: string, to:string}> = [];
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      if(jsonFilex.jsonFile[j].db=="diarac"){
+        if (this.problemCount.has(jsonFilex.jsonFile[j].name)){
+          let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
+          this.problemCount.set(jsonFilex.jsonFile[j].name, count);
+
+        }
+        else {
+          this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
+        }
+      }
+    }
+
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      if(jsonFilex.jsonFile[j].db=="diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name)!=-1){
+        problemArray.push({name:jsonFilex.jsonFile[j].name,count:this.problemCount.get(jsonFilex.jsonFile[j].name),database:
+        jsonFilex.jsonFile[j].db,instance:jsonFilex.jsonFile[j].instance,onhost:jsonFilex.jsonFile[j].onhost,
+      from:jsonFilex.jsonFile[j].from,to:jsonFilex.jsonFile[j].to})
+          this.problemCount.set(jsonFilex.jsonFile[j].name,-1);
+      }
+    }
+
+    
+
+    let jsonCount = JSON.stringify(problemArray);
+    console.log(jsonCount);
+
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
   }
 
   /**
