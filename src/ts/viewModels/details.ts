@@ -36,16 +36,23 @@ class DetailsViewModel {
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
-    error: Message[];
-    warning: Message[];
-    info: Message[];
-    confirmation: Message[];
-    value: ko.Observable<string>;
-    numberOfMonths: number;
-    datePickerMonths: ojDatePicker["datePicker"];
-    largeScreenMatch: MediaQueryList;
-    datePickerWeek: ojDatePicker["datePicker"];
-    timePicker: object;
+  error: Message[];
+  warning: Message[];
+  info: Message[];
+  confirmation: Message[];
+  value: ko.Observable<string>;
+  numberOfMonths: number;
+  datePickerMonths: ojDatePicker["datePicker"];
+  largeScreenMatch: MediaQueryList;
+  datePickerWeek: ojDatePicker["datePicker"];
+  timePicker: object;
+
+
+  readonly orientationValue = ko.observable("vertical");
+  problemCount = new Map();
+  hourCount = new Map();
+  dataProvider: ArrayDataProvider<any, any>;
+
 
 
 
@@ -64,26 +71,70 @@ class DetailsViewModel {
   connected(): void {
     AccUtils.announce("Details page loaded.");
     document.title = "Details";
-    console.log(jsonFilex.jsonFile);
+
     //console.log(jsonFilex.jsonFile[0]);
     //console.log(jsonFilex.jsonFile[0].id);
     // implement further logic if needed
+
+    let problemArray: Array<{ hour: string, count: number, series: string }> = [];
+
+    for (let item in jsonFilex.jsonFile) {
+      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)) {
+        let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
+        this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
+      }
+      else {
+        this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+      }
+    }
+
+
+
+
+    /*let i = 1;
+    this.hourCount.forEach((value: number, key: string) => {
+      console.log(jsonFilex.jsonFile[i].name)
+      problemArray.push({ hour: key, count: value, series: jsonFilex.jsonFile[i].name });
+      i = i + 1;
+    });*/
+
+ 
+    
+
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      console.log(jsonFilex.jsonFile[j].t1)
+      if(jsonFilex.jsonFile[j].name == "Private Network Traffic" && jsonFilex.jsonFile[j].t1=="2021-08-16 03:08:35" ){
+        problemArray.push({ hour: jsonFilex.jsonFile[j].t1, count: 2, series: jsonFilex.jsonFile[j].name });
+      }else{
+        problemArray.push({ hour: jsonFilex.jsonFile[j].t1, count: 1, series: jsonFilex.jsonFile[j].name });
+      }
+    }
+
+  
+
+    console.log(problemArray)
+    let jsonCount = JSON.stringify(problemArray);
+
+this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+
+document.getElementById("chart-container");
+
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
-  disconnected(): void {
-    // implement if needed
-  }
+/**
+ * Optional ViewModel method invoked after the View is disconnected from the DOM.
+ */
+disconnected(): void {
+  // implement if needed
+}
 
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
-  transitionCompleted(): void {
-    // implement if needed
-  }
+/**
+ * Optional ViewModel method invoked after transition to the new View is complete.
+ * That includes any possible animation between the old and the new View.
+ */
+transitionCompleted(): void {
+  // implement if needed
+}
 }
 
 export = DetailsViewModel;
