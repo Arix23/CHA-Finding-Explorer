@@ -14,3 +14,27 @@
   height: 1px;
   overflow: hidden;
 }
+
+#dashboard-item {
+  background-color: lightgray;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+#medium-prob{
+  background-color: rgba(251, 251, 122, 0.774);
+}
+
+#high-prob {
+  background-color: rgb(216, 84, 84);
+}
+
+#table-item{
+  padding: 1em;
+  box-sizing:border-box;
+}
+
+#table-item>div {
+  /* border: 1px solid blue; */
+  flex: 1 1 auto;
+}
