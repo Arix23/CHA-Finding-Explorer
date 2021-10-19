@@ -4,8 +4,80 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Customers Content Area</h1>
+  <!-- barra de filtros -->
+  <div
+    class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
+
+    <oj-button id="restart"
+      class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
+      <span slot="startIcon" class="oj-ux-ico-refresh"></span>
+    </oj-button>
+
+    <div class="oj-md-5 oj-lg-5 oj-xl-5 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+      <oj-input-date-time label-hint="From:" autocomplete="off"></oj-input-date-time>
+
+    </div>
+    <div class="oj-md-5 oj-lg-5 oj-xl-5 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+      <oj-input-date-time label-hint="To:" autocomplete="off"></oj-input-date-time>
+
+    </div>
+
+  </div>
+  <h1>Filters</h1>
   <div>
-      To change the content of this section, you will make edits to the customers.html file located in the /ts/views folder.
+    Search problems or targets to filter data.
+  </div>
+
+
+
+  <div class="oj-flex">
+
+    <div
+      class="oj-bg-neutral-0 oj-flex-item oj-panel oj-panel-border-radius-1 oj-md-justify-content-center oj-sm-margin-1x oj-sm-padding-1x oj-md-margin-1x oj-md-padding-1x oj-lg-margin-3x oj-lg-padding-3x oj-xl-margin-3x oj-xl-padding-3x">
+      <div>
+        <h5>Filter by Problem</h5>
+
+        <oj-input-search  id="search1" class="oj-form-control-max-width-md"
+          suggestions="[[suggestionsDP]]" value="{{valueS}}" placeholder="Search..." aria-label="My search field">
+        </oj-input-search>
+
+        <br>
+
+        <oj-form-layout max-columns="1" direction="row">
+          <oj-checkboxset id="enabledCheckboxset" value='["laptop","tablet"]' label-hint=""
+            class='oj-choice-direction-row'>
+            <oj-option value="desktop">Desktop</oj-option>
+            <oj-option value="laptop">Laptop</oj-option>
+            <oj-option value="tablet">Tablet</oj-option>
+          </oj-checkboxset>
+        </oj-form-layout>
+
+      </div>
+    </div>
+    
+    <div
+      class="oj-bg-neutral-0 oj-flex-item oj-panel oj-panel-border-radius-1 oj-md-justify-content-center oj-sm-margin-1x oj-sm-padding-1x oj-md-margin-1x oj-md-padding-1x oj-lg-margin-3x oj-lg-padding-3x oj-xl-margin-3x oj-xl-padding-3x">
+      <div>
+        <h5>Filter by Target</h5>
+
+        <oj-input-search style="height: min-content;" id="search1" class="oj-form-control-max-width-md"
+          suggestions="[[suggestionsDP]]" value="{{valueS}}" placeholder="Search..." aria-label="My search field">
+        </oj-input-search>
+
+        <br>
+
+        <oj-form-layout max-columns="1" direction="row">
+          <oj-checkboxset id="enabledCheckboxset" value='["laptop","tablet"]' label-hint=""
+            class='oj-choice-direction-row'>
+            <oj-option value="desktop">Desktop</oj-option>
+            <oj-option value="laptop">Laptop</oj-option>
+            <oj-option value="tablet">Tablet</oj-option>
+          </oj-checkboxset>
+        </oj-form-layout>
+
+      </div>
+    </div>
+
+
   </div>
 </div>
