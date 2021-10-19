@@ -199,6 +199,10 @@ class DashboardViewModel {
         fileReader.onload = function () {
           //console.log(fileReader.result.toString());
           jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
+          whenDocumentReady().then(() => {
+            ko.cleanNode(document.getElementById('if-statement'));
+            ko.applyBindings(new DashboardViewModel(), document.getElementById("if-statement"));
+          });
           
           
 
