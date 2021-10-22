@@ -65,10 +65,12 @@ class DashboardViewModel {
       var instanceMaxCount = 0;
       var onHostMaxCount = 0;
       var problemMaxCount = 0;
+      var clusterMaxCount = 0;
       var maxProblem = "Default";
       var maxDataBase = "Default";
       var maxInstance = "Default";
       var maxOnHost = "Default";
+      var maxCluster = "Default";
       var mediumProbProblems = 0;
       var highProbProblems = 0;
 
@@ -166,6 +168,24 @@ class DashboardViewModel {
         }
 
         //GET CLUSTER WITH MOST ERRORS
+        if (map.has(this.jsonFile[i].cluster)) {
+          if (this.jsonFile[i].cluster != undefined) {
+            map.set(this.jsonFile[i].cluster, map.get(this.jsonFile[i].cluster) + 1);
+          }
+
+        } else {
+          if (this.jsonFile[i].cluster != undefined) {
+            map.set(this.jsonFile[i].cluster, 1);
+          }
+
+        }
+
+        if (this.jsonFile[i].cluster != undefined) {
+          if (map.get(this.jsonFile[i].cluster) > clusterMaxCount) {
+            clusterMaxCount = map.get(this.jsonFile[i].cluster);
+            maxCluster = this.jsonFile[i].cluster
+          }
+        }
 
 
       }
@@ -173,6 +193,7 @@ class DashboardViewModel {
       this.dataBaseMostProblems = ko.observable(maxDataBase);
       this.instanceMostProblems = ko.observable(maxInstance);
       this.onHostMostProblems = ko.observable(maxOnHost);
+      this.clusterMostProblems = ko.observable(maxCluster);
       this.mostFrequentProblem = ko.observable(maxProblem);
       this.mediumProbQuantity = ko.observable(mediumProbProblems);
       this.highProbQuantity = ko.observable(highProbProblems);
@@ -186,6 +207,7 @@ class DashboardViewModel {
   dataBaseMostProblems: ko.Observable<string> = ko.observable("Default");
   instanceMostProblems: ko.Observable<string> = ko.observable("Default");
   onHostMostProblems: ko.Observable<string> = ko.observable("Default");
+  clusterMostProblems: ko.Observable<string> = ko.observable("Default");
   mostFrequentProblem: ko.Observable<string> = ko.observable("Default");
   mediumProbQuantity: ko.Observable<number> = ko.observable(0);
   highProbQuantity: ko.Observable<number> = ko.observable(0);
