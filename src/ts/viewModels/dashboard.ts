@@ -73,69 +73,103 @@ class DashboardViewModel {
       var highProbProblems = 0;
 
       //PROCESAMIENTO DEL JSON PARA OBTENER VALORES NECESARIOS PARA EL FUNCIONAMIENTO DEL DASHBOARD
-      for(var i = 0;i<this.jsonFile.length;i++){
+
+      for (var i = 0; i < this.jsonFile.length; i++) {
 
         //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
-        if(this.jsonFile[i].belief<75.0){
+        if (this.jsonFile[i].belief < 75.0) {
           mediumProbProblems++;
-        } else{
+        } else {
           highProbProblems++;
         }
 
         //GET MOST FREQUENT PROBLEM
-        if(map.has(this.jsonFile[i].name)){
-          map.set(this.jsonFile[i].name,map.get(this.jsonFile[i].name)+1)
-        } else{
-          map.set(this.jsonFile[i].name,1);
+        if (map.has(this.jsonFile[i].name)) {
+          map.set(this.jsonFile[i].name, map.get(this.jsonFile[i].name) + 1)
+        } else {
+          map.set(this.jsonFile[i].name, 1);
         }
-        if(map.get(this.jsonFile[i].name)>problemMaxCount){
-          problemMaxCount= map.get(this.jsonFile[i].name);
+        if (map.get(this.jsonFile[i].name) > problemMaxCount) {
+          problemMaxCount = map.get(this.jsonFile[i].name);
           maxProblem = this.jsonFile[i].name
         }
 
 
         //GET DB WITH MOST ERRORS
 
-        if(map.has(this.jsonFile[i].db)){
-          map.set(this.jsonFile[i].db,map.get(this.jsonFile[i].db)+1)
-        } else{
-          map.set(this.jsonFile[i].db,1);
+        if (map.has(this.jsonFile[i].db)) {
+          if (this.jsonFile[i].db != undefined) {
+            map.set(this.jsonFile[i].db, map.get(this.jsonFile[i].db) + 1);
+          }
+
+        } else {
+          if (this.jsonFile[i].db != undefined) {
+            map.set(this.jsonFile[i].db, 1);
+          }
+
         }
 
-        if(map.get(this.jsonFile[i].db)>databaseMaxCount){
-          databaseMaxCount= map.get(this.jsonFile[i].db);
-          maxDataBase = this.jsonFile[i].db
+        if (this.jsonFile[i].db != undefined) {
+          if (map.get(this.jsonFile[i].db) > databaseMaxCount) {
+            databaseMaxCount = map.get(this.jsonFile[i].db);
+            maxDataBase = this.jsonFile[i].db
+          }
         }
-        
+
+
 
         // GET HOST WITH MOST ERRORS
-        if(map.has(this.jsonFile[i].onhost)){
-          map.set(this.jsonFile[i].onhost,map.get(this.jsonFile[i].onhost)+1)
-        } else{
-          map.set(this.jsonFile[i].onhost,1);
+        if (map.has(this.jsonFile[i].onhost) || map.has(this.jsonFile[i].onhost)) {
+          console.log("entro en host");
+          if (this.jsonFile[i].onhost != undefined) {
+            map.set(this.jsonFile[i].onhost, map.get(this.jsonFile[i].onhost) + 1)
+          } else if (this.jsonFile[i].host != undefined) {
+            map.set(this.jsonFile[i].host, map.get(this.jsonFile[i].host) + 1)
+          }
+        } else {
+          console.log("entro en host");
+          if (this.jsonFile[i].onhost != undefined) {
+            map.set(this.jsonFile[i].onhost, 1);
+          } else if (this.jsonFile[i].host != undefined) {
+            map.set(this.jsonFile[i].host, 1);
+          }
         }
-        if(map.get(this.jsonFile[i].onhost)>onHostMaxCount){
-          onHostMaxCount= map.get(this.jsonFile[i].onhost);
-          maxOnHost = this.jsonFile[i].onhost
+
+        if (this.jsonFile[i].onhost != undefined) {
+          if (map.get(this.jsonFile[i].onhost) > onHostMaxCount) {
+            onHostMaxCount = map.get(this.jsonFile[i].onhost);
+            maxOnHost = this.jsonFile[i].onhost
+          }
+        } else if (this.jsonFile[i].host != undefined) {
+          if (map.get(this.jsonFile[i].host) > onHostMaxCount) {
+            onHostMaxCount = map.get(this.jsonFile[i].host);
+            maxOnHost = this.jsonFile[i].host
+          }
         }
 
         //GET INSTANCE WITH MOST ERRORS
 
-        if(map.has(this.jsonFile[i].instance)){
-          map.set(this.jsonFile[i].instance,map.get(this.jsonFile[i].instance)+1)
-        } else{
-          map.set(this.jsonFile[i].instance,1);
+        if (map.has(this.jsonFile[i].instance)) {
+          if (this.jsonFile[i].instance != undefined){
+            map.set(this.jsonFile[i].instance, map.get(this.jsonFile[i].instance) + 1)
+          }
+        } else {
+          if (this.jsonFile[i].instance != undefined){
+            map.set(this.jsonFile[i].instance, 1);
+          }
         }
-        if(map.get(this.jsonFile[i].instance)>instanceMaxCount){
-          instanceMaxCount= map.get(this.jsonFile[i].instance);
-          maxInstance = this.jsonFile[i].instance
+        if (this.jsonFile[i].instance != undefined){
+          if (map.get(this.jsonFile[i].instance) > instanceMaxCount) {
+            instanceMaxCount = map.get(this.jsonFile[i].instance);
+            maxInstance = this.jsonFile[i].instance
+          }
         }
-        
 
-        
-        
+        //GET CLUSTER WITH MOST ERRORS
+
 
       }
+      
       this.dataBaseMostProblems = ko.observable(maxDataBase);
       this.instanceMostProblems = ko.observable(maxInstance);
       this.onHostMostProblems = ko.observable(maxOnHost);
@@ -198,15 +232,23 @@ class DashboardViewModel {
         fileReader.readAsText(file);
         fileReader.onload = function () {
           //console.log(fileReader.result.toString());
-          jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
-          
-          
+          var tmp = JSON.parse(fileReader.result.toString());
+          if (tmp.length == undefined) {
+            tmp = tmp.diagnoses;
+          } else {
+
+          }
+          jsonFilex.jsonFile = tmp;
+
+          //VALIDACION DE JSON
+
+
 
           //console.log(jsonFilex.jsonFile[0].id);
           //console.log(jsonFilex.jsonFile);
         }
-        
-        
+
+
         return file.name;
       })
 
