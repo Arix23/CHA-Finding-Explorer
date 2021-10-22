@@ -29,7 +29,7 @@
           </h1>
         </center>
       </div>
-      
+
     </div>
     <div class="oj-flex">
       <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
@@ -59,48 +59,57 @@
     </div>
 
     <!-- //TARGETS DASHBOARD -->
+
     <div class="oj-flex">
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+      <div class="oj-flex-item">
+        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
     oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
     oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Database with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
-      </div>
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+          <center>
+            <h5> Database with most errors: </h5>
+            <h2 id="dashboard-item">
+              <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
+            </h2>
+          </center>
+        </div>
+        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
     oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
     oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Instance with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
+          <center>
+            <h5> Instance with most errors: </h5>
+            <h2 id="dashboard-item">
+              <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
+            </h2>
+          </center>
+        </div>
+
       </div>
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+
+      <div class="oj-flex-item">
+        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
     oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
     oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Cluster with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
-      </div>
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+          <center>
+            <h5> Cluster with most errors: </h5>
+            <h2 id="dashboard-item">
+              <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
+            </h2>
+          </center>
+        </div>
+        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
     oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
     oj-lg-justify-content-center oj-xl-justify-content-center oj-helper-overflow-wrap-anywhere">
-        <center>
-          <h5> OnHost with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
+          <center>
+            <h5> OnHost with most errors: </h5>
+            <h2 id="dashboard-item">
+              <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
+            </h2>
+          </center>
+        </div>
       </div>
-      
+
+
+
     </div>
   </div>
 </oj-bind-if>
@@ -108,18 +117,18 @@
 
 <oj-bind-if test="[[jsonFile === null]]">
   <center>
-  <div id="parentContainer" class="oj-sm-padding-1x">
-    <h1> New Analysis </h1>
-    <oj-file-picker accept="[[acceptArr]]" selection-mode="[[multipleStr]]" on-oj-select='[[selectListener]]'
-      disabled='[[isDisabled]]' on-oj-invalid-select='[[invalidListener]]'>
-    </oj-file-picker>
+    <div id="parentContainer" class="oj-sm-padding-1x">
+      <h1> New Analysis </h1>
+      <oj-file-picker accept="[[acceptArr]]" selection-mode="[[multipleStr]]" on-oj-select='[[selectListener]]'
+        disabled='[[isDisabled]]' on-oj-invalid-select='[[invalidListener]]'>
+      </oj-file-picker>
 
 
-    <div class="oj-sm-padding-1x-top"></div>
+      <div class="oj-sm-padding-1x-top"></div>
 
 
-    <div class="oj-sm-padding-1x-top">Selected files:
-      <oj-bind-text value="[[fileNames]]"></oj-bind-text>
-    </div>
+      <div class="oj-sm-padding-1x-top">Selected files:
+        <oj-bind-text value="[[fileNames]]"></oj-bind-text>
+      </div>
   </center>
 </oj-bind-if>
