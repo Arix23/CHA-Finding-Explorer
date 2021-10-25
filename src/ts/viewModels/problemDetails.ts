@@ -28,7 +28,7 @@ class ProblemDetailsViewModel {
 
 
   //For each binding
-  problemAccessed = ko.observable("null");
+  problemAccessed :ko.Observable<String> = ko.observable("null");
   problemCount = new Map();
   dataProvider : ArrayDataProvider<any, any>;
 
@@ -40,10 +40,7 @@ class ProblemDetailsViewModel {
     bindingContext: ko.BindingContext
   ) => {
     this.problemAccessed = ko.observable(current.data.name);
-    whenDocumentReady().then(() => {
-      ko.cleanNode(document.getElementById('if-statement'));
-      ko.applyBindings(new ProblemDetailsViewModel(), document.getElementById("if-statement"));
-    });
+    console.log(current.data.name);
   };
 
     // private users = ko.observableArray([

@@ -54,3 +54,22 @@
   padding: 1em;
   width:100%;
 }
+
+#callToActionProblem{
+  padding: 1%;
+  width: 100%;
+}
+
+#chroming_button4{
+  white-space: normal;
+  width: inherit;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+}
+
+#helper-button {
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  width:fit-content;
+}
+
