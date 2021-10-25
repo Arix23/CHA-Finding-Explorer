@@ -61,56 +61,87 @@
     <!-- //TARGETS DASHBOARD -->
 
     <div class="oj-flex">
-      <div class="oj-flex-item">
-        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-          <center>
-            <h5> Database with most errors: </h5>
-            <h2 id="dashboard-item">
-              <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
-            </h2>
-          </center>
-        </div>
-        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-          <center>
-            <h5> Instance with most errors: </h5>
-            <h2 id="dashboard-item">
-              <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
-            </h2>
-          </center>
-        </div>
-
-      </div>
-
-      <div class="oj-flex-item">
-        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-          <center>
-            <h5> Cluster with most errors: </h5>
-            <h2 id="dashboard-item">
-              <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
-            </h2>
-          </center>
-        </div>
-        <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center oj-helper-overflow-wrap-anywhere">
-          <center>
-            <h5> OnHost with most errors: </h5>
-            <h2 id="dashboard-item">
-              <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
-            </h2>
-          </center>
+      <div class="oj-flex-item">1b</div>
+      <div class="oj-flex demo-flex-display" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
+        <div class="oj-flex-item">1a
+          <div class="oj-flex" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
+            <div class="oj-flex-item">2a
+              <div class="oj-flex" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
+                <div class="oj-flex-item">3a</div>
+                <div class="oj-flex-item">3b</div>
+              </div>
+            </div>
+            <div class="oj-flex-item">2b</div>
+          </div>
         </div>
       </div>
+    </div>
 
 
+  </div>
+
+  <div class="demo-grid-sizes demo-flex-display">
+    <!-- <center> -->
+    <div class="oj-flex-bar-middle" style="text-align:center;">
+      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal"> HOla</div>
+      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">hola </div>
+      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">Adios</div>
+    </div>
+    <!-- </center> -->
+  </div>
+
+
+  <div class="oj-flex">
+    <div class="oj-flex-item">
+      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h5> Database with most errors: </h5>
+          <h2 id="dashboard-item">
+            <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
+          </h2>
+        </center>
+      </div>
+      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h5> Instance with most errors: </h5>
+          <h2 id="dashboard-item">
+            <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
+          </h2>
+        </center>
+      </div>
 
     </div>
+
+    <div class="oj-flex-item">
+      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center">
+        <center>
+          <h5> Cluster with most errors: </h5>
+          <h2 id="dashboard-item">
+            <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
+          </h2>
+        </center>
+      </div>
+      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
+    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
+    oj-lg-justify-content-center oj-xl-justify-content-center oj-helper-overflow-wrap-anywhere">
+        <center>
+          <h5> OnHost with most errors: </h5>
+          <h2 id="dashboard-item">
+            <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
+          </h2>
+        </center>
+      </div>
+    </div>
+
+
+
+  </div>
   </div>
 </oj-bind-if>
 
