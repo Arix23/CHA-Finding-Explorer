@@ -66,11 +66,11 @@ class DashboardViewModel {
       var onHostMaxCount = 0;
       var problemMaxCount = 0;
       var clusterMaxCount = 0;
-      var maxProblem = "Default";
-      var maxDataBase = "Default";
-      var maxInstance = "Default";
-      var maxOnHost = "Default";
-      var maxCluster = "Default";
+      var maxProblem = "N/A";
+      var maxDataBase = "N/A";
+      var maxInstance = "N/A";
+      var maxOnHost = "N/A";
+      var maxCluster = "N/A";
       var mediumProbProblems = 0;
       var highProbProblems = 0;
 
@@ -204,11 +204,11 @@ class DashboardViewModel {
   }
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
-  dataBaseMostProblems: ko.Observable<string> = ko.observable("Default");
-  instanceMostProblems: ko.Observable<string> = ko.observable("Default");
-  onHostMostProblems: ko.Observable<string> = ko.observable("Default");
-  clusterMostProblems: ko.Observable<string> = ko.observable("Default");
-  mostFrequentProblem: ko.Observable<string> = ko.observable("Default");
+  dataBaseMostProblems: ko.Observable<string> = ko.observable("N/A");
+  instanceMostProblems: ko.Observable<string> = ko.observable("N/A");
+  onHostMostProblems: ko.Observable<string> = ko.observable("N/A");
+  clusterMostProblems: ko.Observable<string> = ko.observable("N/A");
+  mostFrequentProblem: ko.Observable<string> = ko.observable("N/A");
   mediumProbQuantity: ko.Observable<number> = ko.observable(0);
   highProbQuantity: ko.Observable<number> = ko.observable(0);
 
