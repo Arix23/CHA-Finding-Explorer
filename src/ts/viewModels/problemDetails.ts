@@ -39,7 +39,8 @@ class ProblemDetailsViewModel {
     current: { data: { name: string } },
     bindingContext: ko.BindingContext
   ) => {
-    this.problemAccessed = ko.observable(current.data.name);
+    this.problemAccessed(current.data.name);
+    this.problemAccessed.valueHasMutated();
     console.log(current.data.name);
   };
 
