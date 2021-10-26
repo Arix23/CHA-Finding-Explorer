@@ -72,6 +72,7 @@ class DashboardViewModel {
   
   
   constructor() {
+
     
     if(jsonFilex.jsonFile!=null){
       this.jsonUploaded = ko.observable(true);
@@ -90,10 +91,13 @@ class DashboardViewModel {
       this.numberProblems(this.jsonFile.length); 
       
 
+
       //PROCESAMIENTO DEL JSON PARA OBTENER VALORES NECESARIOS PARA EL FUNCIONAMIENTO DEL DASHBOARD
-      for(var i = 0;i<this.jsonFile.length;i++){
+
+      for (var i = 0; i < this.jsonFile.length; i++) {
 
         //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
+
         if(this.jsonFile[i].belief<75.0){
           this.mediumProbProblems++;
         } else{
@@ -109,10 +113,28 @@ class DashboardViewModel {
         if(this.map.get(this.jsonFile[i].name)>this.problemMaxCount){
           this.problemMaxCount= this.map.get(this.jsonFile[i].name);
           this.maxProblem = this.jsonFile[i].name
+
+        if (this.jsonFile[i].belief < 75.0) {
+          mediumProbProblems++;
+        } else {
+          highProbProblems++;
+        }
+
+        //GET MOST FREQUENT PROBLEM
+        if (map.has(this.jsonFile[i].name)) {
+          map.set(this.jsonFile[i].name, map.get(this.jsonFile[i].name) + 1)
+        } else {
+          map.set(this.jsonFile[i].name, 1);
+        }
+        if (map.get(this.jsonFile[i].name) > problemMaxCount) {
+          problemMaxCount = map.get(this.jsonFile[i].name);
+          maxProblem = this.jsonFile[i].name
+
         }
 
 
         //GET DB WITH MOST ERRORS
+
 
         if(this.map.has(this.jsonFile[i].db)){
           this.map.set(this.jsonFile[i].db,this.map.get(this.jsonFile[i].db)+1)
@@ -123,10 +145,31 @@ class DashboardViewModel {
         if(this.map.get(this.jsonFile[i].db)>this.databaseMaxCount){
           this.databaseMaxCount= this.map.get(this.jsonFile[i].db);
           this.maxDataBase = this.jsonFile[i].db
+
+        if (map.has(this.jsonFile[i].db)) {
+          if (this.jsonFile[i].db != undefined) {
+            map.set(this.jsonFile[i].db, map.get(this.jsonFile[i].db) + 1);
+          }
+
+        } else {
+          if (this.jsonFile[i].db != undefined) {
+            map.set(this.jsonFile[i].db, 1);
+          }
+
         }
-        
+
+        if (this.jsonFile[i].db != undefined) {
+          if (map.get(this.jsonFile[i].db) > databaseMaxCount) {
+            databaseMaxCount = map.get(this.jsonFile[i].db);
+            maxDataBase = this.jsonFile[i].db
+          }
+
+        }
+
+
 
         // GET HOST WITH MOST ERRORS
+
         if(this.map.has(this.jsonFile[i].onhost)){
           this.map.set(this.jsonFile[i].onhost,this.map.get(this.jsonFile[i].onhost)+1)
         } else{
@@ -135,9 +178,38 @@ class DashboardViewModel {
         if(this.map.get(this.jsonFile[i].onhost)>this.onHostMaxCount){
           this.onHostMaxCount= this.map.get(this.jsonFile[i].onhost);
           this.maxOnHost = this.jsonFile[i].onhost
+
+        if (map.has(this.jsonFile[i].onhost) || map.has(this.jsonFile[i].onhost)) {
+          console.log("entro en host");
+          if (this.jsonFile[i].onhost != undefined) {
+            map.set(this.jsonFile[i].onhost, map.get(this.jsonFile[i].onhost) + 1)
+          } else if (this.jsonFile[i].host != undefined) {
+            map.set(this.jsonFile[i].host, map.get(this.jsonFile[i].host) + 1)
+          }
+        } else {
+          console.log("entro en host");
+          if (this.jsonFile[i].onhost != undefined) {
+            map.set(this.jsonFile[i].onhost, 1);
+          } else if (this.jsonFile[i].host != undefined) {
+            map.set(this.jsonFile[i].host, 1);
+          }
+        }
+
+        if (this.jsonFile[i].onhost != undefined) {
+          if (map.get(this.jsonFile[i].onhost) > onHostMaxCount) {
+            onHostMaxCount = map.get(this.jsonFile[i].onhost);
+            maxOnHost = this.jsonFile[i].onhost
+          }
+        } else if (this.jsonFile[i].host != undefined) {
+          if (map.get(this.jsonFile[i].host) > onHostMaxCount) {
+            onHostMaxCount = map.get(this.jsonFile[i].host);
+            maxOnHost = this.jsonFile[i].host
+          }
+
         }
 
         //GET INSTANCE WITH MOST ERRORS
+
 
         if(this.map.has(this.jsonFile[i].instance)){
           this.map.set(this.jsonFile[i].instance,this.map.get(this.jsonFile[i].instance)+1)
@@ -147,28 +219,73 @@ class DashboardViewModel {
         if(this.map.get(this.jsonFile[i].instance)>this.instanceMaxCount){
           this.instanceMaxCount= this.map.get(this.jsonFile[i].instance);
           this.maxInstance = this.jsonFile[i].instance
-        }
-        
 
-        
-        
+        if (map.has(this.jsonFile[i].instance)) {
+          if (this.jsonFile[i].instance != undefined){
+            map.set(this.jsonFile[i].instance, map.get(this.jsonFile[i].instance) + 1)
+          }
+        } else {
+          if (this.jsonFile[i].instance != undefined){
+            map.set(this.jsonFile[i].instance, 1);
+          }
+        }
+        if (this.jsonFile[i].instance != undefined){
+          if (map.get(this.jsonFile[i].instance) > instanceMaxCount) {
+            instanceMaxCount = map.get(this.jsonFile[i].instance);
+            maxInstance = this.jsonFile[i].instance
+          }
+        }
+
+        //GET CLUSTER WITH MOST ERRORS
+        if (map.has(this.jsonFile[i].cluster)) {
+          if (this.jsonFile[i].cluster != undefined) {
+            map.set(this.jsonFile[i].cluster, map.get(this.jsonFile[i].cluster) + 1);
+          }
+
+        } else {
+          if (this.jsonFile[i].cluster != undefined) {
+            map.set(this.jsonFile[i].cluster, 1);
+          }
+
+        }
+
+        if (this.jsonFile[i].cluster != undefined) {
+          if (map.get(this.jsonFile[i].cluster) > clusterMaxCount) {
+            clusterMaxCount = map.get(this.jsonFile[i].cluster);
+            maxCluster = this.jsonFile[i].cluster
+          }
+
+        }
+
 
       }
+
       this.dataBaseMostProblems = ko.observable(this.maxDataBase);
       this.instanceMostProblems = ko.observable(this.maxInstance);
       this.onHostMostProblems = ko.observable(this.maxOnHost);
       this.mostFrequentProblem = ko.observable(this.maxProblem);
       this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
       this.highProbQuantity = ko.observable(this.highProbProblems);
+
+      
+      this.dataBaseMostProblems = ko.observable(maxDataBase);
+      this.instanceMostProblems = ko.observable(maxInstance);
+      this.onHostMostProblems = ko.observable(maxOnHost);
+      this.clusterMostProblems = ko.observable(maxCluster);
+      this.mostFrequentProblem = ko.observable(maxProblem);
+      this.mediumProbQuantity = ko.observable(mediumProbProblems);
+      this.highProbQuantity = ko.observable(highProbProblems);
+
     }
     this.jsonUploaded(true);
   }
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
-  dataBaseMostProblems: ko.Observable<string> = ko.observable("Default");
-  instanceMostProblems: ko.Observable<string> = ko.observable("Default");
-  onHostMostProblems: ko.Observable<string> = ko.observable("Default");
-  mostFrequentProblem: ko.Observable<string> = ko.observable("Default");
+  dataBaseMostProblems: ko.Observable<string> = ko.observable("N/A");
+  instanceMostProblems: ko.Observable<string> = ko.observable("N/A");
+  onHostMostProblems: ko.Observable<string> = ko.observable("N/A");
+  clusterMostProblems: ko.Observable<string> = ko.observable("N/A");
+  mostFrequentProblem: ko.Observable<string> = ko.observable("N/A");
   mediumProbQuantity: ko.Observable<number> = ko.observable(0);
   highProbQuantity: ko.Observable<number> = ko.observable(0);
 
@@ -215,14 +332,28 @@ class DashboardViewModel {
         var self = this;
         fileReader.onload = function () {
           //console.log(fileReader.result.toString());
+
           jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
           jsonFilex.enabledModule();
           self.calculateInfo();
 
+          var tmp = JSON.parse(fileReader.result.toString());
+          if (tmp.length == undefined) {
+            tmp = tmp.diagnoses;
+          } else {
+
+          }
+          jsonFilex.jsonFile = tmp;
+
+          //VALIDACION DE JSON
+
+
+
+
           //console.log(jsonFilex.jsonFile[0].id);
           //console.log(jsonFilex.jsonFile);
         }
-        
+
         return file.name;
       })
 
