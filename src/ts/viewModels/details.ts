@@ -49,9 +49,9 @@ class DetailsViewModel {
 
 
   readonly orientationValue = ko.observable("vertical");
-  problemCount = new Map();
-  hourCount = new Map();
+  hourMap = new Map()
   dataProvider: ArrayDataProvider<any, any>;
+
 
 
 
@@ -78,63 +78,57 @@ class DetailsViewModel {
 
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
 
+
+    
     for (let item in jsonFilex.jsonFile) {
-      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)) {
-        let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
-        this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
+      if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+        if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
+          let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
+          this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, count);
+        }
+        else {
+          this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, 1);
+        }
       }
       else {
-        this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+        let nameMap = new Map();
+        nameMap.set(jsonFilex.jsonFile[item].name, 1);
+        this.hourMap.set(jsonFilex.jsonFile[item].t1, nameMap);
       }
     }
+    //console.log(this.hourMap);
 
 
+    this.hourMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        problemArray.push({ hour: key, count: value, series: key2 });
+      });
+    });
 
-
-    /*let i = 1;
-    this.hourCount.forEach((value: number, key: string) => {
-      console.log(jsonFilex.jsonFile[i].name)
-      problemArray.push({ hour: key, count: value, series: jsonFilex.jsonFile[i].name });
-      i = i + 1;
-    });*/
-
- 
-    
-
-    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      console.log(jsonFilex.jsonFile[j].t1)
-      if(jsonFilex.jsonFile[j].name == "Private Network Traffic" && jsonFilex.jsonFile[j].t1=="2021-08-16 03:08:35" ){
-        problemArray.push({ hour: jsonFilex.jsonFile[j].t1, count: 2, series: jsonFilex.jsonFile[j].name });
-      }else{
-        problemArray.push({ hour: jsonFilex.jsonFile[j].t1, count: 1, series: jsonFilex.jsonFile[j].name });
-      }
-    }
-
-  
 
     console.log(problemArray)
     let jsonCount = JSON.stringify(problemArray);
 
-this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
 
-document.getElementById("chart-container");
+    document.getElementById("chart-container");
 
   }
 
-/**
- * Optional ViewModel method invoked after the View is disconnected from the DOM.
- */
-disconnected(): void {
-  // implement if needed
-}
+  /**
+   * Optional ViewModel method invoked after the View is disconnected from the DOM.
+   */
+  disconnected(): void {
+    // implement if needed
+  }
 
-/**
- * Optional ViewModel method invoked after transition to the new View is complete.
- * That includes any possible animation between the old and the new View.
- */
-transitionCompleted(): void {
-  // implement if needed
-}
+  /**
+   * Optional ViewModel method invoked after transition to the new View is complete.
+   * That includes any possible animation between the old and the new View.
+   */
+  transitionCompleted(): void {
+    // implement if needed
+  }
 }
 
 export = DetailsViewModel;
