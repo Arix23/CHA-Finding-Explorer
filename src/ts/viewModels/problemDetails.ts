@@ -104,7 +104,7 @@ class ProblemDetailsViewModel {
 
 
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
-      if(jsonFilex.jsonFile[j].db=="diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name)!=-1){
+      if(this.problemCount.get(jsonFilex.jsonFile[j].name)!=-1){
         problemArray.push({name:jsonFilex.jsonFile[j].name,count:this.problemCount.get(jsonFilex.jsonFile[j].name),belief: jsonFilex.jsonFile[j].belief,database:
         jsonFilex.jsonFile[j].db,instance:jsonFilex.jsonFile[j].instance,onhost:jsonFilex.jsonFile[j].onhost,
       from:jsonFilex.jsonFile[j].from,to:jsonFilex.jsonFile[j].to})
