@@ -8,6 +8,7 @@ import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
+import "ojs/ojbutton";
 
 
 import * as Bootstrap from "ojs/ojbootstrap";
@@ -19,9 +20,44 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+import jsonFilex from "../appController";
+
 
 
 class ProblemDetailsViewModel {
+
+
+  //For each binding
+  problemAccessed :ko.Observable<String> = ko.observable("null");
+  problemCount = new Map();
+  dataProvider : ArrayDataProvider<any, any>;
+
+  //BUTTON ACCESS PROBLEM
+
+  accessProblem = (
+    event: Event,
+    current: { data: { name: string } },
+    bindingContext: ko.BindingContext
+  ) => {
+    this.problemAccessed(current.data.name);
+    this.problemAccessed.valueHasMutated();
+    console.log(current.data.name);
+  };
+
+    // private users = ko.observableArray([
+    //   {
+    //     name: "Bert",
+    //   },
+    //   {
+    //     name: "Charles",
+    //   },
+    //   {
+    //     name: "Denise",
+    //   },
+    // ]);
+    // readonly dataProvider = new ArrayDataProvider(this.users, {
+    //   keyAttributes: "name",
+    // });
 
   // Problems
   private readonly browsers = [
@@ -51,7 +87,37 @@ class ProblemDetailsViewModel {
   
 
   constructor() {
+    let problemArray: Array<{name: string, count: number, belief: number, database: string, instance: string, onhost: string, from: string, to:string}> = [];
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
 
+      //console.log(jsonFilex.jsonFile[j].cluster);
+
+        if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
+          let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
+          this.problemCount.set(jsonFilex.jsonFile[j].name, count);
+        } else {
+          this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
+        }
+    }
+
+
+
+
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      if(jsonFilex.jsonFile[j].db=="diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name)!=-1){
+        problemArray.push({name:jsonFilex.jsonFile[j].name,count:this.problemCount.get(jsonFilex.jsonFile[j].name),belief: jsonFilex.jsonFile[j].belief,database:
+        jsonFilex.jsonFile[j].db,instance:jsonFilex.jsonFile[j].instance,onhost:jsonFilex.jsonFile[j].onhost,
+      from:jsonFilex.jsonFile[j].from,to:jsonFilex.jsonFile[j].to})
+          this.problemCount.set(jsonFilex.jsonFile[j].name,-1);
+      }
+    }
+
+    
+
+    let jsonCount = JSON.stringify(problemArray);
+    console.log(this.problemAccessed());
+
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
   }
 
   /**
@@ -66,6 +132,8 @@ class ProblemDetailsViewModel {
     AccUtils.announce("Problem Details page loaded.");
     document.title = "Problem Details";
     // implement further logic if needed
+
+    
   }
 
   /**

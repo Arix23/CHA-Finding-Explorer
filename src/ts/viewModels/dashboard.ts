@@ -50,35 +50,70 @@ class DashboardViewModel {
   info: Message[];
   confirmation: Message[];
   value: ko.Observable<string>;
+  jsonUploaded: ko.Observable<boolean>;
   numberOfMonths: number;
   datePickerMonths: ojDatePicker["datePicker"];
   largeScreenMatch: MediaQueryList;
   datePickerWeek: ojDatePicker["datePicker"];
   timePicker: object;
 
+  map = new Map();
+  databaseMaxCount = 0;
+  instanceMaxCount = 0;
+  onHostMaxCount = 0;
+  problemMaxCount = 0;
+  maxProblem = "Default";
+  maxDataBase = "Default";
+  maxInstance = "Default";
+  maxOnHost = "Default";
+  mediumProbProblems = 0;
+  highProbProblems = 0;
 
+  
+  
   constructor() {
-    if (this.jsonFile != null) {
-      this.numberProblems = ko.observable(this.jsonFile.length);
-      var map = new Map();
-      var databaseMaxCount = 0;
-      var instanceMaxCount = 0;
-      var onHostMaxCount = 0;
-      var problemMaxCount = 0;
-      var clusterMaxCount = 0;
-      var maxProblem = "N/A";
-      var maxDataBase = "N/A";
-      var maxInstance = "N/A";
-      var maxOnHost = "N/A";
-      var maxCluster = "N/A";
-      var mediumProbProblems = 0;
-      var highProbProblems = 0;
+
+    
+    if(jsonFilex.jsonFile!=null){
+      this.jsonUploaded = ko.observable(true);
+    } else{
+      this.jsonUploaded = ko.observable(false);
+    }
+
+
+  }
+
+  public calculateInfo() {
+    if (jsonFilex.jsonFile != null) {
+      //console.log("HOLA");
+      this.jsonFile = jsonFilex.jsonFile;
+      console.log(this.jsonFile.length);
+      this.numberProblems(this.jsonFile.length); 
+      
+
 
       //PROCESAMIENTO DEL JSON PARA OBTENER VALORES NECESARIOS PARA EL FUNCIONAMIENTO DEL DASHBOARD
 
       for (var i = 0; i < this.jsonFile.length; i++) {
 
         //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
+
+        if(this.jsonFile[i].belief<75.0){
+          this.mediumProbProblems++;
+        } else{
+          this.highProbProblems++;
+        }
+
+        //GET MOST FREQUENT PROBLEM
+        if(this.map.has(this.jsonFile[i].name)){
+          this.map.set(this.jsonFile[i].name,this.map.get(this.jsonFile[i].name)+1)
+        } else{
+          this.map.set(this.jsonFile[i].name,1);
+        }
+        if(this.map.get(this.jsonFile[i].name)>this.problemMaxCount){
+          this.problemMaxCount= this.map.get(this.jsonFile[i].name);
+          this.maxProblem = this.jsonFile[i].name
+
         if (this.jsonFile[i].belief < 75.0) {
           mediumProbProblems++;
         } else {
@@ -94,10 +129,22 @@ class DashboardViewModel {
         if (map.get(this.jsonFile[i].name) > problemMaxCount) {
           problemMaxCount = map.get(this.jsonFile[i].name);
           maxProblem = this.jsonFile[i].name
+
         }
 
 
         //GET DB WITH MOST ERRORS
+
+
+        if(this.map.has(this.jsonFile[i].db)){
+          this.map.set(this.jsonFile[i].db,this.map.get(this.jsonFile[i].db)+1)
+        } else{
+          this.map.set(this.jsonFile[i].db,1);
+        }
+
+        if(this.map.get(this.jsonFile[i].db)>this.databaseMaxCount){
+          this.databaseMaxCount= this.map.get(this.jsonFile[i].db);
+          this.maxDataBase = this.jsonFile[i].db
 
         if (map.has(this.jsonFile[i].db)) {
           if (this.jsonFile[i].db != undefined) {
@@ -116,11 +163,22 @@ class DashboardViewModel {
             databaseMaxCount = map.get(this.jsonFile[i].db);
             maxDataBase = this.jsonFile[i].db
           }
+
         }
 
 
 
         // GET HOST WITH MOST ERRORS
+
+        if(this.map.has(this.jsonFile[i].onhost)){
+          this.map.set(this.jsonFile[i].onhost,this.map.get(this.jsonFile[i].onhost)+1)
+        } else{
+          this.map.set(this.jsonFile[i].onhost,1);
+        }
+        if(this.map.get(this.jsonFile[i].onhost)>this.onHostMaxCount){
+          this.onHostMaxCount= this.map.get(this.jsonFile[i].onhost);
+          this.maxOnHost = this.jsonFile[i].onhost
+
         if (map.has(this.jsonFile[i].onhost) || map.has(this.jsonFile[i].onhost)) {
           console.log("entro en host");
           if (this.jsonFile[i].onhost != undefined) {
@@ -147,9 +205,20 @@ class DashboardViewModel {
             onHostMaxCount = map.get(this.jsonFile[i].host);
             maxOnHost = this.jsonFile[i].host
           }
+
         }
 
         //GET INSTANCE WITH MOST ERRORS
+
+
+        if(this.map.has(this.jsonFile[i].instance)){
+          this.map.set(this.jsonFile[i].instance,this.map.get(this.jsonFile[i].instance)+1)
+        } else{
+          this.map.set(this.jsonFile[i].instance,1);
+        }
+        if(this.map.get(this.jsonFile[i].instance)>this.instanceMaxCount){
+          this.instanceMaxCount= this.map.get(this.jsonFile[i].instance);
+          this.maxInstance = this.jsonFile[i].instance
 
         if (map.has(this.jsonFile[i].instance)) {
           if (this.jsonFile[i].instance != undefined){
@@ -185,10 +254,19 @@ class DashboardViewModel {
             clusterMaxCount = map.get(this.jsonFile[i].cluster);
             maxCluster = this.jsonFile[i].cluster
           }
+
         }
 
 
       }
+
+      this.dataBaseMostProblems = ko.observable(this.maxDataBase);
+      this.instanceMostProblems = ko.observable(this.maxInstance);
+      this.onHostMostProblems = ko.observable(this.maxOnHost);
+      this.mostFrequentProblem = ko.observable(this.maxProblem);
+      this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
+      this.highProbQuantity = ko.observable(this.highProbProblems);
+
       
       this.dataBaseMostProblems = ko.observable(maxDataBase);
       this.instanceMostProblems = ko.observable(maxInstance);
@@ -197,10 +275,9 @@ class DashboardViewModel {
       this.mostFrequentProblem = ko.observable(maxProblem);
       this.mediumProbQuantity = ko.observable(mediumProbProblems);
       this.highProbQuantity = ko.observable(highProbProblems);
+
     }
-
-
-
+    this.jsonUploaded(true);
   }
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
@@ -252,8 +329,14 @@ class DashboardViewModel {
       Array.prototype.map.call(files, (file) => {
         var fileReader = new FileReader();
         fileReader.readAsText(file);
+        var self = this;
         fileReader.onload = function () {
           //console.log(fileReader.result.toString());
+
+          jsonFilex.jsonFile = JSON.parse(fileReader.result.toString());
+          jsonFilex.enabledModule();
+          self.calculateInfo();
+
           var tmp = JSON.parse(fileReader.result.toString());
           if (tmp.length == undefined) {
             tmp = tmp.diagnoses;
@@ -266,10 +349,10 @@ class DashboardViewModel {
 
 
 
+
           //console.log(jsonFilex.jsonFile[0].id);
           //console.log(jsonFilex.jsonFile);
         }
-
 
         return file.name;
       })

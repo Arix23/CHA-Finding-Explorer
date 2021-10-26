@@ -21,13 +21,12 @@ interface CoreRouterDetail {
   iconClass: string;
 };
 
-// declare global {
-//   var jsonFile:JSON;
-// }
+
 
 class RootViewModel {
   
   public jsonFile: ko.Observable<JSON>;
+  disabledNav: ko.Observable<boolean>;
   manner: ko.Observable<string>;
   message: ko.Observable<string|undefined>;
   smScreen: ko.Observable<boolean>;
@@ -47,13 +46,15 @@ class RootViewModel {
   appName: ko.Observable<string>;
   userLogin: ko.Observable<string>;
   footerLinks: Array<object>;
+  showNavBar : ko.Observable<boolean>;
   selection: KnockoutRouterAdapter<CoreRouterDetail>;
 
   constructor() {
     // handle announcements sent when pages change, for Accessibility.
-
+    this.showNavBar = ko.observable(true);
     this.manner = ko.observable("polite");
     this.jsonFile =null;
+    this.disabledNav = ko.observable(true);
     this.message = ko.observable();
 
     let globalBodyElement: HTMLElement = document.getElementById("globalBody") as HTMLElement;
@@ -72,13 +73,13 @@ class RootViewModel {
 
     const navData = [
         { path: "", redirect: 'dashboard' },
-        { path: 'dashboard', detail: { label: 'Dashboard', iconClass: 'oj-ux-ico-dashboard' } },
-        { path: 'details', detail: { label: 'Details', iconClass: 'oj-ux-ico-file-view-details' } },
-        { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count', iconClass: 'oj-ux-ico-bar-chart' } },
-        { path: 'problemFrequency', detail: { label: 'Problem Frequency', iconClass: 'oj-ux-ico-type-time-input' } },
-        { path: 'problemDetails', detail: { label: 'Problem Details', iconClass: 'oj-ux-ico-warning-s' } },
-        { path: 'targetDetails', detail: { label: 'Target Details', iconClass: 'oj-ux-ico-dashboard-20' } },
-        { path: 'filters', detail: { label: 'Filters', iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
+        { path: 'dashboard', detail: { label: 'Dashboard',  iconClass: 'oj-ux-ico-dashboard' } },
+        { path: 'details', detail: { label: 'Details', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-file-view-details' } },
+        { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-bar-chart' } },
+        { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
+        { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
+        { path: 'targetDetails', detail: { label: 'Target Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-dashboard-20' } },
+        { path: 'filters', detail: { label: 'Filters',disabled:this.disabledNav(), iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
     ];
     // router setup
     const router = new CoreRouter(navData, {
@@ -131,6 +132,27 @@ class RootViewModel {
     ];
     // release the application bootstrap busy state
     Context.getPageContext().getBusyContext().applicationBootstrapComplete();        
+  }
+
+  enabledModule() {
+    this.showNavBar(false);
+    this.disabledNav(false);
+    const navData = [
+      { path: "", redirect: 'dashboard' },
+      { path: 'dashboard', detail: { label: 'Dashboard',  iconClass: 'oj-ux-ico-dashboard' } },
+      { path: 'details', detail: { label: 'Details', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-file-view-details' } },
+      { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-bar-chart' } },
+      { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
+      { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
+      { path: 'targetDetails', detail: { label: 'Target Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-dashboard-20' } },
+      { path: 'filters', detail: { label: 'Filters',disabled:this.disabledNav(), iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
+      
+  ];
+  this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
+
+
+    this.showNavBar(true);
+    
   }
 
   announcementHandler = (event: any): void => {

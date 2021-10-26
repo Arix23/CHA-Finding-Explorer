@@ -69,22 +69,40 @@
          ** query size for a phone format and hidden until a user clicks on
          ** the header hamburger icon.
       -->
+      <oj-bind-if test="[[showNavBar]]">
       <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
         <oj-navigation-list id="navDrawerList"
                             data="[[navDataProvider]]"
                             edge="start"
-                            item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                             on-click="[[toggleDrawer]]"
                             selection="{{selection.path}}">
+                            <template slot="itemTemplate" data-oj-as="item">
+                              <li :class="[[{'oj-disabled' : item.data.detail.disabled === true}]]">
+                                <a href="#">
+                                   <span :class="[[item.data.detail.iconClass]]"></span>
+                                   <oj-bind-text value="[[item.data.detail.label]]"> </oj-bind-text>
+                                </a>
+                             </li>
+                           </template>
         </oj-navigation-list>
       </div>
-
       <div id="navDrawer" role="navigation" class="oj-contrast-marker oj-web-applayout-offcanvas oj-offcanvas-start">
-        <oj-navigation-list id="navDrawerList" data="[[navDataProvider]]" edge="start"
-          item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]" on-click="[[toggleDrawer]]"
+        <oj-navigation-list id="navDrawerList" 
+          data="[[navDataProvider]]" 
+          edge="start"
+          on-click="[[toggleDrawer]]"
           selection="{{selection.path}}">
+          <template slot="itemTemplate" data-oj-as="item">
+            <li :class="[[{'oj-disabled' : item.data.detail.disabled === true}]]">
+              <a href="#">
+                 <span :class="[[item.data.detail.iconClass]]"></span>
+                 <oj-bind-text value="[[item.data.detail.label]]"> </oj-bind-text>
+              </a>
+           </li>
+         </template>
         </oj-navigation-list>
       </div>
+    </oj-bind-if>
       <div id="pageContent" class="oj-web-applayout-page">
         <!--
            ** Oracle JET V11.0.1 web application header pattern.
@@ -113,16 +131,25 @@
             
           </div>
         </header>
+        <oj-bind-if test="[[showNavBar]]">
         <div role="navigation" class="oj-flex oj-web-applayout-content  oj-web-applayout-navbar " >
           <div class="oj-md-2 oj-lg-3 oj-xl-2 oj-flex-item">
             <oj-navigation-list id="navTabBar"
                                 class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataProvider]]"
                                 edge="start"
-                                item.renderer="[[oj.KnockoutTemplateUtils.getRenderer('navTemplate', true)]]"
                                 selection="{{selection.path}}">
+                                <template slot="itemTemplate" data-oj-as="item">
+                                  <li :class="[[{'oj-disabled' : item.data.detail.disabled === true}]]">
+                                    <a href="#">
+                                       <span :class="[[item.data.detail.iconClass]]"></span>
+                                       <oj-bind-text value="[[item.data.detail.label]]"> </oj-bind-text>
+                                    </a>
+                                 </li>
+                               </template>
            </oj-navigation-list>
           </div>
+        </oj-bind-if>
           <div class=" oj-md-10 oj-lg-9 oj-xl-10  oj-flex-item">
             <oj-module role="main" class="oj-web-applayout-max-width " config="[[moduleAdapter.koObservableConfig]]">
             </oj-module>

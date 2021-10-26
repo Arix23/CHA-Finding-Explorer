@@ -38,3 +38,38 @@
   /* border: 1px solid blue; */
   flex: 1 1 auto;
 }
+
+#problem-details-name {
+  background-color: lightgray;
+}
+
+.border-problem {
+  border: 0.1em;
+  border-style: solid;
+  border-color: black;
+  font-weight: bold;
+}
+
+.layout-problem {
+  padding: 1em;
+  width:100%;
+}
+
+#callToActionProblem{
+  padding: 1%;
+  width: 100%;
+}
+
+#chroming_button4{
+  white-space: normal;
+  width: inherit;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+}
+
+#helper-button {
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+  width:fit-content;
+}
+

@@ -3,8 +3,8 @@
  Licensed under The Universal Permissive License (UPL), Version 1.0
  as shown at https://oss.oracle.com/licenses/upl/
  -->
-
-<oj-bind-if test="[[numberProblems]]">
+<div id="if-statement">
+<oj-bind-if test="[[jsonUploaded()===true]]">
 
   <br>
   <div>
@@ -146,7 +146,7 @@
 </oj-bind-if>
 
 
-<oj-bind-if test="[[jsonFile === null]]">
+<oj-bind-if test="[[jsonUploaded()===false]]">
   <center>
     <div id="parentContainer" class="oj-sm-padding-1x">
       <h1> New Analysis </h1>
@@ -163,3 +163,4 @@
       </div>
   </center>
 </oj-bind-if>
+</div>

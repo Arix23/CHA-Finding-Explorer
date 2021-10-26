@@ -43,7 +43,76 @@
     </div>
   </div>
   <h1>Problem Details</h1>
-  <div>
-      To change the content of this section, you will make edits to the customers.html file located in the /ts/views folder.
+  <div class="oj-flex" id="if-statement">
+    <!-- IF PROBLEM SELECTED -->
+    <oj-bind-if test="[[problemAccessed() !== 'null']]">
+      Test
+    </oj-bind-if>
+
+    <!-- IF NO PROBLEM SELECTED -->
+    <oj-bind-if test="[[problemAccessed() === 'null']]">
+      <oj-bind-for-each data="[[dataProvider]]">
+        <template data-oj-as="item">
+          <div class="oj-sm-6 oj-md-6 oj-lg-4 oj-xl-4 oj-sm-align-items-center " id="table-item">
+            <div class="oj-flex border-problem">
+              <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 layout-problem" id="problem-details-name">
+                <oj-bind-text value="[[item.observableIndex]]"></oj-bind-text> : <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
+              </div>
+
+              <div class="oj-flex layout-problem" id="problem-element">
+                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                  Frequency:
+                </div>
+                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                  <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+                </div>
+              </div>
+              <div class="oj-flex layout-problem" id="problem-element">
+                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                  Category:
+                </div>
+                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                  <!-- Medium probability -->
+                  <oj-bind-if test="[[item.data.belief < 75]]">
+                    <div id ="medium-prob">
+                      MEDIUM
+                    </div>
+                    
+                  </oj-bind-if>
+
+                  <!-- High probability -->
+                  <oj-bind-if test="[[item.data.belief >= 75]]">
+                    <div id="high-prob">
+                      HIGH
+                    </div>
+                  </oj-bind-if>
+                </div>
+                </div>
+
+                <!-- <div class="oj-flex">
+                  <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
+                    Main Target:
+                  </div>
+                  <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
+                    
+                  </div> -->
+                  <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 oj-flex-align-items-center oj-flex-justify-content-center" id ="callToActionProblem">
+                    
+                    <oj-button class="oj-helper-overflow-wrap-anywhere" id="chroming_button4" chroming="callToAction" on-oj-action="[[accessProblem]]">
+                      <div id="helper-button">Click here to see full details</div>
+                  </oj-button>
+                
+                  </div>
+                  
+                  
+            </div>
+            
+          </div>
+        </template>
+        <template slot="noData">
+          <div class="oj-typography-body-md oj-typography-bold oj-sm-padding-2x-top">No Problems to display</div>
+        </template>
+      </oj-bind-for-each>
+    </oj-bind-if>
   </div>
 </div>
