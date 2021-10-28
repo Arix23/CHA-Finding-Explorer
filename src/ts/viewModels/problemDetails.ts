@@ -31,6 +31,12 @@ class ProblemDetailsViewModel {
   problemAccessed :ko.Observable<String> = ko.observable("null");
   problemCount = new Map();
   dataProvider : ArrayDataProvider<any, any>;
+  detailsDataProvider : ArrayDataProvider<any, any>;
+  //hostArray: Array<{host: string, database: string, instance: string, from: string,
+  //                  to: string, belief: string, value: number, hash: string}> = [];
+  detailArray: Array<{id: string, count: number, avBelief: number, description: string,
+                        causes: string, action: string, hostTable: Array<any>}> = [];
+
 
   //BUTTON ACCESS PROBLEM
 
@@ -84,7 +90,7 @@ class ProblemDetailsViewModel {
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
 
-  
+
 
   constructor() {
     let problemArray: Array<{name: string, count: number, belief: number, database: string, instance: string, onhost: string, from: string, to:string}> = [];
@@ -95,12 +101,35 @@ class ProblemDetailsViewModel {
         if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
           let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
           this.problemCount.set(jsonFilex.jsonFile[j].name, count);
+          //sumBelief += jsonFilex.jsonFile[j].belief;
+
         } else {
           this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
+          //sumBelief = jsonFilex.jsonFile[j].belief;
         }
     }
 
+    this.problemCount.forEach((value: number, key: string) => {
+      let sumBelief = 0;
+      let i;
+      let hostArray: Array<{host: string, database: string, instance: string, from: string,
+                        to: string, belief: string, hash: string}> = [];
+      for (let item in jsonFilex.jsonFile){
+        if (jsonFilex.jsonFile[item].name == key){
+          hostArray.push({host: jsonFilex.jsonFile[item].onhost, database: jsonFilex.jsonFile[item].db,
+                          instance: jsonFilex.jsonFile[item].instance, from: jsonFilex.jsonFile[item].from,
+                          to: jsonFilex.jsonFile[item].to, belief: jsonFilex.jsonFile[item].belief,
+                          hash: jsonFilex.jsonFile[item].hash});
+          sumBelief += jsonFilex.jsonFile[item].belief;
+          i = item;
+        }
+      }
 
+      sumBelief /= value;
+      this.detailArray.push({id: jsonFilex.jsonFile[i].id, count: value, avBelief: sumBelief,
+                            description: jsonFilex.jsonFile[i].descr, causes: jsonFilex.jsonFile[i].cause,
+                            action: jsonFilex.jsonFile[i].action, hostTable: hostArray});
+    });
 
 
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
@@ -112,11 +141,13 @@ class ProblemDetailsViewModel {
       }
     }
 
-    
+    console.log(this.detailArray);
+    let jsonDetails = JSON.stringify(this.detailArray);
 
     let jsonCount = JSON.stringify(problemArray);
-    console.log(this.problemAccessed());
+    //console.log(this.problemAccessed());
 
+    this.detailsDataProvider = new ArrayDataProvider(JSON.parse(jsonDetails), { keyAttributes: 'id'});
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
   }
 
@@ -132,8 +163,6 @@ class ProblemDetailsViewModel {
     AccUtils.announce("Problem Details page loaded.");
     document.title = "Problem Details";
     // implement further logic if needed
-
-    
   }
 
   /**
