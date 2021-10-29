@@ -73,3 +73,19 @@
   width:fit-content;
 }
 
+.problem-table {
+  width: 100%;
+  height: 27rem;
+}
+
+#listviewContainer{
+  height:10rem;
+  margin-bottom: 1%;
+}
+
+.demo-list{
+  height: 99%;
+}
+
+
+

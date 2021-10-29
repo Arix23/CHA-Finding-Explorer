@@ -9,6 +9,7 @@ import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
 import "ojs/ojbutton";
+import "ojs/ojtable";
 
 
 import * as Bootstrap from "ojs/ojbootstrap";
@@ -20,6 +21,9 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+import "ojs/ojlistview";
+import { ojListView } from "ojs/ojlistview";
+
 import jsonFilex from "../appController";
 
 
@@ -29,13 +33,29 @@ class ProblemDetailsViewModel {
 
   //For each binding
   problemAccessed :ko.Observable<String> = ko.observable("null");
+  lengthProblem : number = 0;
+  mediumArray: Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
+    action: string, mainTarget:string, mainTime: string, 
+    allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+
+    highArray: Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
+      action: string, mainTarget:string, mainTime: string, 
+      allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+  selectedProblemID: ko.Observable<number> = ko.observable(-1);
+  selectedProblem : ko.Observable<{name: string, count: number, avgBelief: number, description: string, cause: string, 
+    action: string, mainTarget:string, mainTime: string, id:string,
+    allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> 
+    = ko.observable({name: "N/A", count: -1, avgBelief: -1, description: "N/A", cause: "N/A", 
+      action: "N/A", mainTarget:"N/A", mainTime: "N/A", id: "N/A", 
+      allTargets: []});
   problemCount = new Map();
-  dataProvider : ArrayDataProvider<any, any>;
-  detailsDataProvider : ArrayDataProvider<any, any>;
-  //hostArray: Array<{host: string, database: string, instance: string, from: string,
-  //                  to: string, belief: string, value: number, hash: string}> = [];
-  detailArray: Array<{id: string, count: number, avBelief: number, description: string,
-                        causes: string, action: string, hostTable: Array<any>}> = [];
+  problemNameToID = new Map();
+  uniqueProblemCount : number = 0;
+  dataProvider : ko.Observable<ArrayDataProvider<any, any>>;
+  detailsDataProvider : ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+
+  targetsAppearedProvider: ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
+  targetsAppeared : Array<{set: Set<string>,array:Array<{target: string}>}> = [];
 
 
   //BUTTON ACCESS PROBLEM
@@ -45,25 +65,93 @@ class ProblemDetailsViewModel {
     current: { data: { name: string } },
     bindingContext: ko.BindingContext
   ) => {
+    
+    this.selectedProblemID(this.problemNameToID.get(current.data.name));
+    this.selectedProblem(this.problemArray[this.selectedProblemID()]);
+    let tmp = JSON.stringify(this.problemArray[this.selectedProblemID()].allTargets);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+    let tmp2 = JSON.stringify(this.targetsAppeared[this.selectedProblemID()].array);
+    let tmpTargets = new ArrayDataProvider(JSON.parse(tmp2));
+    this.targetsAppearedProvider(tmpTargets);
     this.problemAccessed(current.data.name);
     this.problemAccessed.valueHasMutated();
-    console.log(current.data.name);
+
+
   };
 
-    // private users = ko.observableArray([
-    //   {
-    //     name: "Bert",
-    //   },
-    //   {
-    //     name: "Charles",
-    //   },
-    //   {
-    //     name: "Denise",
-    //   },
-    // ]);
-    // readonly dataProvider = new ArrayDataProvider(this.users, {
-    //   keyAttributes: "name",
-    // });
+//filter category
+filterCategory = (
+  event: Event,
+  bindingContext: ko.BindingContext
+) => {
+  if(this.currentCategory().length==0){
+    let tmpDataProvider = new ArrayDataProvider([])
+      this.dataProvider(tmpDataProvider);
+    console.log("hola");
+  } else if (this.currentCategory().length==2){
+    let tmp = JSON.stringify(this.problemArray);
+    let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
+      this.dataProvider(tmpDataProvider);
+  } else{
+    if(this.currentCategory()[0]=="High"){
+      let tmp = JSON.stringify(this.highArray);
+      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
+      this.dataProvider(tmpDataProvider);
+    } else{
+      let tmp = JSON.stringify(this.mediumArray);
+      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
+      this.dataProvider(tmpDataProvider);
+    }
+  }
+
+  this.problemAccessed("null");
+  this.problemAccessed.valueHasMutated();
+  
+  //console.log(this.currentCategory());
+};
+
+  //Go Back
+  goBack = (
+    event: Event,
+    bindingContext: ko.BindingContext
+  ) => {
+    
+    
+    this.problemAccessed("null");
+    this.problemAccessed.valueHasMutated();
+  };
+
+
+  //Prev
+  prev = (
+    event: Event,
+    bindingContext: ko.BindingContext
+  ) => {
+    this.selectedProblemID(this.selectedProblemID()-1);
+    this.selectedProblem(this.problemArray[this.selectedProblemID()]);
+    let tmp = JSON.stringify(this.problemArray[this.selectedProblemID()].allTargets);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+    let tmp2 = JSON.stringify(this.targetsAppeared[this.selectedProblemID()].array);
+    let tmpTargets = new ArrayDataProvider(JSON.parse(tmp2));
+    this.targetsAppearedProvider(tmpTargets); 
+  };
+
+  next = (
+    event: Event,
+    bindingContext: ko.BindingContext
+  ) => {
+    this.selectedProblemID(this.selectedProblemID()+1);
+    this.selectedProblem(this.problemArray[this.selectedProblemID()]);
+    let tmp = JSON.stringify(this.problemArray[this.selectedProblemID()].allTargets);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+    let tmp2 = JSON.stringify(this.targetsAppeared[this.selectedProblemID()].array);
+    let tmpTargets = new ArrayDataProvider(JSON.parse(tmp2));
+    this.targetsAppearedProvider(tmpTargets);
+  };
+
 
   // Problems
   private readonly browsers = [
@@ -76,6 +164,12 @@ class ProblemDetailsViewModel {
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
+
+  //ANALYZE
+
+  problemArray: Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
+    action: string, mainTarget:string, mainTime: string, 
+    allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -90,66 +184,84 @@ class ProblemDetailsViewModel {
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
 
+    mediumCount : number = 0;
+    highCount : number = 0;
+    currentCategory : ko.ObservableArray<string> = ko.observableArray(["Medium","High"]);
+
 
 
   constructor() {
-    let problemArray: Array<{name: string, count: number, belief: number, database: string, instance: string, onhost: string, from: string, to:string}> = [];
+    let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
 
-      //console.log(jsonFilex.jsonFile[j].cluster);
+      
+      let jsonItem = jsonFilex.jsonFile[j];  
+      if (this.problemNameToID.has(jsonItem.name)) {
+        let tmpValue = this.problemArray[this.problemNameToID.get(jsonItem.name)]
+          tmpValue.avgBelief += Number(jsonItem.belief);
+          tmpValue.count++;
+          this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.db);
+          this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.cluster);
+          this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.instance);
+          this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.host);
+          this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.onHost); 
 
-        if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
-          let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
-          this.problemCount.set(jsonFilex.jsonFile[j].name, count);
-          //sumBelief += jsonFilex.jsonFile[j].belief;
+          tmpArray[this.problemNameToID.get(jsonItem.name)].array.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash});
+
 
         } else {
-          this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
-          //sumBelief = jsonFilex.jsonFile[j].belief;
+
+          this.problemArray.push({id:jsonItem.id,name:jsonItem.name,count: 1,avgBelief:Number(jsonItem.belief),description:jsonItem.descr,cause:jsonItem.cause,action:jsonItem.action,mainTarget:"N/A",mainTime:jsonItem.t1,allTargets:[]})
+          this.targetsAppeared.push({set: new Set(jsonItem.db),array:[]});
+          this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.cluster);
+          this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.instance);
+          this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.host);
+          this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.onHost);
+
+
+          let secondTmpArray : Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+          secondTmpArray.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash})
+          tmpArray.push({array:secondTmpArray});
+          this.problemNameToID.set(jsonFilex.jsonFile[j].name,this.uniqueProblemCount);
+          this.uniqueProblemCount++;
         }
     }
 
-    this.problemCount.forEach((value: number, key: string) => {
-      let sumBelief = 0;
-      let i;
-      let hostArray: Array<{host: string, database: string, instance: string, from: string,
-                        to: string, belief: string, hash: string}> = [];
-      for (let item in jsonFilex.jsonFile){
-        if (jsonFilex.jsonFile[item].name == key){
-          hostArray.push({host: jsonFilex.jsonFile[item].onhost, database: jsonFilex.jsonFile[item].db,
-                          instance: jsonFilex.jsonFile[item].instance, from: jsonFilex.jsonFile[item].from,
-                          to: jsonFilex.jsonFile[item].to, belief: jsonFilex.jsonFile[item].belief,
-                          hash: jsonFilex.jsonFile[item].hash});
-          sumBelief += jsonFilex.jsonFile[item].belief;
-          i = item;
-        }
-      }
+    for(var j = 0;j<this.problemArray.length;j++){
+      this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
+      
+      this.problemArray[j].allTargets = tmpArray[j].array;
 
-      sumBelief /= value;
-      this.detailArray.push({id: jsonFilex.jsonFile[i].id, count: value, avBelief: sumBelief,
-                            description: jsonFilex.jsonFile[i].descr, causes: jsonFilex.jsonFile[i].cause,
-                            action: jsonFilex.jsonFile[i].action, hostTable: hostArray});
-    });
-
-
-    for (var j =0;j<jsonFilex.jsonFile.length;j++){
-      if(this.problemCount.get(jsonFilex.jsonFile[j].name)!=-1){
-        problemArray.push({name:jsonFilex.jsonFile[j].name,count:this.problemCount.get(jsonFilex.jsonFile[j].name),belief: jsonFilex.jsonFile[j].belief,database:
-        jsonFilex.jsonFile[j].db,instance:jsonFilex.jsonFile[j].instance,onhost:jsonFilex.jsonFile[j].onhost,
-      from:jsonFilex.jsonFile[j].from,to:jsonFilex.jsonFile[j].to})
-          this.problemCount.set(jsonFilex.jsonFile[j].name,-1);
+      if(this.problemArray[j].avgBelief>=75){
+        this.highCount++;
+        this.highArray.push(this.problemArray[j]);
+      } else{
+        this.mediumCount++;
+        this.mediumArray.push(this.problemArray[j]);
       }
     }
 
-    console.log(this.detailArray);
-    let jsonDetails = JSON.stringify(this.detailArray);
+    for(var j = 0;j<this.targetsAppeared.length;j++){
+      for(let item of this.targetsAppeared[j].set.values()){
+        //console.log(item);
+        if(item!=undefined && item.length>1){
+          this.targetsAppeared[j].array.push({target:item});
+        }
+      }
+    }
 
-    let jsonCount = JSON.stringify(problemArray);
+    
+
+    console.log(this.problemArray)
+
+    let jsonCount = JSON.stringify(this.problemArray);
+    this.lengthProblem = this.problemArray.length;
     //console.log(this.problemAccessed());
 
-    this.detailsDataProvider = new ArrayDataProvider(JSON.parse(jsonDetails), { keyAttributes: 'id'});
-    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    let tmpDataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' })
+      this.dataProvider = ko.observable(tmpDataProvider);
   }
+
 
   /**
    * Optional ViewModel method invoked after the View is inserted into the
