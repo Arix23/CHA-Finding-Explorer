@@ -4,14 +4,42 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <h1>Target Details: Side-to-side</h1>
+  <div
+    class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+    
+
+
+    <oj-bind-if test="[[addTarget()===true]]">
+
+      <h1 class="oj-flex-bar-start">Target:</h1>
+      <oj-button class="oj-flex-bar-end" id="Add Target" chroming="callToAction" on-oj-action='[[addTargetButton]]'>
+        Add Target<span slot="startIcon" class="oj-ux-ico-plus"> </span>
+      </oj-button>
+    </oj-bind-if>
+
+    <oj-bind-if test="[[addTarget()===false]]">
+      <h1 class="oj-flex-bar-start">Target: side-to-side</h1>
+      <oj-button class="oj-flex-bar-end" id="One Target" chroming="callToAction" on-oj-action='[[removeTargetButton]]'>
+        One Target<span slot="startIcon" class="oj-ux-ico-minus"> </span>
+      </oj-button>
+    </oj-bind-if>
+
+
+
+
+
+
+  </div>
+
+
+
 
   <!-- barra de filtros -->
   <div
     class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
 
     <oj-button id="restart"
-      class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
+      class="oj-bg-neutral-0 oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
       <span slot="startIcon" class="oj-ux-ico-refresh"></span>
     </oj-button>
 
@@ -38,9 +66,11 @@
   </div>
 
   <br>
-  <div class="oj-flex">
+
+
+  <oj-bind-if test="[[addTarget()===true]]">
     <div id="table-item"
-      class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+      class="oj-flex-item oj-bg-neutral-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
       <div class="oj-flex">
         <div
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
@@ -57,7 +87,7 @@
 
         </div>
 
-        <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
+        <oj-table class="oj-flex-item" id='table' aria-label='Departments Table' data='[[dataProvider]]'
           selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
           scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                    "field": "name",
@@ -86,27 +116,80 @@
       </div>
     </div>
 
-    <div id="table-item"
-      class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
-      <div class="oj-flex">
-        <div
-          class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
-          Type:
-          <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
-          </oj-select-single>
-          Active problems in selected target:
-        </div>
-        <div
-          class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
-          Select:
-          <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
-          </oj-select-single>
+  </oj-bind-if>
 
-        </div>
 
-        <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
-          selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
-          scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
+  <oj-bind-if test="[[addTarget()===false]]">
+
+    <div class="oj-flex">
+      <div id="table-item"
+        class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+        <div class="oj-flex">
+          <div
+            class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+            Type:
+            <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            </oj-select-single>
+            Active problems in selected target:
+          </div>
+          <div
+            class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+            Select:
+            <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            </oj-select-single>
+
+          </div>
+
+          <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
+            selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
+            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
+                                                   "field": "name",
+                                                   "headerClassName": "oj-sm-only-hide",
+                                                   "className": "oj-sm-only-hide",
+                                                   "resizable": "enabled"},
+                                                  {"headerText": "Count", 
+                                                   "field": "count",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "Database", 
+                                                   "field": "database",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "Instance", 
+                                                   "field": "instance",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "OnHost", 
+                                                   "field": "onhost",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "From", 
+                                                   "field": "from",
+                                                   "resizable": "enabled"},
+                                                   {"headerText": "To", 
+                                                   "field": "to",
+                                                   "resizable": "enabled"}]' class='demo-table-container oj-bg-body'>
+          </oj-table>
+        </div>
+      </div>
+
+      <div id="table-item"
+        class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+        <div class="oj-flex">
+          <div
+            class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+            Type:
+            <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            </oj-select-single>
+            Active problems in selected target:
+          </div>
+          <div
+            class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
+            Select:
+            <oj-select-single data="[[browsersDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            </oj-select-single>
+
+          </div>
+
+          <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
+            selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
+            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                      "field": "name",
                                                      "headerClassName": "oj-sm-only-hide",
                                                      "className": "oj-sm-only-hide",
@@ -129,9 +212,13 @@
                                                      {"headerText": "To", 
                                                      "field": "to",
                                                      "resizable": "enabled"}]' class='demo-table-container oj-bg-body'>
-        </oj-table>
+          </oj-table>
+        </div>
       </div>
     </div>
-  </div>
+
+  </oj-bind-if>
+
+
 
 </div>
