@@ -41,15 +41,48 @@ class TargetDetailsViewModel {
   info: Message[];
   confirmation: Message[];
 
-  // Select Target Type
-  private readonly browsers = [
+  // Select Target Category
+
+  mapDB = new Map();
+  mapIns = new Map();
+  mapHost = new Map();
+  mapClust = new Map();
+  readonly selectionDP = ko.observable("none");
+  
+  private readonly category = [
     { value: "Database", label: "Database" },
     { value: "Instance", label: "Instance" },
     { value: "OnHost", label: "OnHost" },
+    { value: "Cluster", label: "Cluster" },
   ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
+  
+
+  readonly categoryDP = new ArrayDataProvider(this.category, {
     keyAttributes: "value",
   });
+
+  // readonly selectionDP = ko.pureComputed(( => {
+  //   var data = this.
+  // }
+
+  // ));
+
+  public fillData(){
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+
+
+      //console.log(jsonFilex.jsonFile[j].cluster);
+
+        if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
+          let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
+          this.problemCount.set(jsonFilex.jsonFile[j].name, count);
+        } else {
+          this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
+        }
+    }
+    
+  }
+  
 
 
 

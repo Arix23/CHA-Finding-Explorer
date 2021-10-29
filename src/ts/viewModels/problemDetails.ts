@@ -44,21 +44,6 @@ class ProblemDetailsViewModel {
     console.log(current.data.name);
   };
 
-    // private users = ko.observableArray([
-    //   {
-    //     name: "Bert",
-    //   },
-    //   {
-    //     name: "Charles",
-    //   },
-    //   {
-    //     name: "Denise",
-    //   },
-    // ]);
-    // readonly dataProvider = new ArrayDataProvider(this.users, {
-    //   keyAttributes: "name",
-    // });
-
   // Problems
   private readonly browsers = [
     { value: "Private Network Trafficer", label: "Private Network Traffic" },
@@ -67,6 +52,8 @@ class ProblemDetailsViewModel {
     { value: "Opera", label: "Opera" },
     { value: "Safari", label: "Safari" },
   ];
+
+
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
