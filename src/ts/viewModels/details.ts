@@ -1,6 +1,5 @@
 import * as AccUtils from "../accUtils";
-import jsonFilex from "../appController"
-
+import jsonFilex from "../appController";
 //imports barra de filtros
 import * as ko from "knockout";
 import { whenDocumentReady } from "ojs/ojbootstrap";
@@ -9,6 +8,8 @@ import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
+import "ojs/ojchart";
+import "ojs/ojtoolbar";
 
 
 import * as Bootstrap from "ojs/ojbootstrap";
@@ -50,7 +51,11 @@ class DetailsViewModel {
 
   readonly orientationValue = ko.observable("vertical");
   hourMap = new Map()
+  targetMap = new Map()
+  dbMap = new Map()
   dataProvider: ArrayDataProvider<any, any>;
+  dataProvider2: ArrayDataProvider<any, any>;
+  dataProvider3: ArrayDataProvider<any, any>;
 
 
 
@@ -79,7 +84,7 @@ class DetailsViewModel {
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
 
 
-    
+
     for (let item in jsonFilex.jsonFile) {
       if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
         if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
@@ -106,12 +111,81 @@ class DetailsViewModel {
     });
 
 
-    console.log(problemArray)
+    //console.log(problemArray)
     let jsonCount = JSON.stringify(problemArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
 
     document.getElementById("chart-container");
+
+
+
+
+
+
+
+
+    //Target
+    let targetArray: Array<{ hour: string, count: number, series: string }> = [];
+    for (let item in jsonFilex.jsonFile) {
+      if (this.targetMap.has(jsonFilex.jsonFile[item].instance)) {
+        if (this.targetMap.get(jsonFilex.jsonFile[item].instance).has(jsonFilex.jsonFile[item].onhost)) {
+          let count = this.targetMap.get(jsonFilex.jsonFile[item].instance).get(jsonFilex.jsonFile[item].onhost) + 1;
+          this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, count);
+        }
+        else {
+          this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, 1);
+        }
+      }
+      else {
+        let nameMap = new Map();
+        nameMap.set(jsonFilex.jsonFile[item].onhost, 1);
+        this.targetMap.set(jsonFilex.jsonFile[item].instance, nameMap);
+      }
+    }
+    
+
+    this.targetMap.delete(undefined)
+    console.log(this.targetMap);
+
+
+    this.targetMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        targetArray.push({ hour: "Instance: "+key, count: value, series: "Host: "+key2 });
+      });
+    });
+
+    let json = JSON.stringify(targetArray);
+
+    this.dataProvider2 = new ArrayDataProvider(JSON.parse(json), { keyAttributes: 'hour' });
+
+    document.getElementById("chart-container2");
+
+
+
+    //DB
+    let dbArray: Array<{ hour: string, count: number, series: string }> = [];
+    for (let item in jsonFilex.jsonFile) {
+      if (this.dbMap.has(jsonFilex.jsonFile[item].db)) {
+        let count2 = this.dbMap.get(jsonFilex.jsonFile[item].db) + 1;
+        this.dbMap.set(jsonFilex.jsonFile[item].db, count2);
+      }
+      else {
+        this.dbMap.set(jsonFilex.jsonFile[item].db, 1);
+      }
+    }
+
+    this.dbMap.delete(undefined)
+
+    this.dbMap.forEach((value: number, key: string) => {
+      dbArray.push({ hour: key, count: value, series: "Database: "+ key });
+    });
+
+    let jsonx = JSON.stringify(dbArray);
+
+    this.dataProvider3 = new ArrayDataProvider(JSON.parse(jsonx), { keyAttributes: 'hour' });
+
+    document.getElementById("chart-container3");
 
   }
 

@@ -66,4 +66,46 @@
       </oj-chart>
     </div>
 </div>
+<br> 
+<br> 
+<div>
+  <div id='chart-container2'>
+    <oj-chart id="barChart"
+            type="bar"
+            orientation="[[orientationValue]]"
+            data="[[dataProvider2]]"
+            animation-on-display="auto"
+            animation-on-data-change="auto"
+            hover-behavior="dim">
+          <template slot='itemTemplate' data-oj-as='item'>
+            <oj-chart-item
+            value='[[item.data.count]]'
+            group-id='[[ [item.data.hour] ]]'
+            series-id='[[item.data.series]]'>
+            </oj-chart-item>
+          </template>
+    </oj-chart>
+  </div>
+</div>
+<br> 
+<br> 
+<div>
+  <div id='chart-container3'>
+    <oj-chart id="barChart"
+            type="bar"
+            orientation="[[orientationValue]]"
+            data="[[dataProvider3]]"
+            animation-on-display="auto"
+            animation-on-data-change="auto"
+            hover-behavior="dim">
+          <template slot='itemTemplate' data-oj-as='item'>
+            <oj-chart-item
+            value='[[item.data.count]]'
+            group-id='[[ [item.data.hour] ]]'
+            series-id='[[item.data.series]]'>
+            </oj-chart-item>
+          </template>
+    </oj-chart>
+  </div>
+</div>
 </div>
