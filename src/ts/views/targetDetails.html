@@ -4,34 +4,6 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  <div
-    class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
-    
-
-
-    <oj-bind-if test="[[addTarget()===true]]">
-
-      <h1 class="oj-flex-bar-start">Target:</h1>
-      <oj-button class="oj-flex-bar-end" id="Add Target" chroming="callToAction" on-oj-action='[[addTargetButton]]'>
-        Add Target<span slot="startIcon" class="oj-ux-ico-plus"> </span>
-      </oj-button>
-    </oj-bind-if>
-
-    <oj-bind-if test="[[addTarget()===false]]">
-      <h1 class="oj-flex-bar-start">Target: side-to-side</h1>
-      <oj-button class="oj-flex-bar-end" id="One Target" chroming="callToAction" on-oj-action='[[removeTargetButton]]'>
-        One Target<span slot="startIcon" class="oj-ux-ico-minus"> </span>
-      </oj-button>
-    </oj-bind-if>
-
-
-
-
-
-
-  </div>
-
-
 
 
   <!-- barra de filtros -->
@@ -65,8 +37,30 @@
     </div>
   </div>
 
-  <br>
 
+  <oj-bind-if test="[[addTarget()===true]]">
+
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Target:</h1>
+      <oj-button class="oj-flex-bar-end" id="Add Target" chroming="callToAction" on-oj-action='[[addTargetButton]]'>
+        Add Target<span slot="startIcon" class="oj-ux-ico-plus"> </span>
+      </oj-button>
+    </div>
+
+
+  </oj-bind-if>
+
+  <oj-bind-if test="[[addTarget()===false]]">
+
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Target: side-to-side</h1>
+      <oj-button class="oj-flex-bar-end" id="One Target" chroming="callToAction" on-oj-action='[[removeTargetButton]]'>
+        One Target<span slot="startIcon" class="oj-ux-ico-minus"> </span>
+      </oj-button>
+    </div>
+
+
+  </oj-bind-if>
 
   <oj-bind-if test="[[addTarget()===true]]">
     <div id="table-item"
@@ -75,14 +69,15 @@
         <div
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Type:
-          <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+          <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
           </oj-select-single>
           Active problems in selected target:
         </div>
         <div
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Select:
-          <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+          <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
+            
           </oj-select-single>
 
         </div>
@@ -135,7 +130,7 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
             </oj-select-single>
 
           </div>
@@ -182,12 +177,12 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
             </oj-select-single>
 
           </div>
 
-          <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
+          <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP]]'
             selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
             scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                      "field": "name",

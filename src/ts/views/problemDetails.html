@@ -13,7 +13,7 @@
       <div id="problem-header" class="oj-flex oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
         <div class="oj-md-1 oj-lg-1 oj-xl-1 oj-sm-1 ">
           <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[goBack]]">
-            <- Go back
+            ← Go back
           </oj-button>
         </div>
         <div class="oj-md-8 oj-lg-8 oj-xl-8 oj-sm-8">
@@ -22,23 +22,23 @@
         <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-sm-2 ">
           <oj-bind-if test="[[selectedProblemID() <= 0]]">
             <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]" disabled="true">
-              <- Prev
+              ← Prev
             </oj-button>
           </oj-bind-if>
           <oj-bind-if test="[[selectedProblemID() > 0]]">
             <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]">
-              <- Prev
+              ← Prev
             </oj-button>
           </oj-bind-if>
           
           <oj-bind-if test="[[selectedProblemID() >= lengthProblem-1]]">
             <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[next]]" disabled="true">
-              -> Next
+              → Next
             </oj-button>
           </oj-bind-if>
           <oj-bind-if test="[[selectedProblemID() < lengthProblem-1]]">
             <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[next]]">
-              -> Next
+              → Next
             </oj-button>
           </oj-bind-if> 
         </div>
