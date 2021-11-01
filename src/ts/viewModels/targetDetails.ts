@@ -168,7 +168,7 @@ class TargetDetailsViewModel {
       }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
@@ -193,7 +193,7 @@ class TargetDetailsViewModel {
       }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
