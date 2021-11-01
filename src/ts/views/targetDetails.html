@@ -82,15 +82,15 @@
 
         </div>
 
-        <oj-table class="oj-flex-item" id='table' aria-label='Departments Table' data='[[dataProvider]]'
+        <oj-table class="oj-flex-item" id='table' aria-label='Departments Table' data='[[selectionTableDP()]]'
           selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
           scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                    "field": "name",
                                                    "headerClassName": "oj-sm-only-hide",
                                                    "className": "oj-sm-only-hide",
                                                    "resizable": "enabled"},
-                                                  {"headerText": "Count", 
-                                                   "field": "count",
+                                                  {"headerText": "Cluster", 
+                                                   "field": "cluster",
                                                    "resizable": "enabled"},
                                                    {"headerText": "Database", 
                                                    "field": "database",
@@ -99,7 +99,7 @@
                                                    "field": "instance",
                                                    "resizable": "enabled"},
                                                    {"headerText": "OnHost", 
-                                                   "field": "onhost",
+                                                   "field": "host",
                                                    "resizable": "enabled"},
                                                    {"headerText": "From", 
                                                    "field": "from",
@@ -123,7 +123,7 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Type:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
             </oj-select-single>
             Active problems in selected target:
           </div>
@@ -135,15 +135,15 @@
 
           </div>
 
-          <oj-table id='table' aria-label='Departments Table' data='[[dataProvider]]'
+          <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP]]'
             selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
             scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                    "field": "name",
                                                    "headerClassName": "oj-sm-only-hide",
                                                    "className": "oj-sm-only-hide",
                                                    "resizable": "enabled"},
-                                                  {"headerText": "Count", 
-                                                   "field": "count",
+                                                  {"headerText": "Cluster", 
+                                                   "field": "cluster",
                                                    "resizable": "enabled"},
                                                    {"headerText": "Database", 
                                                    "field": "database",
@@ -170,19 +170,19 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Type:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside">
+            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType2]]">
             </oj-select-single>
             Active problems in selected target:
           </div>
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
-            <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
+            <oj-select-single data="[[selectionDP2]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected2]]">
             </oj-select-single>
 
           </div>
 
-          <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP]]'
+          <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP2()]]'
             selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
             scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
                                                      "field": "name",

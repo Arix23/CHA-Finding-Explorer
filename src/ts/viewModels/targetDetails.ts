@@ -58,12 +58,16 @@ class TargetDetailsViewModel {
   arrayClusternames: Array<{ value: string, label: string }> = [];
 
   tableData: Array<{ name: string, database: string, instance: string, host: string, from: string, to: string }> = [];
+  tableData2: Array<{ name: string, database: string, instance: string, host: string, from: string, to: string }> = [];
 
   selectionDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  selectionDP2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   
   selectionTableDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  selectionTableDP2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
 
   selectedType = "";
+  selectedType2 = "";
 
   //readonly selectionDP = ko.observable("none");
 
@@ -77,27 +81,71 @@ class TargetDetailsViewModel {
   readonly categoryDP = new ArrayDataProvider(this.category, {
     keyAttributes: "value",
   });
+  selectType2 = (
+    event: ojSelectSingle.valueChanged<string, Record<string, string>>
+  ) => {
+    if (event.detail.value == "Database") {
+      let tempSelect = new ArrayDataProvider(this.arrayDBnames, {
+        keyAttributes: "value",
+      });
+      this.selectionDP2(tempSelect);
+      this.selectedType2 = "Database";
+      console.log("2");
+      console.log(this.selectionDP2());
 
+    } else if (event.detail.value == "Instance") {
+      let tempSelect = new ArrayDataProvider(this.arrayInsnames, {
+        keyAttributes: "value",
+      });
+      this.selectionDP2(tempSelect);
+      this.selectedType2 = "Instance";
+    } else if (event.detail.value == "OnHost") {
+      let tempSelect = new ArrayDataProvider(this.arrayHostnames, {
+        keyAttributes: "value",
+      });
+      this.selectionDP2(tempSelect);
+      this.selectedType2 = "OnHost";
+    } else if (event.detail.value == "Cluster") {
+      let tempSelect = new ArrayDataProvider(this.arrayClusternames, {
+        keyAttributes: "value",
+      });
+      this.selectionDP2(tempSelect);
+      this.selectedType2 = "Cluster";
+    } else {
+      // let tempSelect = new ArrayDataProvider(this.setAll);
+      // this.selectionDP(tempSelect);
+
+    }
+    console.log(event.detail.value)
+  }
 
   selectType = (
     event: ojSelectSingle.valueChanged<string, Record<string, string>>
   ) => {
     if (event.detail.value == "Database") {
-      let tempSelect = new ArrayDataProvider(this.arrayDBnames);
+      let tempSelect = new ArrayDataProvider(this.arrayDBnames, {
+        keyAttributes: "value",
+      });
       this.selectionDP(tempSelect);
       this.selectedType = "Database";
-      console.log("Selected: " + this.selectedType);
+      console.log(this.selectionDP());
 
     } else if (event.detail.value == "Instance") {
-      let tempSelect = new ArrayDataProvider(this.arrayInsnames);
+      let tempSelect = new ArrayDataProvider(this.arrayInsnames, {
+        keyAttributes: "value",
+      });
       this.selectionDP(tempSelect);
       this.selectedType = "Instance";
     } else if (event.detail.value == "OnHost") {
-      let tempSelect = new ArrayDataProvider(this.arrayHostnames);
+      let tempSelect = new ArrayDataProvider(this.arrayHostnames, {
+        keyAttributes: "value",
+      });
       this.selectionDP(tempSelect);
       this.selectedType = "OnHost";
     } else if (event.detail.value == "Cluster") {
-      let tempSelect = new ArrayDataProvider(this.arrayClusternames);
+      let tempSelect = new ArrayDataProvider(this.arrayClusternames, {
+        keyAttributes: "value",
+      });
       this.selectionDP(tempSelect);
       this.selectedType = "Cluster";
     } else {
@@ -111,10 +159,9 @@ class TargetDetailsViewModel {
   fillSelected = (
     event: ojSelectSingle.valueChanged<string, Record<string, string>>
   ) => {
-    console.log("detail: " + this.arrayDBnames[event.detail.value]);
+    this.tableData = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
       if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === event.detail.value) {
-        console.log("Agrega db");
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
@@ -130,9 +177,35 @@ class TargetDetailsViewModel {
     //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
     console.log(this.tableData);
     let temTableData = new ArrayDataProvider(this.tableData);
-    // this.selectionTableDP(temTableData);
+    this.selectionTableDP(temTableData);
 
   }
+
+  fillSelected2 = (
+    event: ojSelectSingle.valueChanged<string, Record<string, string>>
+  ) => {
+    this.tableData2 = [];
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === event.detail.value) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }
+
+    }
+    //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
+    console.log(this.tableData2);
+    let temTableData = new ArrayDataProvider(this.tableData2);
+    this.selectionTableDP2(temTableData);
+
+  }
+
 
   public fillData() {
 
@@ -237,38 +310,38 @@ class TargetDetailsViewModel {
     document.title = "Target Details";
     // implement further logic if needed
 
-    //procesamiento de json :)
-    let problemArray: Array<{ name: string, count: number, database: string, instance: string, onhost: string, from: string, to: string }> = [];
-    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (jsonFilex.jsonFile[j].db == "diarac") {
-        if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
-          let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
-          this.problemCount.set(jsonFilex.jsonFile[j].name, count);
+    // //procesamiento de json :)
+    // let problemArray: Array<{ name: string, count: number, database: string, instance: string, onhost: string, from: string, to: string }> = [];
+    // for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+    //   if (jsonFilex.jsonFile[j].db == "diarac") {
+    //     if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
+    //       let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
+    //       this.problemCount.set(jsonFilex.jsonFile[j].name, count);
 
-        }
-        else {
-          this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
-        }
-      }
-    }
+    //     }
+    //     else {
+    //       this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
+    //     }
+    //   }
+    // }
 
-    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (jsonFilex.jsonFile[j].db == "diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name) != -1) {
-        problemArray.push({
-          name: jsonFilex.jsonFile[j].name, count: this.problemCount.get(jsonFilex.jsonFile[j].name), database:
-            jsonFilex.jsonFile[j].db, instance: jsonFilex.jsonFile[j].instance, onhost: jsonFilex.jsonFile[j].onhost,
-          from: jsonFilex.jsonFile[j].from, to: jsonFilex.jsonFile[j].to
-        })
-        this.problemCount.set(jsonFilex.jsonFile[j].name, -1);
-      }
-    }
+    // for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+    //   if (jsonFilex.jsonFile[j].db == "diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name) != -1) {
+    //     problemArray.push({
+    //       name: jsonFilex.jsonFile[j].name, count: this.problemCount.get(jsonFilex.jsonFile[j].name), database:
+    //         jsonFilex.jsonFile[j].db, instance: jsonFilex.jsonFile[j].instance, onhost: jsonFilex.jsonFile[j].onhost,
+    //       from: jsonFilex.jsonFile[j].from, to: jsonFilex.jsonFile[j].to
+    //     })
+    //     this.problemCount.set(jsonFilex.jsonFile[j].name, -1);
+    //   }
+    // }
 
 
 
-    let jsonCount = JSON.stringify(problemArray);
-    // console.log(jsonCount);
+    // let jsonCount = JSON.stringify(problemArray);
+    // // console.log(jsonCount);
 
-    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    // this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
   }
 
   /**
