@@ -10,6 +10,7 @@ import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
 import "ojs/ojchart";
 import "ojs/ojtoolbar";
+import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 
 
 import * as Bootstrap from "ojs/ojbootstrap";
@@ -21,7 +22,93 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+type TreeNode = { value: string; children: Array<{ value: String }> };
 class DetailsViewModel {
+
+  //Filtros → Targets
+  problemsDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  targetFilterDP: ArrayTreeDataProvider<string, TreeNode>;
+  setDB = new Set();
+  setIns = new Set();
+  setHost = new Set();
+  setClust = new Set();
+  setAll = new Set();
+  //intento
+  arrayDB: Array<{ value: string }> = [];
+  arrayInstance: Array<{ value: string }> = [];
+  arrayHost: Array<{ value: string }> = [];
+  arrayCluster: Array<{ value: string }> = [];
+
+  arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
+  resultCount;
+
+  //TreeNode treeInfo = new this.TreeNode();
+
+  public addTDPInfo() {
+    this.targetFilterDP = new ArrayTreeDataProvider(this.arrayInfo, {
+      keyAttributes: "value",
+      keyAttributesScope: "sibling",
+    });
+    this.resultCount = ko.observable(this.arrayInfo.length);
+    //console.log("lista de datos: "+ this.arrayInfo[2].value);
+  }
+
+  public fillDataIntento() {
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //DBs
+      if (jsonFilex.jsonFile[j].db != null) {
+        if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
+          this.setDB.add(jsonFilex.jsonFile[j].db);
+          this.arrayDB.push({ value: jsonFilex.jsonFile[j].db });
+
+        }
+      }
+
+      //Instances
+      if (jsonFilex.jsonFile[j].instance != null) {
+        if (!this.setIns.has(jsonFilex.jsonFile[j].instance)) {
+          this.setIns.add(jsonFilex.jsonFile[j].instance);
+          this.arrayInstance.push({ value: jsonFilex.jsonFile[j].instance });
+
+        }
+      }
+
+      //Host
+      if (jsonFilex.jsonFile[j].host != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].host)) {
+          this.setHost.add(jsonFilex.jsonFile[j].host);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].host });
+        }
+      }
+
+      //OnHost
+      if (jsonFilex.jsonFile[j].onhost != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].onhost)) {
+          this.setHost.add(jsonFilex.jsonFile[j].onhost);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].onhost });
+        }
+      }
+
+      //Cluster
+      if (jsonFilex.jsonFile[j].cluster != null) {
+        if (!this.setClust.has(jsonFilex.jsonFile[j].cluster)) {
+          this.setClust.add(jsonFilex.jsonFile[j].cluster);
+          this.arrayCluster.push({ value: jsonFilex.jsonFile[j].cluster });
+        }
+      }
+
+      
+    }
+    this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
+    this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
+    this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
+    this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
+
+
+  }
+
+
+
 
   // Problems
   private readonly browsers = [
@@ -62,7 +149,8 @@ class DetailsViewModel {
 
 
   constructor() {
-
+    this.fillDataIntento();
+    this.addTDPInfo();
   }
 
   /**
@@ -143,7 +231,7 @@ class DetailsViewModel {
         this.targetMap.set(jsonFilex.jsonFile[item].instance, nameMap);
       }
     }
-    
+
 
     this.targetMap.delete(undefined)
     console.log(this.targetMap);
@@ -151,7 +239,7 @@ class DetailsViewModel {
 
     this.targetMap.forEach((map: Map<any, any>, key: string) => {
       map.forEach((value: number, key2: string) => {
-        targetArray.push({ hour: "Instance: "+key, count: value, series: "Host: "+key2 });
+        targetArray.push({ hour: "Instance: " + key, count: value, series: "Host: " + key2 });
       });
     });
 
@@ -178,7 +266,7 @@ class DetailsViewModel {
     this.dbMap.delete(undefined)
 
     this.dbMap.forEach((value: number, key: string) => {
-      dbArray.push({ hour: key, count: value, series: "Database: "+ key });
+      dbArray.push({ hour: key, count: value, series: "Database: " + key });
     });
 
     let jsonx = JSON.stringify(dbArray);
