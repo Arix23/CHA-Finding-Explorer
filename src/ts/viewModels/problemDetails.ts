@@ -153,18 +153,13 @@ filterCategory = (
   };
 
   // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
+  //PROBLEMS FILTER
 
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  problemFilters = new Map();
+  readonly selectProblemValue = ko.observableArray(["CH"]);
+  
 
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
 
   //ANALYZE
 
@@ -192,10 +187,17 @@ filterCategory = (
 
 
   constructor() {
+    let problemFilterArray: Array<{value:string,label:string}> = [];
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
 
-      
+      if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[j].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[j].name,label:jsonFilex.jsonFile[j].name});
+       
+      }
       let jsonItem = jsonFilex.jsonFile[j];  
       if (this.problemNameToID.has(jsonItem.name)) {
         let tmpValue = this.problemArray[this.problemNameToID.get(jsonItem.name)]
@@ -227,6 +229,9 @@ filterCategory = (
           this.uniqueProblemCount++;
         }
     }
+
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
     for(var j = 0;j<this.problemArray.length;j++){
       this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;

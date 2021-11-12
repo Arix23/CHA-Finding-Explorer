@@ -33,6 +33,12 @@ import "ojs/ojbutton";
 
 class TargetDetailsViewModel {
 
+
+  //PROBLEMS FILTER
+
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  problemFilters = new Map();
+  readonly selectProblemValue = ko.observableArray(["CH"]);
   //Table
 
 
@@ -45,6 +51,17 @@ class TargetDetailsViewModel {
   confirmation: Message[];
 
   // Select Target Category
+
+  private readonly category = [
+    { value: "Database", label: "Database" },
+    { value: "Instance", label: "Instance" },
+    { value: "OnHost", label: "OnHost" },
+    { value: "Cluster", label: "Cluster" },
+  ];
+
+  readonly categoryDP = new ArrayDataProvider(this.category, {
+    keyAttributes: "value",
+  });
 
   setDB = new Set();
   setIns = new Set();
@@ -71,16 +88,6 @@ class TargetDetailsViewModel {
 
   //readonly selectionDP = ko.observable("none");
 
-  private readonly category = [
-    { value: "Database", label: "Database" },
-    { value: "Instance", label: "Instance" },
-    { value: "OnHost", label: "OnHost" },
-    { value: "Cluster", label: "Cluster" },
-  ];
-
-  readonly categoryDP = new ArrayDataProvider(this.category, {
-    keyAttributes: "value",
-  });
   selectType2 = (
     event: ojSelectSingle.valueChanged<string, Record<string, string>>
   ) => {
@@ -208,8 +215,16 @@ class TargetDetailsViewModel {
 
 
   public fillData() {
-
+    let problemFilterArray: Array<{value:string,label:string}> = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      
+      if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[j].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[j].name,label:jsonFilex.jsonFile[j].name});
+       
+      }
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -256,6 +271,8 @@ class TargetDetailsViewModel {
       //   console.log(value);
       // });
     }
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
   }
 
@@ -287,6 +304,7 @@ class TargetDetailsViewModel {
   }
 
   constructor() {
+    
     this.addTarget = ko.observable(true);
     this.fillData();
     // let tempSelect = new ArrayDataProvider(Array.from(this.setAll.values));
