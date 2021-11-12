@@ -26,7 +26,6 @@ import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 import jsonFilex from "../appController";
 import { ojButtonEventMap } from "@oracle/oraclejet/dist/types/ojbutton";
-import {ojSelectMany} from "ojs/ojselectcombobox"
 
 //Button
 import "ojs/ojbutton";
@@ -34,65 +33,12 @@ import "ojs/ojbutton";
 
 class TargetDetailsViewModel {
 
-  applyProblemFilters = (
-    event: ojSelectMany.valueChanged<string,Record<string,string>>,
-  ) => {
-    this.problemCount = new Map();
-    this.selectedProblemsFiltersMap = new Set();
-    
-    let i = 0;
-    this.selectProblemValue(event.detail.value);
-    for(i;i<this.selectProblemValue().length;i++){
-      this.selectedProblemsFiltersMap.add(this.selectProblemValue()[i]);
-    }
 
-    this.tableData = [];
-    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-
-      if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }
-
-    }
-    let temTableData = new ArrayDataProvider(this.tableData);
-    this.selectionTableDP(temTableData);
-
-
-    //SECOND TABLE
-    this.tableData2 = [];
-    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
-        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }
-
-    }
-    let temTableData2 = new ArrayDataProvider(this.tableData2);
-    this.selectionTableDP2(temTableData2);
-    
-
-    
-  }
   //PROBLEMS FILTER
 
   problemsDataProvider : ArrayDataProvider<any,any>;
   problemFilters = new Map();
-  readonly selectProblemValue = ko.observableArray([]);
+  readonly selectProblemValue = ko.observableArray(["CH"]);
   //Table
 
 
@@ -139,9 +85,6 @@ class TargetDetailsViewModel {
 
   selectedType = "";
   selectedType2 = "";
-
-  selectedTarget = "";
-  selectedTarget2 = "";
 
   //readonly selectionDP = ko.observable("none");
 
@@ -224,17 +167,16 @@ class TargetDetailsViewModel {
     event: ojSelectSingle.valueChanged<string, Record<string, string>>
   ) => {
     this.tableData = [];
-    this.selectedTarget = event.detail.value;
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === event.detail.value && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
@@ -250,17 +192,16 @@ class TargetDetailsViewModel {
     event: ojSelectSingle.valueChanged<string, Record<string, string>>
   ) => {
     this.tableData2 = [];
-    this.selectedTarget2 = event.detail.value;
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
@@ -337,7 +278,7 @@ class TargetDetailsViewModel {
 
 
 
-  selectedProblemsFiltersMap = new Set();
+
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
   numberOfMonths: number;

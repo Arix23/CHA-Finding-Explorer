@@ -8,7 +8,6 @@ import Message = require("ojs/ojmessaging");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
-import { ojSelectMany } from "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
 import "ojs/ojchart";
 import "ojs/ojtoolbar";
@@ -24,13 +23,11 @@ import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
-import { ojSelect } from "ojs/ojselectcombobox";
-
 
 //targetfilters
+import { ojSelectMany } from "ojs/ojselectcombobox";
 import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 type TreeNode = { value: string; children: Array<{ value: String }> };
-
 
 class ProblemFrequencyViewModel {
 
@@ -56,6 +53,20 @@ class ProblemFrequencyViewModel {
 
   resultCount;
 
+
+  targetVC = (
+    event: ojSelectMany.valueChanged<string, Record<string, string>>
+  ) => {
+
+    if (!this.filterMap.has("Target")) {
+      this.filterMap.set("Target", event.detail.value);
+    } else {
+      this.filterMap.delete("Target");
+      this.filterMap.set("Target", event.detail.value);
+    }
+    //console.log("Filter map " + this.filterMap.get("Target"));
+    // this.graphTimeProblem();
+  };
 
 
   public addTDPInfo() {
@@ -122,123 +133,20 @@ class ProblemFrequencyViewModel {
 
   }
 
+  readonly selectProblemValue = ko.observableArray(["CH"]);
 
+  // Problems
+  private readonly browsers = [
+    { value: "Private Network Trafficer", label: "Private Network Traffic" },
+    { value: "Firefox", label: "Firefox" },
+    { value: "Chrome", label: "Chrome" },
+    { value: "Opera", label: "Opera" },
+    { value: "Safari", label: "Safari" },
+  ];
+  readonly browsersDP = new ArrayDataProvider(this.browsers, {
+    keyAttributes: "value",
+  });
 
-  applyProblemFilters = (
-    event: ojSelectMany.valueChanged<string,Record<string,string>>,
-  ) => {
-    this.problemCount = new Map();
-    this.selectedProblemsFiltersMap = new Map();
-    
-    let i = 0;
-    this.selectProblemValue(event.detail.value);
-    for(i;i<this.selectProblemValue().length;i++){
-      this.selectedProblemsFiltersMap.set(this.selectProblemValue()[i],1);
-    }
-    
-
-    for (let item in jsonFilex.jsonFile){
-      if (this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
-        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
-        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
-          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
-        let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
-        this.problemCount.set(jsonFilex.jsonFile[item].name, count);
-      }
-      else {
-        if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
-          this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
-        } else{
-          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
-            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
-            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
-              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
-          ){
-            this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
-          } else{
-            //Do Nothing
-          }
-        }
-        
-        
-      }
-
-
-
-      
-    }
-    let problemArray: Array<{name: string, count: number, group: string}> = [];
-    i = 0;
-    this.problemCount.forEach((value: number, key: string) => {
-      problemArray.push({ name: key, count: value , group: "A"});
-      i = i + 1;
-    });
-
-    let jsonCount = JSON.stringify(problemArray);
-    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-    this.dataObservableProvider(this.dataProvider);
-  }
-
-  applyTargetFilters = (
-    event: ojSelectMany.valueChanged<string,Record<string,string>>,
-  ) => {
-    this.problemCount = new Map();
-    this.selectedTargetsFilterMap = new Map();
-    
-    let i = 0;
-    this.selectTargetValue(event.detail.value);
-    for(i;i<this.selectTargetValue().length;i++){
-      this.selectedTargetsFilterMap.set(this.selectTargetValue()[i],1);
-    }
-    
-
-    for (let item in jsonFilex.jsonFile){
-      if (this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
-        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
-        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
-          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
-        let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
-        this.problemCount.set(jsonFilex.jsonFile[item].name, count);
-      }
-      else {
-        if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
-          this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
-        } else{
-          if((this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) || this.selectedProblemsFiltersMap.size==0) && (this.selectedTargetsFilterMap.has(
-            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
-            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
-              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
-          ){
-            this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
-          } else{
-            //Do Nothing
-          }
-        }
-        
-        
-      }
-
-
-
-      
-    }
-    let problemArray: Array<{name: string, count: number, group: string}> = [];
-    i = 0;
-    this.problemCount.forEach((value: number, key: string) => {
-      problemArray.push({ name: key, count: value , group: "A"});
-      i = i + 1;
-    });
-
-    let jsonCount = JSON.stringify(problemArray);
-    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-    this.dataObservableProvider(this.dataProvider);
-  }
-
-  readonly selectProblemValue = ko.observableArray();
-  readonly selectTargetValue = ko.observableArray();
-  
-
-  dataObservableProvider : ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
     error: Message[];
@@ -254,10 +162,6 @@ class ProblemFrequencyViewModel {
 
   readonly orientationValue = ko.observable("vertical");
   problemCount = new Map();
-
-  selectedProblemsFiltersMap = new Map();
-  selectedTargetsFilterMap = new Map();
-
   dataProvider : ArrayDataProvider<any, any>;
 
   problemFilters = new Map();
@@ -314,7 +218,6 @@ class ProblemFrequencyViewModel {
     let jsonCount = JSON.stringify(problemArray);
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-    this.dataObservableProvider(this.dataProvider);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
 

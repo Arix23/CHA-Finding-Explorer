@@ -8,7 +8,7 @@
   <!-- barra de filtros -->
   <div class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
 
-    <oj-button id="restart"  class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
+    <oj-button id="restart" class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
       <span slot="startIcon" class="oj-ux-ico-refresh"></span>
     </oj-button>
 
@@ -22,13 +22,13 @@
     </div>
 
     <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many  label-hint="Problems" on-value-changed="[[applyProblemFilters]]"options = "{{problemsDataProvider}}" value ="{{selectProblemValue}}" label-edge="inside">
+      <oj-select-many  label-hint="Problems" options = "{{problemsDataProvider}}" value ="{{selectProblemValue}}" label-edge="inside">
       </oj-select-many>
 
     </div>
 
     <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1 on-value-changed="[[applyTargetFilters]]">         
+      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1 on-value-changed="[[targetVC]]">         
       </oj-select-many>
 
     </div>
@@ -42,7 +42,7 @@
         id="barChart"
         type="bar"
         orientation="[[orientationValue]]"
-        data="[[dataObservableProvider()]]"
+        data="[[dataProvider]]"
         animation-on-display="auto"
         animation-on-data-change="auto"
         hover-behavior="dim">
