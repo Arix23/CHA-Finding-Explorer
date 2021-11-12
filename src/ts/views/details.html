@@ -24,14 +24,14 @@
 
     <div
       class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many  label-hint="Problems" options = "{{problemsDataProvider}}" value ="{{selectProblemValue}}" label-edge="inside">
+      <oj-select-many  label-hint="Problems" options = "{{problemsDataProvider}}"on-value-changed="[[applyProblemFilters]]"value ="{{selectProblemValue}}" label-edge="inside">
       </oj-select-many>
 
     </div>
 
     <div
       class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1 on-value-changed="[[targetVC]]">         
+      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1 on-value-changed="[[applyTargetFilters]]">         
       </oj-select-many>
 
     </div>
@@ -39,10 +39,10 @@
   <h1>Graphs</h1>
   <div>
     <div id='chart-container'>
-      <oj-chart id="barChart"
+      <oj-chart id="barChart"s
               type="bar"
               orientation="[[orientationValue]]"
-              data="[[dataProvider]]"
+              data="[[dataObservableProvider()]]"
               animation-on-display="auto"
               animation-on-data-change="auto"
               hover-behavior="dim">
@@ -63,7 +63,7 @@
     <oj-chart id="barChart"
             type="bar"
             orientation="[[orientationValue]]"
-            data="[[dataProvider2]]"
+            data="[[dataObservableProvider2()]]"
             animation-on-display="auto"
             animation-on-data-change="auto"
             hover-behavior="dim">
@@ -84,7 +84,7 @@
     <oj-chart id="barChart"
             type="bar"
             orientation="[[orientationValue]]"
-            data="[[dataProvider3]]"
+            data="[[dataObservableProvider3()]]"
             animation-on-display="auto"
             animation-on-data-change="auto"
             hover-behavior="dim">
