@@ -134,17 +134,6 @@ class DetailsViewModel {
 
 
 
-  // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;

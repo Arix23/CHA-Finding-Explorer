@@ -28,6 +28,47 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ConcurrentProblemCountViewModel {
 
+
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    let problemArray: Array<{hour: string, count: number, series: string}> = [];
+    let problemMap = new Map();
+    this.hourCount = new Map();
+    this.selectProblemValue(event.detail.value);
+
+    for(let i = 0;i<this.selectProblemValue().length;i++){
+      problemMap.set(this.selectProblemValue()[i],1);
+    }
+
+    for (let item in jsonFilex.jsonFile){
+      
+      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)){
+        let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
+        this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
+      }
+      else {
+        if(problemMap.size===0){
+          this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+        } else{
+          if(problemMap.has(jsonFilex.jsonFile[item].name)){
+            this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+          }
+        }
+        
+      }
+    }
+    let i = 0;
+    this.hourCount.forEach((value: number, key: string) => {
+      problemArray.push({ hour: key, count: value, series: "Problems"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataObservableProvider(this.dataProvider);
+  }
+
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -131,18 +172,7 @@ class ConcurrentProblemCountViewModel {
   }
 
 
-  // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
-  readonly selectProblemValue = ko.observableArray(["CH"]);
+  readonly selectProblemValue = ko.observableArray([]);
 
 
   // Date picker
@@ -162,6 +192,7 @@ class ConcurrentProblemCountViewModel {
     hourCount = new Map();
     problemFilters = new Map();
     dataProvider : ArrayDataProvider<any, any>;
+    dataObservableProvider: ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
     problemsDataProvider : ArrayDataProvider<any,any>;
 
   constructor() {
@@ -211,7 +242,7 @@ class ConcurrentProblemCountViewModel {
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
-    
+    this.dataObservableProvider(this.dataProvider);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
   }
