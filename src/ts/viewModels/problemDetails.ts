@@ -33,6 +33,43 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ProblemDetailsViewModel {
 
+
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.selectProblemValue(event.detail.value);
+    
+    let IDSet = new Set();
+
+
+    if(this.selectProblemValue().length>0){
+      for(let i =0;i<this.selectProblemValue().length;i++){
+        IDSet.add(this.problemNameToID.get(this.selectProblemValue()[i]));
+        let tmpArray : Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
+          action: string, mainTarget:string, mainTime: string, 
+          allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+    
+        for(let i=0;i<this.problemArray.length;i++){
+          if(IDSet.has(i)){
+            tmpArray.push(this.problemArray[i]);
+          }
+        }
+    
+        let jsonCount = JSON.stringify(tmpArray);
+        this.lengthProblem = tmpArray.length;
+        let tmpDataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' })
+        this.dataProvider(tmpDataProvider);
+      }
+    } else{
+
+      let jsonCount = JSON.stringify(this.problemArray);
+      this.lengthProblem = this.problemArray.length;
+      let tmpDataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' })
+      this.dataProvider(tmpDataProvider);
+    }
+    
+  }
+
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -262,7 +299,7 @@ filterCategory = (
 
   problemsDataProvider : ArrayDataProvider<any,any>;
   problemFilters = new Map();
-  readonly selectProblemValue = ko.observableArray(["CH"]);
+  readonly selectProblemValue = ko.observableArray([]);
   
 
 
