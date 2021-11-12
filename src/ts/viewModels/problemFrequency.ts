@@ -8,6 +8,7 @@ import Message = require("ojs/ojmessaging");
 import ArrayDataProvider = require("ojs/ojarraydataprovider");
 import "ojs/ojknockout";
 import "ojs/ojselectcombobox";
+import { ojSelectMany } from "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
 import "ojs/ojchart";
 import "ojs/ojtoolbar";
@@ -23,6 +24,7 @@ import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
+import { ojSelect } from "ojs/ojselectcombobox";
 
 
 
@@ -30,15 +32,18 @@ import "ojs/ojtimezonedata";
 class ProblemFrequencyViewModel {
 
 
-  applyFilters = (
-    event: Event,
-    bindingContext: ko.BindingContext
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
     this.problemCount = new Map();
+    this.selectedProblemsFiltersMap = new Map();
+    
     let i = 0;
+    this.selectProblemValue(event.detail.value);
     for(i;i<this.selectProblemValue().length;i++){
       this.selectedProblemsFiltersMap.set(this.selectProblemValue()[i],1);
     }
+    
 
     for (let item in jsonFilex.jsonFile){
       if (this.problemCount.has(jsonFilex.jsonFile[item].name)){
@@ -46,11 +51,16 @@ class ProblemFrequencyViewModel {
         this.problemCount.set(jsonFilex.jsonFile[item].name, count);
       }
       else {
-        if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name || this.selectedProblemsFiltersMap.size==0)){
+        if(this.selectedProblemsFiltersMap.size==0){
           this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
         } else{
-          //Do Nothing
+          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name)){
+            this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+          } else{
+            //Do Nothing
+          }
         }
+        
         
       }
 
@@ -68,7 +78,6 @@ class ProblemFrequencyViewModel {
     let jsonCount = JSON.stringify(problemArray);
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
     this.dataObservableProvider(this.dataProvider);
-     
   }
   readonly selectProblemValue = ko.observableArray();
   
