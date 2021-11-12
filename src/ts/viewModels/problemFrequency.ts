@@ -138,17 +138,7 @@ class ProblemFrequencyViewModel {
 
 
 
-  // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
+
 
 
 
@@ -166,15 +156,22 @@ class ProblemFrequencyViewModel {
     
 
     for (let item in jsonFilex.jsonFile){
-      if (this.problemCount.has(jsonFilex.jsonFile[item].name)){
+      if (this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
         let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
         this.problemCount.set(jsonFilex.jsonFile[item].name, count);
       }
       else {
-        if(this.selectedProblemsFiltersMap.size==0){
+        if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
           this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
         } else{
-          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name)){
+          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
+          ){
             this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
           } else{
             //Do Nothing
@@ -220,6 +217,7 @@ class ProblemFrequencyViewModel {
   problemCount = new Map();
 
   selectedProblemsFiltersMap = new Map();
+  selectedTargetsFilterMap = new Map();
 
   dataProvider : ArrayDataProvider<any, any>;
 

@@ -33,25 +33,31 @@ class ConcurrentProblemCountViewModel {
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
     let problemArray: Array<{hour: string, count: number, series: string}> = [];
-    let problemMap = new Map();
+    this.problemFilterMap = new Map();
     this.hourCount = new Map();
     this.selectProblemValue(event.detail.value);
 
     for(let i = 0;i<this.selectProblemValue().length;i++){
-      problemMap.set(this.selectProblemValue()[i],1);
+      this.problemFilterMap.set(this.selectProblemValue()[i],1);
     }
 
     for (let item in jsonFilex.jsonFile){
       
-      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)){
+      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)&& (this.problemFilterMap.has(jsonFilex.jsonFile[item].name)||this.problemFilterMap.size==0)&&(this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
         let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
         this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
       }
       else {
-        if(problemMap.size===0){
+        if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
           this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
         } else{
-          if(problemMap.has(jsonFilex.jsonFile[item].name)){
+          if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
             this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
           }
         }
@@ -187,6 +193,9 @@ class ConcurrentProblemCountViewModel {
     largeScreenMatch: MediaQueryList;
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
+
+    problemFilterMap = new Map();
+    selectedTargetsFilterMap = new Map();
 
     readonly orientationValue = ko.observable("vertical");
     hourCount = new Map();

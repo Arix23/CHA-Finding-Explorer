@@ -26,6 +26,7 @@ import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 import jsonFilex from "../appController";
 import { ojButtonEventMap } from "@oracle/oraclejet/dist/types/ojbutton";
+import {ojSelectMany} from "ojs/ojselectcombobox"
 
 //Button
 import "ojs/ojbutton";
@@ -33,12 +34,26 @@ import "ojs/ojbutton";
 
 class TargetDetailsViewModel {
 
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.problemCount = new Map();
+    let selectedProblemsFiltersMap = new Set();
+    
+    let i = 0;
+    this.selectProblemValue(event.detail.value);
+    for(i;i<this.selectProblemValue().length;i++){
+      selectedProblemsFiltersMap.add(this.selectProblemValue()[i]);
+    }
+    
 
+    
+  }
   //PROBLEMS FILTER
 
   problemsDataProvider : ArrayDataProvider<any,any>;
   problemFilters = new Map();
-  readonly selectProblemValue = ko.observableArray(["CH"]);
+  readonly selectProblemValue = ko.observableArray([]);
   //Table
 
 
