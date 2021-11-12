@@ -319,7 +319,19 @@ class DetailsViewModel {
 
 
   public fillData() {
+    let problemFilterArray: Array<{value:string,label:string}> = [];
+    
+
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //llenar problemas 
+      if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[j].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[j].name,label:jsonFilex.jsonFile[j].name});
+       
+      }
+
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -362,6 +374,7 @@ class DetailsViewModel {
         }
       }
 
+      
 
     }
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
@@ -369,13 +382,25 @@ class DetailsViewModel {
     this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
     this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
 
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
+
 
   }
+  
+
 
 
 
   problemFilterMap = new Map();
   problemTargetMap = new Map();
+
+
+ // Problems
+  //PROBLEMS FILTER
+
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  problemFilters = new Map();
 
 
   // Date picker
@@ -399,6 +424,7 @@ class DetailsViewModel {
   dataProvider: ArrayDataProvider<any, any>;
   dataProvider2: ArrayDataProvider<any, any>;
   dataProvider3: ArrayDataProvider<any, any>;
+
   dataObservableProvider : ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   dataObservableProvider2 : ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   dataObservableProvider3 : ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
@@ -409,9 +435,12 @@ class DetailsViewModel {
 
 
 
+
   constructor() {
     this.fillData();
     this.addTDPInfo();
+
+   
   }
 
   /**
@@ -425,6 +454,7 @@ class DetailsViewModel {
 
   graphTimeProblem() {
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
+
     let problemFilterArray: Array<{value:string,label:string}> = [];
     let targetArray: Array<{ hour: string, count: number, series: string }> = [];
     let dbArray: Array<{ hour: string, count: number, series: string }> = [];
@@ -438,6 +468,9 @@ class DetailsViewModel {
        
       }
       if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+
+
+
         if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
           let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
 
@@ -489,15 +522,34 @@ class DetailsViewModel {
       });
     });
 
-    let jsonFilterProblems = JSON.stringify(problemFilterArray);
-
 
     //console.log(problemArray)
     let jsonCount = JSON.stringify(problemArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+
     this.dataObservableProvider(this.dataProvider);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
+
+
+    document.getElementById("chart-container");
+
+
+  }
+
+  connected(): void {
+    AccUtils.announce("Details page loaded.");
+    document.title = "Details";
+
+    //console.log(jsonFilex.jsonFile[0]);
+    //console.log(jsonFilex.jsonFile[0].id);
+    // implement further logic if needed
+
+    this.graphTimeProblem();
+
+      }
+    }
+
 
 
     //SECOND GRAPH FINISH

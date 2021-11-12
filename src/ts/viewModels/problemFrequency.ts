@@ -123,6 +123,7 @@ class ProblemFrequencyViewModel {
   }
 
 
+
   applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {

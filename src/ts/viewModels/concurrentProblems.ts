@@ -29,6 +29,7 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 class ConcurrentProblemCountViewModel {
 
 
+
   applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
@@ -122,6 +123,8 @@ class ConcurrentProblemCountViewModel {
     this.dataObservableProvider(this.dataProvider);
   }
 
+
+
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -210,8 +213,13 @@ class ConcurrentProblemCountViewModel {
   }
 
 
+
   readonly selectProblemValue = ko.observableArray([]);
   readonly selectTargetValue = ko.observableArray([]);
+
+
+
+
 
 
   // Date picker
