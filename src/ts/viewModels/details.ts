@@ -23,17 +23,6 @@ import "ojs/ojtimezonedata";
 
 class DetailsViewModel {
 
-  // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -56,8 +45,9 @@ class DetailsViewModel {
   dataProvider: ArrayDataProvider<any, any>;
   dataProvider2: ArrayDataProvider<any, any>;
   dataProvider3: ArrayDataProvider<any, any>;
-
-
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  readonly selectProblemValue = ko.observableArray(["CH"]);
+  problemFilters = new Map();
 
 
 
@@ -82,10 +72,17 @@ class DetailsViewModel {
     // implement further logic if needed
 
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
-
+    let problemFilterArray: Array<{value:string,label:string}> = [];
 
 
     for (let item in jsonFilex.jsonFile) {
+      if(this.problemFilters.has(jsonFilex.jsonFile[item].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[item].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[item].name,label:jsonFilex.jsonFile[item].name});
+       
+      }
       if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
         if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
           let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
@@ -110,12 +107,14 @@ class DetailsViewModel {
       });
     });
 
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+
 
     //console.log(problemArray)
     let jsonCount = JSON.stringify(problemArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
-
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
 
 

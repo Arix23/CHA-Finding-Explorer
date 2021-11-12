@@ -27,7 +27,7 @@ import "ojs/ojtimezonedata";
 
 
 class ProblemFrequencyViewModel {
-
+  readonly selectProblemValue = ko.observableArray(["CH"]);
 
   // Problems
   private readonly browsers = [
@@ -57,6 +57,9 @@ class ProblemFrequencyViewModel {
   readonly orientationValue = ko.observable("vertical");
   problemCount = new Map();
   dataProvider : ArrayDataProvider<any, any>;
+
+  problemFilters = new Map();
+  problemsDataProvider : ArrayDataProvider<any,any>;
   /*dataProvider = new ArrayDataProvider(this.problemCount, {
     keyAttributes: "key",
   });*/
@@ -79,7 +82,15 @@ class ProblemFrequencyViewModel {
     // creates a map {problem, count}
 
     let problemArray: Array<{name: string, count: number, group: string}> = [];
+    let problemFilterArray: Array<{value:string,label:string}> = [];
     for (let item in jsonFilex.jsonFile){
+      if(this.problemFilters.has(jsonFilex.jsonFile[item].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[item].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[item].name,label:jsonFilex.jsonFile[item].name});
+       
+      }
       if (this.problemCount.has(jsonFilex.jsonFile[item].name)){
         let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
         this.problemCount.set(jsonFilex.jsonFile[item].name, count);
@@ -96,9 +107,9 @@ class ProblemFrequencyViewModel {
     });
 
     let jsonCount = JSON.stringify(problemArray);
-
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
-
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
 
   }

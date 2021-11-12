@@ -79,7 +79,6 @@ class RootViewModel {
         { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
         { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
         { path: 'targetDetails', detail: { label: 'Target Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-dashboard-20' } },
-        { path: 'filters', detail: { label: 'Filters',disabled:this.disabledNav(), iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
     ];
     // router setup
     const router = new CoreRouter(navData, {
@@ -145,7 +144,6 @@ class RootViewModel {
       { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
       { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
       { path: 'targetDetails', detail: { label: 'Target Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-dashboard-20' } },
-      { path: 'filters', detail: { label: 'Filters',disabled:this.disabledNav(), iconClass: 'oj-icon-color-info oj-ux-ico-filter-alt' } }
       
   ];
   this.navDataProvider = new ArrayDataProvider(navData.slice(1), {keyAttributes: "path"});
