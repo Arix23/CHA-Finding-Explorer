@@ -78,7 +78,19 @@ class DetailsViewModel {
 
 
   public fillData() {
+    let problemFilterArray: Array<{value:string,label:string}> = [];
+    
+
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //llenar problemas 
+      if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[j].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[j].name,label:jsonFilex.jsonFile[j].name});
+       
+      }
+
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -121,6 +133,7 @@ class DetailsViewModel {
         }
       }
 
+      
 
     }
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
@@ -128,23 +141,21 @@ class DetailsViewModel {
     this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
     this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
 
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
+
 
   }
+  
 
 
 
+ // Problems
+  //PROBLEMS FILTER
 
-  // Problems
-  private readonly browsers = [
-    { value: "Private Network Trafficer", label: "Private Network Traffic" },
-    { value: "Firefox", label: "Firefox" },
-    { value: "Chrome", label: "Chrome" },
-    { value: "Opera", label: "Opera" },
-    { value: "Safari", label: "Safari" },
-  ];
-  readonly browsersDP = new ArrayDataProvider(this.browsers, {
-    keyAttributes: "value",
-  });
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  problemFilters = new Map();
+  readonly selectProblemValue = ko.observableArray(["CH"]);
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -175,6 +186,8 @@ class DetailsViewModel {
   constructor() {
     this.fillData();
     this.addTDPInfo();
+
+   
   }
 
   /**
