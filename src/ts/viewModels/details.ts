@@ -10,7 +10,7 @@ import "ojs/ojselectcombobox";
 import "ojs/ojformlayout";
 import "ojs/ojchart";
 import "ojs/ojtoolbar";
-import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
+
 
 
 import * as Bootstrap from "ojs/ojbootstrap";
@@ -22,8 +22,16 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+//targetfilters
+import { ojSelectMany } from "ojs/ojselectcombobox";
+import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 type TreeNode = { value: string; children: Array<{ value: String }> };
+
 class DetailsViewModel {
+
+  //FILTROS: HASHMAP → key String, value Array 
+  // ejemplo - key: "taget", value: {diara3, diarac4}
+  filterMap = new Map();
 
   //Filtros → Targets
   problemsDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
@@ -33,16 +41,31 @@ class DetailsViewModel {
   setHost = new Set();
   setClust = new Set();
   setAll = new Set();
-  //intento
+  //arreglo
   arrayDB: Array<{ value: string }> = [];
   arrayInstance: Array<{ value: string }> = [];
   arrayHost: Array<{ value: string }> = [];
   arrayCluster: Array<{ value: string }> = [];
 
   arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
+
   resultCount;
 
-  //TreeNode treeInfo = new this.TreeNode();
+
+  targetVC = (
+    event: ojSelectMany.valueChanged<string, Record<string, string>>
+  ) => {
+
+    if (!this.filterMap.has("Target")) {
+      this.filterMap.set("Target", event.detail.value);
+    } else {
+      this.filterMap.delete("Target");
+      this.filterMap.set("Target", event.detail.value);
+    }
+    //console.log("Filter map " + this.filterMap.get("Target"));
+    // this.graphTimeProblem();
+  };
+
 
   public addTDPInfo() {
     this.targetFilterDP = new ArrayTreeDataProvider(this.arrayInfo, {
@@ -53,7 +76,8 @@ class DetailsViewModel {
     //console.log("lista de datos: "+ this.arrayInfo[2].value);
   }
 
-  public fillDataIntento() {
+
+  public fillData() {
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
@@ -97,7 +121,7 @@ class DetailsViewModel {
         }
       }
 
-      
+
     }
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
     this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
@@ -149,7 +173,7 @@ class DetailsViewModel {
 
 
   constructor() {
-    this.fillDataIntento();
+    this.fillData();
     this.addTDPInfo();
   }
 
@@ -161,35 +185,31 @@ class DetailsViewModel {
    * and inserted into the DOM and after the View is reconnected
    * after being disconnected.
    */
-  connected(): void {
-    AccUtils.announce("Details page loaded.");
-    document.title = "Details";
 
-    //console.log(jsonFilex.jsonFile[0]);
-    //console.log(jsonFilex.jsonFile[0].id);
-    // implement further logic if needed
-
+  graphTimeProblem() {
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
 
-
-
+    //en este for agregar los ifs para agregar info
     for (let item in jsonFilex.jsonFile) {
-      if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+      if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) { //checa si esta el t1
         if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
           let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
+
           this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, count);
+
         }
         else {
           this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, 1);
         }
       }
-      else {
+      else { //crea t1
         let nameMap = new Map();
         nameMap.set(jsonFilex.jsonFile[item].name, 1);
         this.hourMap.set(jsonFilex.jsonFile[item].t1, nameMap);
+
       }
     }
-    //console.log(this.hourMap);
+    // console.log(this.hourMap);
 
 
     this.hourMap.forEach((map: Map<any, any>, key: string) => {
@@ -207,11 +227,17 @@ class DetailsViewModel {
     document.getElementById("chart-container");
 
 
+  }
 
+  connected(): void {
+    AccUtils.announce("Details page loaded.");
+    document.title = "Details";
 
+    //console.log(jsonFilex.jsonFile[0]);
+    //console.log(jsonFilex.jsonFile[0].id);
+    // implement further logic if needed
 
-
-
+    this.graphTimeProblem();
 
     //Target
     let targetArray: Array<{ hour: string, count: number, series: string }> = [];
