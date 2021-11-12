@@ -292,13 +292,10 @@ filterCategory = (
 
 
   constructor() {
-<<<<<<< HEAD
 
     this.fillData();
     this.addTDPInfo();
-=======
     let problemFilterArray: Array<{value:string,label:string}> = [];
->>>>>>> main
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
 

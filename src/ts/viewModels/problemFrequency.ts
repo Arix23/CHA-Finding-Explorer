@@ -27,7 +27,6 @@ import "ojs/ojtimezonedata";
 import { ojSelect } from "ojs/ojselectcombobox";
 
 //targetfilters
-import { ojSelectMany } from "ojs/ojselectcombobox";
 import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 type TreeNode = { value: string; children: Array<{ value: String }> };
 
