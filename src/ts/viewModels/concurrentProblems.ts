@@ -21,10 +21,132 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+//targetfilters
+import { ojSelectMany } from "ojs/ojselectcombobox";
+import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
+type TreeNode = { value: string; children: Array<{ value: String }> };
+
 class ConcurrentProblemCountViewModel {
 
+<<<<<<< HEAD
+  //FILTROS: HASHMAP → key String, value Array 
+  // ejemplo - key: "taget", value: {diara3, diarac4}
+  filterMap = new Map();
+
+  //Filtros → Targets
+  problemsDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  targetFilterDP: ArrayTreeDataProvider<string, TreeNode>;
+  setDB = new Set();
+  setIns = new Set();
+  setHost = new Set();
+  setClust = new Set();
+  setAll = new Set();
+  //arreglo
+  arrayDB: Array<{ value: string }> = [];
+  arrayInstance: Array<{ value: string }> = [];
+  arrayHost: Array<{ value: string }> = [];
+  arrayCluster: Array<{ value: string }> = [];
+
+  arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
+
+  resultCount;
+
+
+  targetVC = (
+    event: ojSelectMany.valueChanged<string, Record<string, string>>
+  ) => {
+
+    if (!this.filterMap.has("Target")) {
+      this.filterMap.set("Target", event.detail.value);
+    } else {
+      this.filterMap.delete("Target");
+      this.filterMap.set("Target", event.detail.value);
+    }
+    //console.log("Filter map " + this.filterMap.get("Target"));
+    // this.graphTimeProblem();
+  };
+
+
+  public addTDPInfo() {
+    this.targetFilterDP = new ArrayTreeDataProvider(this.arrayInfo, {
+      keyAttributes: "value",
+      keyAttributesScope: "sibling",
+    });
+    this.resultCount = ko.observable(this.arrayInfo.length);
+    //console.log("lista de datos: "+ this.arrayInfo[2].value);
+  }
+
+
+  public fillData() {
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //DBs
+      if (jsonFilex.jsonFile[j].db != null) {
+        if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
+          this.setDB.add(jsonFilex.jsonFile[j].db);
+          this.arrayDB.push({ value: jsonFilex.jsonFile[j].db });
+
+        }
+      }
+
+      //Instances
+      if (jsonFilex.jsonFile[j].instance != null) {
+        if (!this.setIns.has(jsonFilex.jsonFile[j].instance)) {
+          this.setIns.add(jsonFilex.jsonFile[j].instance);
+          this.arrayInstance.push({ value: jsonFilex.jsonFile[j].instance });
+
+        }
+      }
+
+      //Host
+      if (jsonFilex.jsonFile[j].host != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].host)) {
+          this.setHost.add(jsonFilex.jsonFile[j].host);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].host });
+        }
+      }
+
+      //OnHost
+      if (jsonFilex.jsonFile[j].onhost != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].onhost)) {
+          this.setHost.add(jsonFilex.jsonFile[j].onhost);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].onhost });
+        }
+      }
+
+      //Cluster
+      if (jsonFilex.jsonFile[j].cluster != null) {
+        if (!this.setClust.has(jsonFilex.jsonFile[j].cluster)) {
+          this.setClust.add(jsonFilex.jsonFile[j].cluster);
+          this.arrayCluster.push({ value: jsonFilex.jsonFile[j].cluster });
+        }
+      }
+
+
+    }
+    this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
+    this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
+    this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
+    this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
+
+
+  }
+
+
+  // Problems
+  private readonly browsers = [
+    { value: "Private Network Trafficer", label: "Private Network Traffic" },
+    { value: "Firefox", label: "Firefox" },
+    { value: "Chrome", label: "Chrome" },
+    { value: "Opera", label: "Opera" },
+    { value: "Safari", label: "Safari" },
+  ];
+  readonly browsersDP = new ArrayDataProvider(this.browsers, {
+    keyAttributes: "value",
+  });
+=======
   readonly selectProblemValue = ko.observableArray(["CH"]);
 
+>>>>>>> main
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -46,6 +168,8 @@ class ConcurrentProblemCountViewModel {
     problemsDataProvider : ArrayDataProvider<any,any>;
 
   constructor() {
+    this.fillData();
+    this.addTDPInfo();
 
   }
 
