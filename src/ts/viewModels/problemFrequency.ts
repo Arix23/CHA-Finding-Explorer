@@ -29,8 +29,8 @@ import { ojSelectMany } from "ojs/ojselectcombobox";
 import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 type TreeNode = { value: string; children: Array<{ value: String }> };
 
+
 class ProblemFrequencyViewModel {
-<<<<<<< HEAD
 
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
@@ -134,9 +134,7 @@ class ProblemFrequencyViewModel {
 
   }
 
-=======
-  readonly selectProblemValue = ko.observableArray(["CH"]);
->>>>>>> main
+
 
   // Problems
   private readonly browsers = [
@@ -150,6 +148,52 @@ class ProblemFrequencyViewModel {
     keyAttributes: "value",
   });
 
+
+
+  applyFilters = (
+    event: Event,
+    bindingContext: ko.BindingContext
+  ) => {
+    this.problemCount = new Map();
+    let i = 0;
+    for(i;i<this.selectProblemValue().length;i++){
+      this.selectedProblemsFiltersMap.set(this.selectProblemValue()[i],1);
+    }
+
+    for (let item in jsonFilex.jsonFile){
+      if (this.problemCount.has(jsonFilex.jsonFile[item].name)){
+        let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
+        this.problemCount.set(jsonFilex.jsonFile[item].name, count);
+      }
+      else {
+        if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name || this.selectedProblemsFiltersMap.size==0)){
+          this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+        } else{
+          //Do Nothing
+        }
+        
+      }
+
+
+
+      
+    }
+    let problemArray: Array<{name: string, count: number, group: string}> = [];
+    i = 0;
+    this.problemCount.forEach((value: number, key: string) => {
+      problemArray.push({ name: key, count: value , group: "A"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    this.dataObservableProvider(this.dataProvider);
+     
+  }
+  readonly selectProblemValue = ko.observableArray();
+  
+
+  dataObservableProvider : ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
     error: Message[];
@@ -165,6 +209,9 @@ class ProblemFrequencyViewModel {
 
   readonly orientationValue = ko.observable("vertical");
   problemCount = new Map();
+
+  selectedProblemsFiltersMap = new Map();
+
   dataProvider : ArrayDataProvider<any, any>;
 
   problemFilters = new Map();
@@ -221,6 +268,7 @@ class ProblemFrequencyViewModel {
     let jsonCount = JSON.stringify(problemArray);
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    this.dataObservableProvider(this.dataProvider);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
 
