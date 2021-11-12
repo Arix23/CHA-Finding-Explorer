@@ -29,6 +29,7 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class DetailsViewModel {
 
+<<<<<<< HEAD
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -145,6 +146,8 @@ class DetailsViewModel {
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
+=======
+>>>>>>> main
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -167,8 +170,9 @@ class DetailsViewModel {
   dataProvider: ArrayDataProvider<any, any>;
   dataProvider2: ArrayDataProvider<any, any>;
   dataProvider3: ArrayDataProvider<any, any>;
-
-
+  problemsDataProvider : ArrayDataProvider<any,any>;
+  readonly selectProblemValue = ko.observableArray(["CH"]);
+  problemFilters = new Map();
 
 
 
@@ -188,10 +192,25 @@ class DetailsViewModel {
 
   graphTimeProblem() {
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
+<<<<<<< HEAD
 
     //en este for agregar los ifs para agregar info
     for (let item in jsonFilex.jsonFile) {
       if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) { //checa si esta el t1
+=======
+    let problemFilterArray: Array<{value:string,label:string}> = [];
+
+
+    for (let item in jsonFilex.jsonFile) {
+      if(this.problemFilters.has(jsonFilex.jsonFile[item].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[item].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[item].name,label:jsonFilex.jsonFile[item].name});
+       
+      }
+      if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+>>>>>>> main
         if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
           let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
 
@@ -218,12 +237,14 @@ class DetailsViewModel {
       });
     });
 
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
+
 
     //console.log(problemArray)
     let jsonCount = JSON.stringify(problemArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
-
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
 
 

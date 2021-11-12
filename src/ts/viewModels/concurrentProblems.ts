@@ -28,6 +28,7 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ConcurrentProblemCountViewModel {
 
+<<<<<<< HEAD
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -142,6 +143,10 @@ class ConcurrentProblemCountViewModel {
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
+=======
+  readonly selectProblemValue = ko.observableArray(["CH"]);
+
+>>>>>>> main
 
   // Date picker
   timeFullConverter: IntlDateTimeConverter;
@@ -158,7 +163,9 @@ class ConcurrentProblemCountViewModel {
 
     readonly orientationValue = ko.observable("vertical");
     hourCount = new Map();
+    problemFilters = new Map();
     dataProvider : ArrayDataProvider<any, any>;
+    problemsDataProvider : ArrayDataProvider<any,any>;
 
   constructor() {
     this.fillData();
@@ -179,7 +186,15 @@ class ConcurrentProblemCountViewModel {
     document.title = "Concurrent Problem Count";
     // implement further logic if needed
     let problemArray: Array<{hour: string, count: number, series: string}> = [];
+    let problemFilterArray: Array<{value:string,label:string}> = [];
     for (let item in jsonFilex.jsonFile){
+      if(this.problemFilters.has(jsonFilex.jsonFile[item].name)){
+        //Do nothing
+      } else{
+        this.problemFilters.set(jsonFilex.jsonFile[item].name,1)
+        problemFilterArray.push({value:jsonFilex.jsonFile[item].name,label:jsonFilex.jsonFile[item].name});
+       
+      }
       if (this.hourCount.has(jsonFilex.jsonFile[item].t1)){
         let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
         this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
@@ -196,9 +211,11 @@ class ConcurrentProblemCountViewModel {
     });
 
     let jsonCount = JSON.stringify(problemArray);
+    let jsonFilterProblems = JSON.stringify(problemFilterArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
-
+    
+    this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
   }
 
