@@ -28,6 +28,7 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ConcurrentProblemCountViewModel {
 
+
   //FILTROS: HASHMAP → key String, value Array 
   // ejemplo - key: "taget", value: {diara3, diarac4}
   filterMap = new Map();
@@ -142,7 +143,9 @@ class ConcurrentProblemCountViewModel {
   readonly browsersDP = new ArrayDataProvider(this.browsers, {
     keyAttributes: "value",
   });
+
   readonly selectProblemValue = ko.observableArray(["CH"]);
+
 
 
   // Date picker
