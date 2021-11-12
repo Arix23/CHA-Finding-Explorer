@@ -74,7 +74,7 @@ class RootViewModel {
     const navData = [
         { path: "", redirect: 'dashboard' },
         { path: 'dashboard', detail: { label: 'Dashboard',  iconClass: 'oj-ux-ico-dashboard' } },
-        { path: 'details', detail: { label: 'Details', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-file-view-details' } },
+        { path: 'details', detail: { label: 'Graphs', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-chart-range-bar ' } },
         { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-bar-chart' } },
         { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
         { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
@@ -140,7 +140,7 @@ class RootViewModel {
     const navData = [
       { path: "", redirect: 'dashboard' },
       { path: 'dashboard', detail: { label: 'Dashboard',  iconClass: 'oj-ux-ico-dashboard' } },
-      { path: 'details', detail: { label: 'Details', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-file-view-details' } },
+      { path: 'details', detail: { label: 'Graphs', disabled:this.disabledNav(),iconClass: 'oj-ux-ico-chart-range-bar ' } },
       { path: 'concurrentProblems', detail: { label: 'Concurrent Problem Count',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-bar-chart' } },
       { path: 'problemFrequency',  detail: { label: 'Problem Frequency',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-type-time-input' } },
       { path: 'problemDetails', detail: { label: 'Problem Details',disabled:this.disabledNav(), iconClass: 'oj-ux-ico-warning-s' } },
