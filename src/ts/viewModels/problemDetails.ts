@@ -93,19 +93,6 @@ class ProblemDetailsViewModel {
   resultCount;
 
 
-  targetVC = (
-    event: ojSelectMany.valueChanged<string, Record<string, string>>
-  ) => {
-
-    if (!this.filterMap.has("Target")) {
-      this.filterMap.set("Target", event.detail.value);
-    } else {
-      this.filterMap.delete("Target");
-      this.filterMap.set("Target", event.detail.value);
-    }
-    //console.log("Filter map " + this.filterMap.get("Target"));
-    // this.graphTimeProblem();
-  };
 
 
   public addTDPInfo() {
