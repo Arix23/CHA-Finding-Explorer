@@ -21,9 +21,197 @@ import "ojs/ojlabel";
 import "ojs/ojformlayout";
 import "ojs/ojtimezonedata";
 
+//targetfilters
+import { ojSelectMany } from "ojs/ojselectcombobox";
+import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
+type TreeNode = { value: string; children: Array<{ value: String }> };
+
 class ConcurrentProblemCountViewModel {
 
-  readonly selectProblemValue = ko.observableArray(["CH"]);
+
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    let problemArray: Array<{hour: string, count: number, series: string}> = [];
+    this.problemFilterMap = new Map();
+    this.hourCount = new Map();
+    this.selectProblemValue(event.detail.value);
+
+    for(let i = 0;i<this.selectProblemValue().length;i++){
+      this.problemFilterMap.set(this.selectProblemValue()[i],1);
+    }
+
+    for (let item in jsonFilex.jsonFile){
+      
+      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)&& (this.problemFilterMap.has(jsonFilex.jsonFile[item].name)||this.problemFilterMap.size==0)&&(this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+        let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
+        this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
+      }
+      else {
+        if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
+          this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+        } else{
+          if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+            this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+          }
+        }
+        
+      }
+    }
+    let i = 0;
+    this.hourCount.forEach((value: number, key: string) => {
+      problemArray.push({ hour: key, count: value, series: "Problems"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataObservableProvider(this.dataProvider);
+  }
+
+  //crear un observable array que está inicializado → selectproblemvalue
+  applyTargetFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    let problemArray: Array<{hour: string, count: number, series: string}> = [];
+    this.selectedTargetsFilterMap = new Map();
+    this.hourCount = new Map();
+    this.selectTargetValue(event.detail.value);
+
+    for(let i = 0;i<this.selectTargetValue().length;i++){
+      this.selectedTargetsFilterMap.set(this.selectTargetValue()[i],1);
+    }
+
+    for (let item in jsonFilex.jsonFile){
+      
+      if (this.hourCount.has(jsonFilex.jsonFile[item].t1)&& (this.problemFilterMap.has(jsonFilex.jsonFile[item].name)||this.problemFilterMap.size==0)&&(this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+        let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
+        this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
+      }
+      else {
+        if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
+          this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+        } else{
+          if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size===0) && (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+            this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
+          }
+        }
+        
+      }
+    }
+    let i = 0;
+    this.hourCount.forEach((value: number, key: string) => {
+      problemArray.push({ hour: key, count: value, series: "Problems"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataObservableProvider(this.dataProvider);
+  }
+
+  //FILTROS: HASHMAP → key String, value Array 
+  // ejemplo - key: "taget", value: {diara3, diarac4}
+  filterMap = new Map();
+
+  //Filtros → Targets
+  problemsDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  targetFilterDP: ArrayTreeDataProvider<string, TreeNode>;
+  setDB = new Set();
+  setIns = new Set();
+  setHost = new Set();
+  setClust = new Set();
+  setAll = new Set();
+  //arreglo
+  arrayDB: Array<{ value: string }> = [];
+  arrayInstance: Array<{ value: string }> = [];
+  arrayHost: Array<{ value: string }> = [];
+  arrayCluster: Array<{ value: string }> = [];
+
+  arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
+
+  resultCount;
+
+
+  public addTDPInfo() {
+    this.targetFilterDP = new ArrayTreeDataProvider(this.arrayInfo, {
+      keyAttributes: "value",
+      keyAttributesScope: "sibling",
+    });
+    this.resultCount = ko.observable(this.arrayInfo.length);
+    //console.log("lista de datos: "+ this.arrayInfo[2].value);
+  }
+
+
+  public fillData() {
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //DBs
+      if (jsonFilex.jsonFile[j].db != null) {
+        if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
+          this.setDB.add(jsonFilex.jsonFile[j].db);
+          this.arrayDB.push({ value: jsonFilex.jsonFile[j].db });
+
+        }
+      }
+
+      //Instances
+      if (jsonFilex.jsonFile[j].instance != null) {
+        if (!this.setIns.has(jsonFilex.jsonFile[j].instance)) {
+          this.setIns.add(jsonFilex.jsonFile[j].instance);
+          this.arrayInstance.push({ value: jsonFilex.jsonFile[j].instance });
+
+        }
+      }
+
+      //Host
+      if (jsonFilex.jsonFile[j].host != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].host)) {
+          this.setHost.add(jsonFilex.jsonFile[j].host);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].host });
+        }
+      }
+
+      //OnHost
+      if (jsonFilex.jsonFile[j].onhost != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].onhost)) {
+          this.setHost.add(jsonFilex.jsonFile[j].onhost);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].onhost });
+        }
+      }
+
+      //Cluster
+      if (jsonFilex.jsonFile[j].cluster != null) {
+        if (!this.setClust.has(jsonFilex.jsonFile[j].cluster)) {
+          this.setClust.add(jsonFilex.jsonFile[j].cluster);
+          this.arrayCluster.push({ value: jsonFilex.jsonFile[j].cluster });
+        }
+      }
+
+
+    }
+    this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
+    this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
+    this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
+    this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
+
+
+  }
+
+
+  readonly selectProblemValue = ko.observableArray([]);
+  readonly selectTargetValue = ko.observableArray([]);
 
 
   // Date picker
@@ -39,13 +227,19 @@ class ConcurrentProblemCountViewModel {
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
 
+    problemFilterMap = new Map();
+    selectedTargetsFilterMap = new Map();
+
     readonly orientationValue = ko.observable("vertical");
     hourCount = new Map();
     problemFilters = new Map();
     dataProvider : ArrayDataProvider<any, any>;
+    dataObservableProvider: ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
     problemsDataProvider : ArrayDataProvider<any,any>;
 
   constructor() {
+    this.fillData();
+    this.addTDPInfo();
 
   }
 
@@ -90,7 +284,7 @@ class ConcurrentProblemCountViewModel {
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
 
     this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
-    
+    this.dataObservableProvider(this.dataProvider);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
     document.getElementById("chart-container");
   }

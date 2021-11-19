@@ -26,11 +26,287 @@ import { ojListView } from "ojs/ojlistview";
 
 import jsonFilex from "../appController";
 
-
+//targetfilters
+import { ojSelectMany } from "ojs/ojselectcombobox";
+import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
+type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ProblemDetailsViewModel {
 
+  applyTargetFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.selectTargetValue(event.detail.value);
+    this.targetsAppeared = [];
+    this.uniqueProblemCount = 0;
+    this.problemNameToID = new Map();
+    this.problemArray = [];
+    this.lengthProblem = 0;
+    this.problemTargetSet = new Set();
+    for(let i =0;i<this.selectTargetValue().length;i++){
+      this.problemTargetSet.add(this.selectTargetValue()[i]);
+    }
 
+    let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      let jsonItem = jsonFilex.jsonFile[j];  
+      if((this.IDSet.has(jsonItem.name) || this.IDSet.size==0) && (
+        this.problemTargetSet.has(jsonItem.db) || this.problemTargetSet.has(jsonItem.cluster) ||
+        this.problemTargetSet.has(jsonItem.instance) || this.problemTargetSet.has(jsonItem.host) ||
+        this.problemTargetSet.has(jsonItem.onhost) || this.problemTargetSet.size==0
+      )){
+      
+      
+        if (this.problemNameToID.has(jsonItem.name)) {
+          let tmpValue = this.problemArray[this.problemNameToID.get(jsonItem.name)]
+            tmpValue.avgBelief += Number(jsonItem.belief);
+            tmpValue.count++;
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.db);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.cluster);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.instance);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.host);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.onHost); 
+
+            tmpArray[this.problemNameToID.get(jsonItem.name)].array.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash});
+
+
+          } else {
+
+            this.problemArray.push({id:jsonItem.id,name:jsonItem.name,count: 1,avgBelief:Number(jsonItem.belief),description:jsonItem.descr,cause:jsonItem.cause,action:jsonItem.action,mainTarget:"N/A",mainTime:jsonItem.t1,allTargets:[]})
+            this.targetsAppeared.push({set: new Set(jsonItem.db),array:[]});
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.cluster);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.instance);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.host);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.onHost);
+
+
+            let secondTmpArray : Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+            secondTmpArray.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash})
+            tmpArray.push({array:secondTmpArray});
+            this.problemNameToID.set(jsonFilex.jsonFile[j].name,this.uniqueProblemCount);
+            this.uniqueProblemCount++;
+          }
+        }
+    }
+
+
+    for(var j = 0;j<this.problemArray.length;j++){
+      this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
+      
+      this.problemArray[j].allTargets = tmpArray[j].array;
+
+      if(this.problemArray[j].avgBelief>=75){
+        this.highCount++;
+        this.highArray.push(this.problemArray[j]);
+      } else{
+        this.mediumCount++;
+        this.mediumArray.push(this.problemArray[j]);
+      }
+    }
+
+    for(var j = 0;j<this.targetsAppeared.length;j++){
+      for(let item of this.targetsAppeared[j].set.values()){
+        //console.log(item);
+        if(item!=undefined && item.length>1){
+          this.targetsAppeared[j].array.push({target:item});
+        }
+      }
+    }
+
+    
+
+    let jsonCount = JSON.stringify(this.problemArray);
+    this.lengthProblem = this.problemArray.length;
+    //console.log(this.problemAccessed());
+
+    let tmpDataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' })
+    this.dataProvider(tmpDataProvider);
+    
+  }
+
+ applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.selectProblemValue(event.detail.value);
+    this.targetsAppeared = [];
+    this.lengthProblem = 0;
+    this.uniqueProblemCount = 0;
+    this.problemNameToID = new Map();
+    this.IDSet = new Set();
+    this.problemArray = [];
+    for(let i =0;i<this.selectProblemValue().length;i++){
+      this.IDSet.add(this.selectProblemValue()[i]);
+    }
+
+    let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+    for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      let jsonItem = jsonFilex.jsonFile[j];  
+      if((this.IDSet.has(jsonItem.name) || this.IDSet.size==0) && (
+        this.problemTargetSet.has(jsonItem.db) || this.problemTargetSet.has(jsonItem.cluster) ||
+        this.problemTargetSet.has(jsonItem.instance) || this.problemTargetSet.has(jsonItem.host) ||
+        this.problemTargetSet.has(jsonItem.onhost) || this.problemTargetSet.size==0
+      )){
+      
+      
+        if (this.problemNameToID.has(jsonItem.name)) {
+          let tmpValue = this.problemArray[this.problemNameToID.get(jsonItem.name)]
+            tmpValue.avgBelief += Number(jsonItem.belief);
+            tmpValue.count++;
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.db);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.cluster);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.instance);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.host);
+            this.targetsAppeared[this.problemNameToID.get(jsonItem.name)].set.add(jsonItem.onHost); 
+
+            tmpArray[this.problemNameToID.get(jsonItem.name)].array.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash});
+
+
+          } else {
+
+            this.problemArray.push({id:jsonItem.id,name:jsonItem.name,count: 1,avgBelief:Number(jsonItem.belief),description:jsonItem.descr,cause:jsonItem.cause,action:jsonItem.action,mainTarget:"N/A",mainTime:jsonItem.t1,allTargets:[]})
+            this.targetsAppeared.push({set: new Set(jsonItem.db),array:[]});
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.cluster);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.instance);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.host);
+            this.targetsAppeared[this.uniqueProblemCount].set.add(jsonItem.onHost);
+
+
+            let secondTmpArray : Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+            secondTmpArray.push({db:jsonItem.db,cluster:jsonItem.cluster,host:jsonItem.onHost,from:jsonItem.t1,to:jsonItem.t2,instance:jsonItem.instance,belief:Number(jsonItem.belief),hash:jsonItem.hash})
+            tmpArray.push({array:secondTmpArray});
+            this.problemNameToID.set(jsonFilex.jsonFile[j].name,this.uniqueProblemCount);
+            this.uniqueProblemCount++;
+          }
+        }
+    }
+
+
+    for(var j = 0;j<this.problemArray.length;j++){
+      this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
+      
+      this.problemArray[j].allTargets = tmpArray[j].array;
+
+      if(this.problemArray[j].avgBelief>=75){
+        this.highCount++;
+        this.highArray.push(this.problemArray[j]);
+      } else{
+        this.mediumCount++;
+        this.mediumArray.push(this.problemArray[j]);
+      }
+    }
+
+    for(var j = 0;j<this.targetsAppeared.length;j++){
+      for(let item of this.targetsAppeared[j].set.values()){
+        //console.log(item);
+        if(item!=undefined && item.length>1){
+          this.targetsAppeared[j].array.push({target:item});
+        }
+      }
+    }
+
+    
+
+    let jsonCount = JSON.stringify(this.problemArray);
+    this.lengthProblem = this.problemArray.length;
+    //console.log(this.problemAccessed());
+
+    let tmpDataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' })
+    this.dataProvider(tmpDataProvider);
+    
+  }
+
+  
+
+  //FILTROS: HASHMAP → key String, value Array 
+  // ejemplo - key: "taget", value: {diara3, diarac4}
+  filterMap = new Map();
+
+  //Filtros → Targets
+  problemsDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  targetFilterDP: ArrayTreeDataProvider<string, TreeNode>;
+  setDB = new Set();
+  setIns = new Set();
+  setHost = new Set();
+  setClust = new Set();
+  setAll = new Set();
+  //arreglo
+  arrayDB: Array<{ value: string }> = [];
+  arrayInstance: Array<{ value: string }> = [];
+  arrayHost: Array<{ value: string }> = [];
+  arrayCluster: Array<{ value: string }> = [];
+
+  arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
+
+  resultCount;
+
+
+
+
+  public addTDPInfo() {
+    this.targetFilterDP = new ArrayTreeDataProvider(this.arrayInfo, {
+      keyAttributes: "value",
+      keyAttributesScope: "sibling",
+    });
+    this.resultCount = ko.observable(this.arrayInfo.length);
+    //console.log("lista de datos: "+ this.arrayInfo[2].value);
+  }
+
+
+  public fillData() {
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      //DBs
+      if (jsonFilex.jsonFile[j].db != null) {
+        if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
+          this.setDB.add(jsonFilex.jsonFile[j].db);
+          this.arrayDB.push({ value: jsonFilex.jsonFile[j].db });
+
+        }
+      }
+
+      //Instances
+      if (jsonFilex.jsonFile[j].instance != null) {
+        if (!this.setIns.has(jsonFilex.jsonFile[j].instance)) {
+          this.setIns.add(jsonFilex.jsonFile[j].instance);
+          this.arrayInstance.push({ value: jsonFilex.jsonFile[j].instance });
+
+        }
+      }
+
+      //Host
+      if (jsonFilex.jsonFile[j].host != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].host)) {
+          this.setHost.add(jsonFilex.jsonFile[j].host);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].host });
+        }
+      }
+
+      //OnHost
+      if (jsonFilex.jsonFile[j].onhost != null) {
+        if (!this.setHost.has(jsonFilex.jsonFile[j].onhost)) {
+          this.setHost.add(jsonFilex.jsonFile[j].onhost);
+          this.arrayHost.push({ value: jsonFilex.jsonFile[j].onhost });
+        }
+      }
+
+      //Cluster
+      if (jsonFilex.jsonFile[j].cluster != null) {
+        if (!this.setClust.has(jsonFilex.jsonFile[j].cluster)) {
+          this.setClust.add(jsonFilex.jsonFile[j].cluster);
+          this.arrayCluster.push({ value: jsonFilex.jsonFile[j].cluster });
+        }
+      }
+
+
+    }
+    this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
+    this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
+    this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
+    this.arrayInfo.push({ value: "Cluster", children: this.arrayCluster });
+
+
+  }
+
+  IDSet = new Set();
   //For each binding
   problemAccessed :ko.Observable<String> = ko.observable("null");
   lengthProblem : number = 0;
@@ -157,7 +433,9 @@ filterCategory = (
 
   problemsDataProvider : ArrayDataProvider<any,any>;
   problemFilters = new Map();
-  readonly selectProblemValue = ko.observableArray(["CH"]);
+  problemTargetSet = new Set();
+  readonly selectProblemValue = ko.observableArray([]);
+  readonly selectTargetValue = ko.observableArray([]);
   
 
 
@@ -187,6 +465,9 @@ filterCategory = (
 
 
   constructor() {
+
+    this.fillData();
+    this.addTDPInfo();
     let problemFilterArray: Array<{value:string,label:string}> = [];
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){

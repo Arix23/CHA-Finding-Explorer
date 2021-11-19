@@ -3,146 +3,153 @@
  Licensed under The Universal Permissive License (UPL), Version 1.0
  as shown at https://oss.oracle.com/licenses/upl/
  -->
-<div id="if-statement">
-<oj-bind-if test="[[jsonUploaded()===true]]">
+ <div id="if-statement">
+  <oj-bind-if test="[[jsonUploaded()===true]]">
 
-  <br>
-  <div>
-    <div class="oj-flex">
-      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h3> Number of Problems: </h3>
-          <h1>
-            <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
-          </h1>
-        </center>
+    <h2
+      class="oj-sm-margin-3x-horizontal oj-md-margin-3x-horizontal oj-lg-margin-3x-horizontal oj-xl-margin-3x-horizontal">
+      Overview</h2>
+
+    <div
+      class="oj-flex oj-sm-margin-3x-horizontal oj-md-margin-3x-horizontal oj-lg-margin-3x-horizontal oj-xl-margin-3x-horizontal">
+      <div id="table-item" class="oj-flex-item oj-bg-neutral oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+        
+        " style="text-align:center;">
+        <oj-badge class=" "> Total problem count </oj-badge>
+        <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </oj-badge>
       </div>
-      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h3> Most Frequent Error: </h3>
-          <h1 id="dashboard-item">
-            <oj-bind-text value="[[mostFrequentProblem]]"></oj-bind-text>
-          </h1>
-        </center>
+      <div id="table-item" class="oj-flex-item oj-bg-neutral oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+      oj-sm-margin-1x-horizontal oj-md-margin-2x-horizontal oj-lg-margin-3x-horizontal oj-xl-margin-3x-horizontal
+         oj-lg-5 oj-xl-5" style="text-align:center;">
+        <oj-badge class=" "> Most frequent error </oj-badge>
+        <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+          <oj-bind-text value="[[mostFrequentProblem]]"></oj-bind-text>
+        </oj-badge>
+      </div>
+      <div id="table-item" class="oj-flex-item oj-bg-neutral oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+        
+        " style="text-align:center;">
+        <oj-badge class=" "> Time with most errors </oj-badge>
+        <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+          <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
+        </oj-badge>
       </div>
 
     </div>
-    <div class="oj-flex">
-      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h3 id="medium-prob">
+
+    <div class=" oj-bg-neutral oj-panel oj-panel-border-radius-1  
+     oj-sm-margin-3x oj-md-margin-3x oj-lg-margin-3x oj-xl-margin-3x">
+      <h6 oj-sm-margin-3x>Summary</h6>
+
+      <div class="oj-flex">
+
+        <!-- Targets con mas errores -->
+
+        <div class=" oj-flex-item oj-sm-margin-1x-end oj-md-margin-1x-end oj-lg-margin-1x-end oj-xl-margin-1x-end">
+          <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+            " style="text-align:center;">
+            <oj-badge class=" "> Database with most errors: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+          <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top" 
+            style="text-align:center;">
+            <oj-badge class=" ">Instance with most errors: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+
+        </div>
+        <div class=" oj-flex-item oj-sm-margin-1x-start oj-md-margin-1x-start oj-lg-margin-1x-start oj-xl-margin-1x-start">
+          <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center"
+          style="text-align:center;">
+            <oj-badge class=" "> Cluster with most errors: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+          <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top"
+          style="text-align:center;">
+            <oj-badge class=" "> Host with most errors: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class=" oj-bg-neutral oj-panel oj-panel-border-radius-1  
+     oj-sm-margin-3x oj-md-margin-3x oj-lg-margin-3x oj-xl-margin-3x">
+      <h6 oj-sm-margin-3x>Count by probability</h6>
+
+      <div class="oj-flex">
+
+        <div class="oj-flex-item ">
+          <div id="table-item" class="oj-flex-item  oj-bg-brand-30  oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+          
+          " style="text-align:center;">
+            <oj-badge class=" "> Low Probability Problems: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+        </div>
+
+        <div class="oj-flex-item oj-sm-margin-2x-horizontal oj-md-margin-2x-horizontal oj-lg-margin-2x-horizontal oj-xl-margin-2x-horizontal">
+          <div id="table-item" class="oj-flex-item oj-bg-warning-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+          
+          " style="text-align:center;">
+            <oj-badge class=" "> Medium Probability Problems: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[mediumProbQuantity]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+        </div>
+
+        <div class="oj-flex-item ">
+
+          <div id="table-item" class="oj-flex-item oj-bg-danger-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
+          
+          " style="text-align:center;">
+            <oj-badge class=" "> High Probability Problems: </oj-badge>
+            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
+              <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
+            </oj-badge>
+          </div>
+
+
+          <!-- <h3 id="medium-prob">
             Medium Probability Problems:
             <oj-bind-text value="[[mediumProbQuantity]]"></oj-bind-text>
           </h3>
           <h3 id="high-prob">
             High Probability Problems:
             <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
-          </h3>
-        </center>
-      </div>
-      <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h3> Time with most errors: </h3>
-          <h1 id="dashboard-item">
-            <oj-bind-text value="[[numberProblems]]"></oj-bind-text>
-          </h1>
-        </center>
-      </div>
-    </div>
+          </h3> -->
 
-    <!-- //TARGETS DASHBOARD -->
 
-    <!-- <div class="oj-flex">
-      <div class="oj-flex-item">1b</div>
-      <div class="oj-flex demo-flex-display" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
-        <div class="oj-flex-item">1a
-          <div class="oj-flex" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
-            <div class="oj-flex-item">2a
-              <div class="oj-flex" :class="[[{'oj-sm-flex-direction-column': dircolumn()}]]">
-                <div class="oj-flex-item">3a</div>
-                <div class="oj-flex-item">3b</div>
-              </div>
-            </div>
-            <div class="oj-flex-item">2b</div>
-          </div>
         </div>
-      </div>
-    </div> -->
 
 
-  </div>
-
-  <!-- <div class="demo-grid-sizes demo-flex-display">
-    center> -->
-    <!-- <div class="oj-flex-bar-middle" style="text-align:center;">
-      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal"> HOla</div>
-      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">hola </div>
-      <div class="oj-sm-4 oj-flex-item oj-sm-padding-2x-horizontal">Adios</div>
-    </div> -->
-    <!-- </center> -->
-  <!-- </div> --> 
-
-
-  <div class="oj-flex">
-    <div class="oj-flex-item">
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Database with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[dataBaseMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
-      </div>
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Instance with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
       </div>
 
     </div>
 
-    <div class="oj-flex-item">
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center">
-        <center>
-          <h5> Cluster with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
-      </div>
-      <div class="oj-flex-item oj-sm-align-items-center oj-md-align-items-center 
-    oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-center oj-md-justify-content-center 
-    oj-lg-justify-content-center oj-xl-justify-content-center oj-helper-overflow-wrap-anywhere">
-        <center>
-          <h5> OnHost with most errors: </h5>
-          <h2 id="dashboard-item">
-            <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
-          </h2>
-        </center>
-      </div>
-    </div>
+</div>
 
 
 
-  </div>
-  </div>
+
+</div>
 </oj-bind-if>
 
 
