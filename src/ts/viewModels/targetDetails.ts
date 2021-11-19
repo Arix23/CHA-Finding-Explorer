@@ -6,6 +6,7 @@ import "ojs/ojknockout";
 import "ojs/ojformlayout";
 import "ojs/ojslider";
 import "ojs/ojtable";
+import "ojs/ojchart";
 
 import "ojs/ojselectsingle";
 import { ojSelectSingle } from "ojs/ojselectsingle";
@@ -133,12 +134,36 @@ class TargetDetailsViewModel {
 
   selectionDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   selectionDP2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
-  
+
   selectionTableDP: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   selectionTableDP2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
 
+  selectionGraph1: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  selectionGraph2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+
+  selectionPie1: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+  selectionPie2: ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
+
   selectedType = "";
   selectedType2 = "";
+
+  readonly orientationValue = ko.observable("vertical");
+  problemCountTB1 = new Map();
+  dataProviderTB1 : ArrayDataProvider<any, any>;
+  problemCountTB2 = new Map();
+  dataProviderTB2 : ArrayDataProvider<any, any>;
+  problemArrayTB: Array<{hour: string, count: number, series: string}> = [];
+  problemArrayTB1: Array<{hour: string, count: number, series: string}> = [];
+
+  problemFrequency1 = new Map();
+  problemFrequency2 = new Map();
+  frequencyArray1: Array<{name: string, count: number, group: string}> = [];
+  frequencyArray2: Array<{name: string, count: number, group: string}> = [];
+
+  readonly innerRadius = ko.observable(0.5);
+  readonly centerLabel1 = ko.observable("Target 1");
+  readonly centerLabel2 = ko.observable("Target 2");
+  readonly labelStyle = ko.observable({ fontSize: "20px", color: "#999999" });
 
   selectedTarget = "";
   selectedTarget2 = "";
@@ -240,10 +265,57 @@ class TargetDetailsViewModel {
 
     }
     //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
-    console.log(this.tableData);
+    //console.log(this.tableData);
     let temTableData = new ArrayDataProvider(this.tableData);
     this.selectionTableDP(temTableData);
 
+    this.problemCountTB1 = new Map();
+
+    for (let i in this.tableData){
+      if (this.problemCountTB1.has(this.tableData[i].from)){
+        let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
+        this.problemCountTB1.set(this.tableData[i].from, count);
+      }
+      else {
+        this.problemCountTB1.set(this.tableData[i].from, 1);
+      }
+    }
+
+    this.problemArrayTB1 = [];
+    this.problemArrayTB = [];
+    //console.log(this.problemCountTB1);
+    this.problemCountTB1.forEach((value: number, key: string) => {
+      this.problemArrayTB1.push({ hour: key, count: value , series: "Target 1"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
+    this.selectionGraph1(temGraphData);
+    temGraphData = new ArrayDataProvider(this.problemArrayTB);
+    this.selectionGraph2(temGraphData);
+
+
+    this.problemFrequency1 = new Map();
+    for (let i in this.tableData){
+      if (this.problemFrequency1.has(this.tableData[i].name)){
+        let count = this.problemFrequency1.get(this.tableData[i].name) + 1;
+        this.problemFrequency1.set(this.tableData[i].name, count);
+      }
+      else {
+        this.problemFrequency1.set(this.tableData[i].name, 1);
+      }
+    }
+
+    this.frequencyArray1 = [];
+    this.problemFrequency1.forEach((value: number, key: string) => {
+      this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+    });
+
+    let temPieData = new ArrayDataProvider(this.frequencyArray1);
+    this.selectionPie1(temPieData);
+
+    //let jsonCountTB1 = JSON.stringify(this.problemArrayTB1);
+    //this.dataProviderTB1 = new ArrayDataProvider(JSON.parse(jsonCountTB1), { keyAttributes: 'hour' });
   }
 
   fillSelected2 = (
@@ -266,23 +338,77 @@ class TargetDetailsViewModel {
 
     }
     //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
-    console.log(this.tableData2);
+    //console.log(this.tableData2);
     let temTableData = new ArrayDataProvider(this.tableData2);
     this.selectionTableDP2(temTableData);
 
+    this.problemCountTB2 = new Map();
+    //let problemArrayTB2: Array<{hour: string, count: number, series: string}> = [];
+    for (let i in this.tableData2){
+      if (this.problemCountTB2.has(this.tableData2[i].from)){
+        let count = this.problemCountTB2.get(this.tableData2[i].from) + 1;
+        this.problemCountTB2.set(this.tableData2[i].from, count);
+      }
+      else {
+        this.problemCountTB2.set(this.tableData2[i].from, 1);
+      }
+    }
+
+    this.problemArrayTB = [];
+    //this.problemArrayTB = this.problemArrayTB1;
+    //console.log(this.problemCountTB2);
+
+    this.problemArrayTB1.forEach(val => this.problemArrayTB.push(Object.assign({}, val)));
+
+    this.problemCountTB2.forEach((value: number, key: string) => {
+      this.problemArrayTB.push({ hour: key, count: value , series: "Target 2"});
+    });
+
+    console.log("Array2");
+    console.log(this.problemArrayTB);
+    let temGraphData = new ArrayDataProvider(this.problemArrayTB);
+    this.selectionGraph2(temGraphData);
+
+
+    this.problemFrequency2 = new Map();
+    for (let i in this.tableData2){
+      if (this.problemFrequency2.has(this.tableData2[i].name)){
+        let count = this.problemFrequency2.get(this.tableData2[i].name) + 1;
+        this.problemFrequency2.set(this.tableData2[i].name, count);
+      }
+      else {
+        this.problemFrequency2.set(this.tableData2[i].name, 1);
+      }
+    }
+
+    this.frequencyArray2 = [];
+    //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
+
+    this.problemFrequency2.forEach((value: number, key: string) => {
+      this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+    });
+
+    console.log(this.frequencyArray2);
+
+    let temPieData = new ArrayDataProvider(this.frequencyArray2);
+    this.selectionPie2(temPieData);
+
+    //let jsonCountTB2 = JSON.stringify(this.problemArrayTB);
+    //console.log(jsonCountTB2);
+    //this.dataProviderTB2 = new ArrayDataProvider(JSON.parse(jsonCountTB2), { keyAttributes: 'hour' });
   }
 
 
   public fillData() {
     let problemFilterArray: Array<{value:string,label:string}> = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      
+
       if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
         //Do nothing
       } else{
         this.problemFilters.set(jsonFilex.jsonFile[j].name,1)
         problemFilterArray.push({value:jsonFilex.jsonFile[j].name,label:jsonFilex.jsonFile[j].name});
-       
+
       }
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
@@ -331,6 +457,7 @@ class TargetDetailsViewModel {
       // });
     }
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    //console.log(jsonFilterProblems);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
   }
@@ -359,17 +486,19 @@ class TargetDetailsViewModel {
   }
   public removeTargetButton = (event: ojButtonEventMap['ojAction']) => {
     this.addTarget(true);
+    //let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
+    //this.selectionGraph1(temGraphData);
 
   }
 
   constructor() {
-    
+
     this.addTarget = ko.observable(true);
     this.fillData();
     // let tempSelect = new ArrayDataProvider(Array.from(this.setAll.values));
     // this.selectionDP(tempSelect);
 
-    console.log(Array.from(this.setAll))
+    //console.log(Array.from(this.setAll))
 
   }
 
