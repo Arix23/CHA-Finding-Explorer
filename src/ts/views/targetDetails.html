@@ -72,34 +72,34 @@
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Select:
           <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
-            
+
           </oj-select-single>
 
         </div>
 
         <oj-table class="oj-flex-item" id='table' aria-label='Departments Table' data='[[selectionTableDP()]]'
           selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
-          scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
+          scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name",
                                                    "field": "name",
                                                    "headerClassName": "oj-sm-only-hide",
                                                    "className": "oj-sm-only-hide",
                                                    "resizable": "enabled"},
-                                                  {"headerText": "Cluster", 
+                                                  {"headerText": "Cluster",
                                                    "field": "cluster",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "Database", 
+                                                   {"headerText": "Database",
                                                    "field": "database",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "Instance", 
+                                                   {"headerText": "Instance",
                                                    "field": "instance",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "OnHost", 
+                                                   {"headerText": "OnHost",
                                                    "field": "host",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "From", 
+                                                   {"headerText": "From",
                                                    "field": "from",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "To", 
+                                                   {"headerText": "To",
                                                    "field": "to",
                                                    "resizable": "enabled"}]' class='demo-table-container oj-bg-body'>
         </oj-table>
@@ -132,27 +132,27 @@
 
           <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP]]'
             selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
-            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
+            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name",
                                                    "field": "name",
                                                    "headerClassName": "oj-sm-only-hide",
                                                    "className": "oj-sm-only-hide",
                                                    "resizable": "enabled"},
-                                                  {"headerText": "Cluster", 
+                                                  {"headerText": "Cluster",
                                                    "field": "cluster",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "Database", 
+                                                   {"headerText": "Database",
                                                    "field": "database",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "Instance", 
+                                                   {"headerText": "Instance",
                                                    "field": "instance",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "OnHost", 
+                                                   {"headerText": "OnHost",
                                                    "field": "host",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "From", 
+                                                   {"headerText": "From",
                                                    "field": "from",
                                                    "resizable": "enabled"},
-                                                   {"headerText": "To", 
+                                                   {"headerText": "To",
                                                    "field": "to",
                                                    "resizable": "enabled"}]' class='demo-table-container oj-bg-body'>
           </oj-table>
@@ -179,36 +179,161 @@
 
           <oj-table id='table' aria-label='Departments Table' data='[[selectionTableDP2()]]'
             selection-mode='{"row": "multiple", "column": "multiple"}' dnd='{"reorder": {"columns": "enabled"}}'
-            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name", 
+            scroll-policy='loadMoreOnScroll' scroll-policy-options='{"fetchSize": 10}' columns='[{"headerText": "Name",
                                                      "field": "name",
                                                      "headerClassName": "oj-sm-only-hide",
                                                      "className": "oj-sm-only-hide",
                                                      "resizable": "enabled"},
-                                                    {"headerText": "Count", 
+                                                    {"headerText": "Count",
                                                      "field": "count",
                                                      "resizable": "enabled"},
-                                                     {"headerText": "Database", 
+                                                     {"headerText": "Database",
                                                      "field": "database",
                                                      "resizable": "enabled"},
-                                                     {"headerText": "Instance", 
+                                                     {"headerText": "Instance",
                                                      "field": "instance",
                                                      "resizable": "enabled"},
-                                                     {"headerText": "OnHost", 
+                                                     {"headerText": "OnHost",
                                                      "field": "host",
                                                      "resizable": "enabled"},
-                                                     {"headerText": "From", 
+                                                     {"headerText": "From",
                                                      "field": "from",
                                                      "resizable": "enabled"},
-                                                     {"headerText": "To", 
+                                                     {"headerText": "To",
                                                      "field": "to",
                                                      "resizable": "enabled"}]' class='demo-table-container oj-bg-body'>
           </oj-table>
         </div>
+
       </div>
     </div>
 
   </oj-bind-if>
 
+  <oj-bind-if test="[[addTarget()===true]]">
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Concurrent problem count</h1>
+    </div>
+  </oj-bind-if>
+
+
+  <oj-bind-if test="[[addTarget()===false]]">
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Concurrent problem count comparison</h1>
+    </div>
+  </oj-bind-if>
+
+
+  <oj-bind-if test="[[addTarget()===true]]">
+    <div id='chart-container'>
+      <oj-chart id="lineChart"
+              type="line"
+              orientation="[[orientationValue]]"
+              data="[[selectionGraph1()]]"
+              animation-on-display="auto"
+              animation-on-data-change="auto"
+              hover-behavior="dim">
+              <template slot='itemTemplate' data-oj-as='item'>
+                <oj-chart-item
+                  value='[[item.data.count]]'
+                  group-id='[[ [item.data.hour] ]]'
+                  series-id='[[item.data.series]]'>
+                </oj-chart-item>
+              </template>
+      </oj-chart>
+    </div>
+  </oj-bind-if>
+
+
+  <oj-bind-if test="[[addTarget()===false]]">
+    <div id='chart-container'>
+          <oj-chart id="lineChart"
+                  type="line"
+                  orientation="[[orientationValue]]"
+                  data="[[selectionGraph2()]]"
+                  animation-on-display="auto"
+                  animation-on-data-change="auto"
+                  hover-behavior="dim">
+                <template slot='itemTemplate' data-oj-as='item'>
+                  <oj-chart-item
+                    value='[[item.data.count]]'
+                    group-id='[[ [item.data.hour] ]]'
+                    series-id='[[item.data.series]]'>
+                  </oj-chart-item>
+                </template>
+          </oj-chart>
+        </div>
+  </oj-bind-if>
+
+  <oj-bind-if test="[[addTarget()===true]]">
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Problem percentage</h1>
+    </div>
+  </oj-bind-if>
+
+
+  <oj-bind-if test="[[addTarget()===false]]">
+    <div class="oj-flex-bar oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center">
+      <h1 class="oj-flex-bar-start">Problem percentage comparison</h1>
+    </div>
+  </oj-bind-if>
+
+  <oj-bind-if test="[[addTarget()===true]]">
+    <div id='chart-container'>
+        <oj-chart id="pieChart"
+          type="pie"
+          data="[[selectionPie1()]]"
+          style-defaults.pie-inner-radius="[[innerRadius]]"
+          animation-on-data-change="auto"
+          pie-center.label="[[centerLabel1]]"
+          pie-center.label-style="[[labelStyle]]">
+          <template slot='itemTemplate' data-oj-as='item'>
+            <oj-chart-item
+              value='[[item.data.count]]'
+              group-id='[[ [item.data.group] ]]'
+              series-id='[[item.data.name]]'>
+            </oj-chart-item>
+          </template>
+        </oj-chart>
+      </div>
+  </oj-bind-if>
+
+
+  <oj-bind-if test="[[addTarget()===false]]">
+    <div id='chart-container'>
+      <oj-chart id="pieChart"
+        type="pie"
+        data="[[selectionPie1()]]"
+        style-defaults.pie-inner-radius="[[innerRadius]]"
+        animation-on-data-change="auto"
+        pie-center.label="[[centerLabel1]]"
+        pie-center.label-style="[[labelStyle]]">
+        <template slot='itemTemplate' data-oj-as='item'>
+          <oj-chart-item
+            value='[[item.data.count]]'
+            group-id='[[ [item.data.group] ]]'
+            series-id='[[item.data.name]]'>
+          </oj-chart-item>
+        </template>
+      </oj-chart>
+
+        <oj-chart id="pieChart"
+          type="pie"
+          data="[[selectionPie2()]]"
+          style-defaults.pie-inner-radius="[[innerRadius]]"
+          animation-on-data-change="auto"
+          pie-center.label="[[centerLabel2]]"
+          pie-center.label-style="[[labelStyle]]">
+          <template slot='itemTemplate' data-oj-as='item'>
+            <oj-chart-item
+              value='[[item.data.count]]'
+              group-id='[[ [item.data.group] ]]'
+              series-id='[[item.data.name]]'>
+            </oj-chart-item>
+          </template>
+        </oj-chart>
+      </div>
+  </oj-bind-if>
 
 
 </div>
