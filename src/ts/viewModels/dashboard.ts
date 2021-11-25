@@ -102,7 +102,18 @@ class DashboardViewModel {
       let maxDayValue = 0;
       let month = 0;
       let year = 0;
+      let startDate = 0;
+      let endDate = 0;
+      let hourMap = new Map();
+      let dates = [];
+      let maxHourCount = 0
+
       for (var i = 0; i < this.jsonFile.length; i++) {
+
+
+        
+        
+
 
 
         //CALCULATE HOUR MOST PROBLEMS
@@ -111,18 +122,23 @@ class DashboardViewModel {
         let day = date[2];
         let hour = split1[1].split(":");
         let hourExtracted = hour[0];
-        let hourMap = new Map();
-        let maxHourCount = 0
+        
         
 
-        if(hourMap.has(hourExtracted+day)){
-          hourMap.set(hourExtracted,hourMap.get(hourExtracted+day)+1);
-        } else{
-          hourMap.set(hourExtracted+day,1);
+        dates.push(this.jsonFile[i].t1);
+        if(this.jsonFile[i].t2!=undefined && this.jsonFile[i].t2!=""){
+          dates.push(this.jsonFile[i].t2);
         }
 
-        if(hourMap.get(hourExtracted+day)>maxHourCount){
-          maxHourCount=hourMap.get(hourExtracted+day);
+        if(hourMap.has(hourExtracted+":"+day)){
+          let newValue = hourMap.get(hourExtracted+":"+day)+1;
+          hourMap.set(hourExtracted+":"+day,newValue);
+        } else{
+          hourMap.set(hourExtracted+":"+day,1);
+        }
+
+        if(hourMap.get(hourExtracted+":"+day)>maxHourCount){
+          maxHourCount=hourMap.get(hourExtracted+":"+day);
           maxHourValue=hourExtracted;
           maxDayValue = day;
           month = date[1];
@@ -262,6 +278,10 @@ class DashboardViewModel {
       maxHourValueString += maxHourValue;
       maxHourValueString+=":00"
       this.hourMostProblems = ko.observable(maxHourValueString);
+      this.startDate = ko.observable(dates[0]);
+      this.endDate = ko.observable(dates[dates.length-1]);
+      console.log(this.startDate());
+      console.log(this.endDate());
       }
     
       
@@ -283,6 +303,8 @@ class DashboardViewModel {
 
     this.jsonUploaded(true);
   }
+  startDate: ko.Observable<string> = ko.observable("NA");
+  endDate: ko.Observable<string> = ko.observable("NA");
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
   hourMostProblems: ko.Observable<string> = ko.observable("N/A");

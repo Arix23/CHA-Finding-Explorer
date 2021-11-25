@@ -25,6 +25,7 @@ import "ojs/ojtimezonedata";
 //targetfilters
 import { ojSelectMany } from "ojs/ojselectcombobox";
 import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
+import { AvailableTimeZoneType } from "@oracle/oraclejet/dist/types/ojtimezoneutils";
 type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class DetailsViewModel {
@@ -319,7 +320,15 @@ class DetailsViewModel {
 
 
   public fillData() {
+    let dates = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+
+
+
+      dates.push(jsonFilex.jsonFile[j].t1);
+        if(jsonFilex.jsonFile[j].t2!=undefined && jsonFilex.jsonFile[j].t2!=""){
+          dates.push(jsonFilex.jsonFile[j].t2);
+        }
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -364,6 +373,11 @@ class DetailsViewModel {
 
 
     }
+    let startDate = dates[0].split(" ")[0];
+    let endDate = dates[dates.length-1].split(" ")[0];
+
+    this.startDate(startDate);
+    this.endDate(endDate);
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
     this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
     this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
@@ -373,7 +387,8 @@ class DetailsViewModel {
   }
 
 
-
+  startDate :ko.Observable<string>= ko.observable("N/A");
+  endDate: ko.Observable<string> = ko.observable("N/A");
   problemFilterMap = new Map();
   problemTargetMap = new Map();
 
