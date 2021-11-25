@@ -85,6 +85,83 @@ class TargetDetailsViewModel {
     }
     let temTableData2 = new ArrayDataProvider(this.tableData2);
     this.selectionTableDP2(temTableData2);
+
+
+    //GRAPHS
+    this.problemCountTB1 = new Map();
+
+    for (let i in this.tableData){
+      if(this.selectedProblemsFiltersMap.has(this.tableData[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (this.problemCountTB1.has(this.tableData[i].from)){
+          let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
+          this.problemCountTB1.set(this.tableData[i].from, count);
+        }
+        else {
+          this.problemCountTB1.set(this.tableData[i].from, 1);
+        }
+      }
+      
+    }
+
+    let problemCountTB = new Map();
+
+    for (let i in this.tableData2){
+      if(this.selectedProblemsFiltersMap.has(this.tableData2[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (problemCountTB.has(this.tableData2[i].from)){
+          let count = this.problemCountTB1.get(this.tableData2[i].from) + 1;
+          problemCountTB.set(this.tableData2[i].from, count);
+        }
+        else {
+          problemCountTB.set(this.tableData2[i].from, 1);
+        }
+      }
+      
+    }
+
+    this.problemArrayTB1 = [];
+    this.problemArrayTB = [];
+    //console.log(this.problemCountTB1);
+    this.problemCountTB1.forEach((value: number, key: string) => {
+      this.problemArrayTB1.push({ hour: key, count: value , series: "Target 1"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    problemCountTB.forEach((value: number, key: string) => {
+      this.problemArrayTB.push({ hour: key, count: value , series: "Target 2"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
+    this.selectionGraph1(temGraphData);
+    temGraphData = new ArrayDataProvider(this.problemArrayTB);
+    this.selectionGraph2(temGraphData);
+
+
+    this.frequencyArray1 = [];
+    this.problemFrequency1.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+      }
+      
+    });
+
+    let temPieData = new ArrayDataProvider(this.frequencyArray1);
+    this.selectionPie1(temPieData);
+
+
+    this.frequencyArray2 = [];
+    //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
+
+    this.problemFrequency2.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+      }
+      
+    });
+
+
+    temPieData = new ArrayDataProvider(this.frequencyArray2);
+    this.selectionPie2(temPieData);
     
 
     

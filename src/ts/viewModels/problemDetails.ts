@@ -123,6 +123,26 @@ class ProblemDetailsViewModel {
     this.dataProvider(tmpDataProvider);
     
   }
+  applyDetailsTargetFilter = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.selectDetailsTargetValue(event.detail.value);
+    let problemDetailsTargetSet = new Set();
+    for(let i =0;i<this.selectDetailsTargetValue().length;i++){
+      problemDetailsTargetSet.add(this.selectDetailsTargetValue()[i]);
+    }
+    let tmpJSON = this.problemArray[this.selectedProblemID()].allTargets;
+    let tmpArray: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+    for(let item of tmpJSON){
+      if(problemDetailsTargetSet.size===0 || (problemDetailsTargetSet.has(item.db) ||problemDetailsTargetSet.has(item.cluster) || problemDetailsTargetSet.has(item.host) || problemDetailsTargetSet.has(item.instance))){
+        tmpArray.push(item);
+      }
+    }
+    let tmp = JSON.stringify(tmpArray);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+  }
+
 
  applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
@@ -364,7 +384,7 @@ filterCategory = (
   if(this.currentCategory().length==0){
     let tmpDataProvider = new ArrayDataProvider([])
       this.dataProvider(tmpDataProvider);
-    console.log("hola");
+
   } else if (this.currentCategory().length==2){
     let tmp = JSON.stringify(this.problemArray);
     let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
@@ -436,6 +456,7 @@ filterCategory = (
   problemTargetSet = new Set();
   readonly selectProblemValue = ko.observableArray([]);
   readonly selectTargetValue = ko.observableArray([]);
+  readonly selectDetailsTargetValue = ko.observableArray([]);
   
 
 

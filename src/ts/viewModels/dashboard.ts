@@ -98,8 +98,37 @@ class DashboardViewModel {
 
 
       //PROCESAMIENTO DEL JSON PARA OBTENER VALORES NECESARIOS PARA EL FUNCIONAMIENTO DEL DASHBOARD
-
+      let maxHourValue = 0;
+      let maxDayValue = 0;
+      let month = 0;
+      let year = 0;
       for (var i = 0; i < this.jsonFile.length; i++) {
+
+
+        //CALCULATE HOUR MOST PROBLEMS
+        let split1 = this.jsonFile[i].t1.split(" ");
+        let date = split1[0].split("-");
+        let day = date[2];
+        let hour = split1[1].split(":");
+        let hourExtracted = hour[0];
+        let hourMap = new Map();
+        let maxHourCount = 0
+        
+
+        if(hourMap.has(hourExtracted+day)){
+          hourMap.set(hourExtracted,hourMap.get(hourExtracted+day)+1);
+        } else{
+          hourMap.set(hourExtracted+day,1);
+        }
+
+        if(hourMap.get(hourExtracted+day)>maxHourCount){
+          maxHourCount=hourMap.get(hourExtracted+day);
+          maxHourValue=hourExtracted;
+          maxDayValue = day;
+          month = date[1];
+          year = date[0];
+        }
+
 
         //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
 
@@ -219,12 +248,23 @@ class DashboardViewModel {
           }
 
         }
+        
 
 
       }
+      let maxHourValueString = "";
+      maxHourValueString += year;
+      maxHourValueString += "-";
+      maxHourValueString += month;
+      maxHourValueString += "-";
+      maxHourValueString += maxDayValue;
+      maxHourValueString += " "
+      maxHourValueString += maxHourValue;
+      maxHourValueString+=":00"
+      this.hourMostProblems = ko.observable(maxHourValueString);
       }
     
-
+      
       this.dataBaseMostProblems = ko.observable(this.maxDataBase);
       this.instanceMostProblems = ko.observable(this.maxInstance);
       this.onHostMostProblems = ko.observable(this.maxOnHost);
@@ -245,6 +285,7 @@ class DashboardViewModel {
   }
   jsonFile: ko.Observable<JSON> = jsonFilex.jsonFile;
   numberProblems: ko.Observable<number> = ko.observable(0);
+  hourMostProblems: ko.Observable<string> = ko.observable("N/A");
   dataBaseMostProblems: ko.Observable<string> = ko.observable("N/A");
   instanceMostProblems: ko.Observable<string> = ko.observable("N/A");
   onHostMostProblems: ko.Observable<string> = ko.observable("N/A");
