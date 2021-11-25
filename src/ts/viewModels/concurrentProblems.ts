@@ -28,6 +28,8 @@ type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class ConcurrentProblemCountViewModel {
 
+  startDate :ko.Observable<string>= ko.observable("N/A");
+  endDate: ko.Observable<string> = ko.observable("N/A");
 
   applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
@@ -156,7 +158,13 @@ class ConcurrentProblemCountViewModel {
 
 
   public fillData() {
+    let dates = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+
+      dates.push(jsonFilex.jsonFile[j].t1);
+        if(jsonFilex.jsonFile[j].t2!=undefined && jsonFilex.jsonFile[j].t2!=""){
+          dates.push(jsonFilex.jsonFile[j].t2);
+        }
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -201,6 +209,11 @@ class ConcurrentProblemCountViewModel {
 
 
     }
+    let startDate = dates[0].split(" ")[0];
+    let endDate = dates[dates.length-1].split(" ")[0];
+
+    this.startDate(startDate);
+    this.endDate(endDate);
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
     this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
     this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
@@ -243,14 +256,7 @@ class ConcurrentProblemCountViewModel {
 
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is inserted into the
-   * document DOM.  The application can put logic that requires the DOM being
-   * attached here.
-   * This method might be called multiple times - after the View is created
-   * and inserted into the DOM and after the View is reconnected
-   * after being disconnected.
-   */
+  
   connected(): void {
     AccUtils.announce("Concurrent Problem Count page loaded.");
     document.title = "Concurrent Problem Count";
@@ -289,17 +295,12 @@ class ConcurrentProblemCountViewModel {
     document.getElementById("chart-container");
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
+
   disconnected(): void {
     // implement if needed
   }
 
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
+
   transitionCompleted(): void {
     // implement if needed
   }

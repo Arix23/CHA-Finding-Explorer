@@ -274,6 +274,8 @@ class ProblemDetailsViewModel {
 
   public fillData() {
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+
+
       //DBs
       if (jsonFilex.jsonFile[j].db != null) {
         if (!this.setDB.has(jsonFilex.jsonFile[j].db)) {
@@ -478,6 +480,8 @@ filterCategory = (
     largeScreenMatch: MediaQueryList;
     datePickerWeek: ojDatePicker["datePicker"];
     timePicker: object;
+    startDate :ko.Observable<string>= ko.observable("N/A");
+  endDate: ko.Observable<string> = ko.observable("N/A");
 
     mediumCount : number = 0;
     highCount : number = 0;
@@ -490,8 +494,14 @@ filterCategory = (
     this.fillData();
     this.addTDPInfo();
     let problemFilterArray: Array<{value:string,label:string}> = [];
+    let dates = [];
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
+
+      dates.push(jsonFilex.jsonFile[j].t1);
+        if(jsonFilex.jsonFile[j].t2!=undefined && jsonFilex.jsonFile[j].t2!=""){
+          dates.push(jsonFilex.jsonFile[j].t2);
+        }
 
       if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
         //Do nothing
@@ -558,7 +568,11 @@ filterCategory = (
       }
     }
 
-    
+    let startDate = dates[0].split(" ")[0];
+    let endDate = dates[dates.length-1].split(" ")[0];
+
+    this.startDate(startDate);
+    this.endDate(endDate);
 
     console.log(this.problemArray)
 
@@ -571,31 +585,19 @@ filterCategory = (
   }
 
 
-  /**
-   * Optional ViewModel method invoked after the View is inserted into the
-   * document DOM.  The application can put logic that requires the DOM being
-   * attached here.
-   * This method might be called multiple times - after the View is created
-   * and inserted into the DOM and after the View is reconnected
-   * after being disconnected.
-   */
+  
   connected(): void {
     AccUtils.announce("Problem Details page loaded.");
     document.title = "Problem Details";
     // implement further logic if needed
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
+  
   disconnected(): void {
     // implement if needed
   }
 
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
+  
   transitionCompleted(): void {
     // implement if needed
   }

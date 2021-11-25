@@ -223,7 +223,8 @@ class TargetDetailsViewModel {
 
   selectedType = "";
   selectedType2 = "";
-
+  startDate :ko.Observable<string>= ko.observable("N/A");
+  endDate: ko.Observable<string> = ko.observable("N/A");
   readonly orientationValue = ko.observable("vertical");
   problemCountTB1 = new Map();
   dataProviderTB1 : ArrayDataProvider<any, any>;
@@ -478,8 +479,12 @@ class TargetDetailsViewModel {
 
   public fillData() {
     let problemFilterArray: Array<{value:string,label:string}> = [];
+    let dates = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-
+      dates.push(jsonFilex.jsonFile[j].t1);
+        if(jsonFilex.jsonFile[j].t2!=undefined && jsonFilex.jsonFile[j].t2!=""){
+          dates.push(jsonFilex.jsonFile[j].t2);
+        }
       if(this.problemFilters.has(jsonFilex.jsonFile[j].name)){
         //Do nothing
       } else{
@@ -534,6 +539,11 @@ class TargetDetailsViewModel {
       // });
     }
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
+    let startDate = dates[0].split(" ")[0];
+    let endDate = dates[dates.length-1].split(" ")[0];
+
+    this.startDate(startDate);
+    this.endDate(endDate);
     //console.log(jsonFilterProblems);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
@@ -572,72 +582,24 @@ class TargetDetailsViewModel {
 
     this.addTarget = ko.observable(true);
     this.fillData();
-    // let tempSelect = new ArrayDataProvider(Array.from(this.setAll.values));
-    // this.selectionDP(tempSelect);
-
-    //console.log(Array.from(this.setAll))
+    
 
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is inserted into the
-   * document DOM.  The application can put logic that requires the DOM being
-   * attached here.
-   * This method might be called multiple times - after the View is created
-   * and inserted into the DOM and after the View is reconnected
-   * after being disconnected.
-   */
+  
   connected(): void {
 
     AccUtils.announce("Target Details page loaded.");
     document.title = "Target Details";
-    // implement further logic if needed
-
-    // //procesamiento de json :)
-    // let problemArray: Array<{ name: string, count: number, database: string, instance: string, onhost: string, from: string, to: string }> = [];
-    // for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-    //   if (jsonFilex.jsonFile[j].db == "diarac") {
-    //     if (this.problemCount.has(jsonFilex.jsonFile[j].name)) {
-    //       let count = this.problemCount.get(jsonFilex.jsonFile[j].name) + 1;
-    //       this.problemCount.set(jsonFilex.jsonFile[j].name, count);
-
-    //     }
-    //     else {
-    //       this.problemCount.set(jsonFilex.jsonFile[j].name, 1);
-    //     }
-    //   }
-    // }
-
-    // for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-    //   if (jsonFilex.jsonFile[j].db == "diarac" && this.problemCount.get(jsonFilex.jsonFile[j].name) != -1) {
-    //     problemArray.push({
-    //       name: jsonFilex.jsonFile[j].name, count: this.problemCount.get(jsonFilex.jsonFile[j].name), database:
-    //         jsonFilex.jsonFile[j].db, instance: jsonFilex.jsonFile[j].instance, onhost: jsonFilex.jsonFile[j].onhost,
-    //       from: jsonFilex.jsonFile[j].from, to: jsonFilex.jsonFile[j].to
-    //     })
-    //     this.problemCount.set(jsonFilex.jsonFile[j].name, -1);
-    //   }
-    // }
-
-
-
-    // let jsonCount = JSON.stringify(problemArray);
-    // // console.log(jsonCount);
-
-    // this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    
   }
 
-  /**
-   * Optional ViewModel method invoked after the View is disconnected from the DOM.
-   */
+  
   disconnected(): void {
     // implement if needed
   }
 
-  /**
-   * Optional ViewModel method invoked after transition to the new View is complete.
-   * That includes any possible animation between the old and the new View.
-   */
+  
   transitionCompleted(): void {
     // implement if needed
   }
