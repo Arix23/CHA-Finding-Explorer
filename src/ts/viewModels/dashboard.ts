@@ -140,9 +140,9 @@ class DashboardViewModel {
       }
 
       medium=(lowerValue+higherValue)/2
-      console.log("numero menor "+ lower)
-      console.log("numero medio "+ medium)
-      console.log("numero mayor "+ higher)
+      //console.log("numero menor "+ lower)
+      //console.log("numero medio "+ medium)
+      //console.log("numero mayor "+ higher)
 
       
       for (var i = 0; i < this.jsonFile.length; i++) {

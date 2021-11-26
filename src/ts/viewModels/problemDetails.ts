@@ -47,6 +47,8 @@ class ProblemDetailsViewModel {
       this.problemTargetSet.add(this.selectTargetValue()[i]);
     }
 
+    
+
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
       let jsonItem = jsonFilex.jsonFile[j];  
@@ -88,6 +90,7 @@ class ProblemDetailsViewModel {
           }
         }
     }
+    
 
 
     for(var j = 0;j<this.problemArray.length;j++){
@@ -95,14 +98,27 @@ class ProblemDetailsViewModel {
       
       this.problemArray[j].allTargets = tmpArray[j].array;
 
-      if(this.problemArray[j].avgBelief>=75){
+      if(this.problemArray[j].avgBelief<=this.higher && this.problemArray[j].avgBelief>this.medium+3){
+        this.highProbProblems++;
         this.highCount++;
         this.highArray.push(this.problemArray[j]);
-      } else{
+      }else if(this.problemArray[j].avgBelief>= this.lower && this.problemArray[j].avgBelief<this.medium-3){
+        this.lowProbProblems++;
+        this.lowCount++;
+        this.lowArray.push(this.problemArray[j]);
+      }else{
+        this.mediumProbProblems++;
         this.mediumCount++;
         this.mediumArray.push(this.problemArray[j]);
       }
     }
+
+    this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
+    this.highProbQuantity = ko.observable(this.highProbProblems);
+    this.lowProbQuantity = ko.observable(this.lowProbProblems);
+    this.high = ko.observable(this.higher);
+    this.med = ko.observable(this.medium);
+    this.low = ko.observable(this.lower);
 
     for(var j = 0;j<this.targetsAppeared.length;j++){
       for(let item of this.targetsAppeared[j].set.values()){
@@ -206,14 +222,29 @@ class ProblemDetailsViewModel {
       
       this.problemArray[j].allTargets = tmpArray[j].array;
 
-      if(this.problemArray[j].avgBelief>=75){
+      if(this.problemArray[j].avgBelief<=this.higher && this.problemArray[j].avgBelief>this.medium+3){
+        this.highProbProblems++;
         this.highCount++;
         this.highArray.push(this.problemArray[j]);
-      } else{
+      }else if(this.problemArray[j].avgBelief>= this.lower && this.problemArray[j].avgBelief<this.medium-3){
+        this.lowProbProblems++;
+        this.lowCount++;
+        this.lowArray.push(this.problemArray[j]);
+      }else{
+        this.mediumProbProblems++;
         this.mediumCount++;
         this.mediumArray.push(this.problemArray[j]);
       }
+
+
     }
+
+    this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
+    this.highProbQuantity = ko.observable(this.highProbProblems);
+    this.lowProbQuantity = ko.observable(this.lowProbProblems);
+    this.high = ko.observable(this.higher);
+    this.med = ko.observable(this.medium);
+    this.low = ko.observable(this.lower);
 
     for(var j = 0;j<this.targetsAppeared.length;j++){
       for(let item of this.targetsAppeared[j].set.values()){
@@ -258,6 +289,16 @@ class ProblemDetailsViewModel {
   arrayInfo: Array<{ value: string, children: Array<{ value: string }> }> = [];
 
   resultCount;
+  higher;
+  lower;
+  medium;
+  mediumProbQuantity: ko.Observable<number> = ko.observable(0);
+  highProbQuantity: ko.Observable<number> = ko.observable(0);
+  lowProbQuantity: ko.Observable<number> = ko.observable(0);
+
+  high: ko.Observable<number> = ko.observable(0);
+  med: ko.Observable<number> = ko.observable(0);
+  low: ko.Observable<number> = ko.observable(0);
 
 
 
@@ -336,6 +377,10 @@ class ProblemDetailsViewModel {
     action: string, mainTarget:string, mainTime: string, 
     allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
 
+    lowArray: Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
+      action: string, mainTarget:string, mainTime: string, 
+      allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+
     highArray: Array<{id:string,name: string, count: number, avgBelief: number, description: string, cause: string, 
       action: string, mainTarget:string, mainTime: string, 
       allTargets: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
@@ -396,8 +441,12 @@ filterCategory = (
       let tmp = JSON.stringify(this.highArray);
       let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
       this.dataProvider(tmpDataProvider);
-    } else{
+    } else if(this.currentCategory()[0]=="Medium"){
       let tmp = JSON.stringify(this.mediumArray);
+      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
+      this.dataProvider(tmpDataProvider);
+    }else{
+      let tmp = JSON.stringify(this.lowArray);
       let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
       this.dataProvider(tmpDataProvider);
     }
@@ -485,18 +534,36 @@ filterCategory = (
 
     mediumCount : number = 0;
     highCount : number = 0;
+    lowCount : number = 0;
+    
+    mediumProbProblems = 0;
+    highProbProblems = 0;
+    lowProbProblems = 0;
+    
     currentCategory : ko.ObservableArray<string> = ko.observableArray(["Medium","High"]);
 
 
 
   constructor() {
 
+
     this.fillData();
     this.addTDPInfo();
     let problemFilterArray: Array<{value:string,label:string}> = [];
     let dates = [];
     let tmpArray : Array<{array: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}>}> = [];
+    this.higher=jsonFilex.jsonFile[0].belief
+    this.lower=this.higher
     for (var j =0;j<jsonFilex.jsonFile.length;j++){
+      
+      if(jsonFilex.jsonFile[j].belief<this.lower){
+        this.lower=jsonFilex.jsonFile[j].belief
+      }
+
+      if(jsonFilex.jsonFile[j].belief>this.higher){
+        this.higher=jsonFilex.jsonFile[j].belief
+      }
+   
 
       dates.push(jsonFilex.jsonFile[j].t1);
         if(jsonFilex.jsonFile[j].t2!=undefined && jsonFilex.jsonFile[j].t2!=""){
@@ -542,22 +609,52 @@ filterCategory = (
         }
     }
 
+    if(!isNaN(Number(this.higher))){
+      var higherValue = Number(this.higher);
+    } else{
+      higherValue = this.higher
+    }
+    if(!isNaN(Number(this.lower))){
+      var lowerValue = Number(this.lower);
+    } else{
+      lowerValue = this.lower
+    }
+
+    this.medium=(lowerValue+higherValue)/2
+    console.log("numero menor "+ this.lower)
+    console.log("numero medio "+ this.medium)
+    console.log("numero mayor "+ this.higher)
+
     let jsonFilterProblems = JSON.stringify(problemFilterArray);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
+    console.log(this.problemArray)
     for(var j = 0;j<this.problemArray.length;j++){
       this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
       
       this.problemArray[j].allTargets = tmpArray[j].array;
 
-      if(this.problemArray[j].avgBelief>=75){
+      if(this.problemArray[j].avgBelief<=this.higher && this.problemArray[j].avgBelief>this.medium+3){
         this.highCount++;
         this.highArray.push(this.problemArray[j]);
-      } else{
+      }else if(this.problemArray[j].avgBelief>= this.lower && this.problemArray[j].avgBelief<this.medium-3){
+        this.lowCount++;
+        this.lowArray.push(this.problemArray[j]);
+      }else{
         this.mediumCount++;
         this.mediumArray.push(this.problemArray[j]);
       }
+
+
+
     }
+    this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
+    this.highProbQuantity = ko.observable(this.highProbProblems);
+    this.lowProbQuantity = ko.observable(this.lowProbProblems);
+    this.high = ko.observable(this.higher);
+    this.med = ko.observable(this.medium);
+    this.low = ko.observable(this.lower);
+    console.log(this.higher)
 
     for(var j = 0;j<this.targetsAppeared.length;j++){
       for(let item of this.targetsAppeared[j].set.values()){

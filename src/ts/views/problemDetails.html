@@ -211,6 +211,7 @@
           <oj-checkboxset id="rowDirectionEnabledCheckboxset" value='{{currentCategory}}' class='oj-choice-direction-row' label-hint="Filter by category">
             <oj-option value="Medium">Medium (<oj-bind-text value='[[mediumCount]]'></oj-bind-text>)</oj-option>
             <oj-option value="High">High (<oj-bind-text value='[[highCount]]'></oj-bind-text>)</oj-option>
+            <oj-option value="Low">Low (<oj-bind-text value='[[lowCount]]'></oj-bind-text>)</oj-option>
           </oj-checkboxset>
 
           
@@ -252,15 +253,24 @@
                 </div>
                 <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
                   <!-- Medium probability -->
-                  <oj-bind-if test="[[item.data.avgBelief < 75]]">
+                  <oj-bind-if test="[[(item.data.avgBelief>57.926693) && (item.data.avgBelief<63.926693)]]">
                     <div id ="medium-prob">
                       MEDIUM
                     </div>
                     
                   </oj-bind-if>
 
+                  <!-- Low probability -->
+                  <oj-bind-if test="[[(item.data.avgBelief>=50.348686) && (item.data.avgBelief < 57.926693) ]]">
+                    <div id ="low-prob">
+                      LOW
+                    </div>
+                  
+                  </oj-bind-if>
+
+
                   <!-- High probability -->
-                  <oj-bind-if test="[[item.data.avgBelief >= 75]]">
+                  <oj-bind-if test="[[(item.data.avgBelief<=71.504700) && (item.data.avgBelief > 63.926693) ]]">
                     <div id="high-prob">
                       HIGH
                     </div>
