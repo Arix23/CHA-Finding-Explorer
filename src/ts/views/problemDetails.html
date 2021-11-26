@@ -4,149 +4,184 @@
  as shown at https://oss.oracle.com/licenses/upl/
  -->
 <div class="oj-hybrid-padding">
-  
-  
+
+
   <div id="if-statement">
     <!-- IF PROBLEM SELECTED -->
     <oj-bind-if test="[[problemAccessed() !== 'null']]">
-      
-      <div id="problem-header" class="oj-flex oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
+
+      <div id="problem-header"
+        class="oj-flex oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
         <div class="oj-md-1 oj-lg-1 oj-xl-1 oj-sm-1 ">
-          <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[goBack]]">
+          <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[goBack]]">
             ← Go back
           </oj-button>
         </div>
         <div class="oj-md-8 oj-lg-8 oj-xl-8 oj-sm-8">
-          <h1 id="problem-name"><oj-bind-text value="[[selectedProblem().name]]"></oj-bind-text></h1>
+          <h1 id="problem-name">
+            <oj-bind-text value="[[selectedProblem().name]]"></oj-bind-text>
+          </h1>
         </div>
         <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-sm-2 ">
           <oj-bind-if test="[[selectedProblemID() <= 0]]">
-            <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]" disabled="true">
+            <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]" disabled="true">
               ← Prev
             </oj-button>
           </oj-bind-if>
           <oj-bind-if test="[[selectedProblemID() > 0]]">
-            <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]">
+            <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[prev]]">
               ← Prev
             </oj-button>
           </oj-bind-if>
-          
+
           <oj-bind-if test="[[selectedProblemID() >= lengthProblem-1]]">
-            <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[next]]" disabled="true">
+            <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[next]]" disabled="true">
               → Next
             </oj-button>
           </oj-bind-if>
           <oj-bind-if test="[[selectedProblemID() < lengthProblem-1]]">
-            <oj-button id ="problem-buttons" chroming="callToAction" on-oj-action="[[next]]">
+            <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[next]]">
               → Next
             </oj-button>
-          </oj-bind-if> 
+          </oj-bind-if>
         </div>
       </div>
       <div class="oj-flex" id="problem-header">
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4">
           <h3>
-          ID:
-        </h3>
+            ID:
+          </h3>
           <oj-bind-text value="[[selectedProblem().id]]"></oj-bind-text>
         </div>
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4">
           <h3>
-          Total repetitions:
-        </h3>
+            Total repetitions:
+          </h3>
           <oj-bind-text value="[[selectedProblem().count]]"></oj-bind-text>
         </div>
-        <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="medium-prob">
-          <h3>
-          Average Belief:
-        </h3>
-          <oj-bind-text value="[[selectedProblem().avgBelief]]"></oj-bind-text>
-          [Medium probability]
-        </div>
-        </div>
-        <div class ="oj-flex layout-problem">
+
+        <!-- Medium probability -->
+        <oj-bind-if test="[[(selectedProblem().avgBelief>med()-3) && (selectedProblem().avgBelief<med()+3)]]">
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="medium-prob">
+            <h3>
+              Average Belief:
+            </h3>
+            <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
+            [Medium probability]
+          </div>
+
+        </oj-bind-if>
+
+        <!-- Low probability -->
+        <oj-bind-if test="[[(selectedProblem().avgBelief>=low()) && (selectedProblem().avgBelief < med()-3) ]]">
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="low-prob">
+            <h3>
+              Average Belief:
+            </h3>
+            <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
+            [Low probability]
+          </div>
+        </oj-bind-if>
+
+
+        <!-- High probability -->
+        <oj-bind-if test="[[(selectedProblem().avgBelief<=high()) && (selectedProblem().avgBelief > med()+3) ]]">
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="high-prob">
+            <h3>
+              Average Belief:
+            </h3>
+            <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
+            [High probability]
+          </div>
+        </oj-bind-if>
+
+      </div>
+      <div class="oj-flex layout-problem">
 
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card">
           <h2>
-          Description:
-        </h2>
+            Description:
+          </h2>
           <oj-bind-text value="[[selectedProblem().description]]"></oj-bind-text>
         </div>
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card">
           <h2>
-          Causes:
-        </h2>
+            Causes:
+          </h2>
           <oj-bind-text value="[[selectedProblem().cause]]"></oj-bind-text>
         </div>
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card">
           <h2>
-          Action:
-        </h2>
+            Action:
+          </h2>
           <oj-bind-text value="[[selectedProblem().action]]"></oj-bind-text>
         </div>
 
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card">
           <h2>
-          Main Target in which it appears:
-        </h2>
+            Main Target in which it appears:
+          </h2>
           <oj-bind-text value="[[selectedProblem().mainTarget]]"></oj-bind-text>
         </div>
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card">
           <h2>
-          Main Time Period
-        </h2>
+            Main Time Period
+          </h2>
           <oj-bind-text value="[[selectedProblem().mainTime]]"></oj-bind-text>
         </div>
         <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="problem-details-card" height=20%>
           <h2>
-          Targets in which appeared:
-        </h2>
-        <div id="listviewContainer">
-        <oj-list-view id="listview" aria-label="notes" class="demo-list"
-        data="[[targetsAppearedProvider()]]"
-        selection-mode="single">
+            Targets in which appeared:
+          </h2>
+          <div id="listviewContainer">
+            <oj-list-view id="listview" aria-label="notes" class="demo-list" data="[[targetsAppearedProvider()]]"
+              selection-mode="single">
 
-        <template slot="itemTemplate" data-oj-as="item">
-            <div class="oj-flex oj-sm-justify-content-space-between oj-sm-align-items-center">
-                <span class="oj-typography-body-md oj-text-color-primary"><oj-bind-text value='[[item.data.target]]'></oj-bind-text></span>
-                
-            </div>
-            
-        </template>
-    </oj-list-view>
-  </div>
+              <template slot="itemTemplate" data-oj-as="item">
+                <div class="oj-flex oj-sm-justify-content-space-between oj-sm-align-items-center">
+                  <span class="oj-typography-body-md oj-text-color-primary">
+                    <oj-bind-text value='[[item.data.target]]'></oj-bind-text>
+                  </span>
+
+                </div>
+
+              </template>
+            </oj-list-view>
+          </div>
         </div>
 
 
 
         <div class="oj-md-12 oj-lg-12 oj-xl-12 oj-sm-12">
           <h3>
-        Full Report: 
-      </h3>
-        <!-- barra de filtros -->
-  <div class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
+            Full Report:
+          </h3>
+          <!-- barra de filtros -->
+          <div
+            class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
 
-    Filters:
+            Filters:
 
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time label-hint="From:" autocomplete="off"></oj-input-date-time>
+            <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+              <oj-input-date-time label-hint="From:" autocomplete="off"></oj-input-date-time>
 
-    </div>
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time label-hint="To:" autocomplete="off"></oj-input-date-time>
+            </div>
+            <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+              <oj-input-date-time label-hint="To:" autocomplete="off"></oj-input-date-time>
 
-    </div>
+            </div>
 
-    <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" on-value-changed="[[applyDetailsTargetFilter]]" maximum-result-count=-1>         
-      </oj-select-many>
+            <div
+              class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
+              <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside"
+                on-value-changed="[[applyDetailsTargetFilter]]" maximum-result-count=-1>
+              </oj-select-many>
 
-    </div>
-  </div>
-  <div class="problem-table-div">
-        <oj-table id="table" aria-label='Problems Table' data='[[detailsDataProvider()]]'
-                        scroll-policy='loadAll'
-                        horizontal-grid-visible ="enabled"  vertical-grid-visible="enabled" columns='[
+            </div>
+          </div>
+          <div class="problem-table-div">
+            <oj-table id="table" aria-label='Problems Table' data='[[detailsDataProvider()]]' scroll-policy='loadAll'
+              horizontal-grid-visible="enabled" vertical-grid-visible="enabled" columns='[
                                                    {"headerText": "Cluster", 
                                                    "field": "cluster",
                                                    "resizable": "enabled"},
@@ -168,114 +203,124 @@
                                                    {"headerText": "Belief", 
                                                    "field": "belief",
                                                    "resizable": "enabled"}]' class="problem-table">
-        </oj-table>
-      </div>
-      </div>
+            </oj-table>
+          </div>
+        </div>
       </div>
     </oj-bind-if>
 
     <!-- IF NO PROBLEM SELECTED -->
-    
+
     <oj-bind-if test="[[problemAccessed() === 'null']]">
       <!-- barra de filtros -->
-  <div class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
+      <div
+        class="oj-bg-neutral-30 oj-flex-bar-start oj-xl-margin-4x oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-panel oj-panel-border-radius-1">
 
-    <oj-button id="restart" class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
-      <span slot="startIcon" class="oj-ux-ico-refresh"></span>
-    </oj-button>
+        <oj-button id="restart"
+          class="oj-bg-neutral-0  oj-md-1 oj-lg-1 oj-xl-1 oj-lg-margin-4x-start oj-xl-margin-4x-start  oj-flex-item ">
+          <span slot="startIcon" class="oj-ux-ico-refresh"></span>
+        </oj-button>
 
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time min="[[startDate()]]" max="[[endDate()]]"label-hint="From:" autocomplete="off"></oj-input-date-time>
+        <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+          <oj-input-date-time min="[[startDate()]]" max="[[endDate()]]" label-hint="From:" autocomplete="off">
+          </oj-input-date-time>
 
-    </div>
-    <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time min="[[startDate()]]" max="[[endDate()]]"label-hint="To:" autocomplete="off"></oj-input-date-time>
+        </div>
+        <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
+          <oj-input-date-time min="[[startDate()]]" max="[[endDate()]]" label-hint="To:" autocomplete="off">
+          </oj-input-date-time>
 
-    </div>
+        </div>
 
-    <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many  label-hint="Problems" on-value-changed="[[applyProblemFilters]]"options = "{{problemsDataProvider}}" value ="{{selectProblemValue}}" label-edge="inside">
-      </oj-select-many>
+        <div
+          class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-2x-vertical oj-flex-item">
+          <oj-select-many label-hint="Problems" on-value-changed="[[applyProblemFilters]]"
+            options="{{problemsDataProvider}}" value="{{selectProblemValue}}" label-edge="inside">
+          </oj-select-many>
 
-    </div>
+        </div>
 
-    <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
-      <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1 on-value-changed="[[applyTargetFilters]]">         
-      </oj-select-many>
+        <div
+          class="oj-md-4 oj-lg-4 oj-xl-4 oj-lg-margin-4x-start oj-lg-margin-4x-end oj-lg-margin-2x-vertical oj-xl-margin-4x-start oj-xl-margin-4x-end oj-xl-margin-2x-vertical oj-flex-item">
+          <oj-select-many options="[[targetFilterDP]]" label-hint="Target" label-edge="inside" maximum-result-count=-1
+            on-value-changed="[[applyTargetFilters]]">
+          </oj-select-many>
 
-    </div>
-  </div>
+        </div>
+      </div>
       <h1>Problem Details</h1>
-      <div class="oj-flex oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
+      <div
+        class="oj-flex oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
         <div class="oj-sm-3 oj-md-3 oj-lg-3 oj-xl-3">
-          <oj-checkboxset id="rowDirectionEnabledCheckboxset" value='{{currentCategory}}' class='oj-choice-direction-row' label-hint="Filter by category">
+          <oj-checkboxset id="rowDirectionEnabledCheckboxset" value='{{currentCategory}}'
+            class='oj-choice-direction-row' label-hint="Filter by category">
             <oj-option value="Medium">Medium (<oj-bind-text value='[[mediumCount]]'></oj-bind-text>)</oj-option>
             <oj-option value="High">High (<oj-bind-text value='[[highCount]]'></oj-bind-text>)</oj-option>
             <oj-option value="Low">Low (<oj-bind-text value='[[lowCount]]'></oj-bind-text>)</oj-option>
           </oj-checkboxset>
 
-          
-    </div>
-    
-    <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
-      <oj-input-number id="st1ena" value=1 label-hint="min Frequency" 
-              min=1 step=1></oj-input-number>
-    </div>
-    <div class="oj-sm-1 oj-md-1 oj-xl-1 oj-lg-1">
-      
-    </div>
-    <div class="oj-sm-1 oj-md-1 oj-xl-1 oj-lg-1">
-      <oj-button chroming="callToAction" on-oj-action="[[filterCategory]]">
-        Filter
-      </oj-button>
-    </div>
-    </div>
+
+        </div>
+
+        <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
+          <oj-input-number id="st1ena" value=1 label-hint="min Frequency" min=1 step=1></oj-input-number>
+        </div>
+        <div class="oj-sm-1 oj-md-1 oj-xl-1 oj-lg-1">
+
+        </div>
+        <div class="oj-sm-1 oj-md-1 oj-xl-1 oj-lg-1">
+          <oj-button chroming="callToAction" on-oj-action="[[filterCategory]]">
+            Filter
+          </oj-button>
+        </div>
+      </div>
       <div class="oj-flex">
-      <oj-bind-for-each data="[[dataProvider()]]">
-        <template data-oj-as="item">
-          <div class="oj-sm-6 oj-md-6 oj-lg-4 oj-xl-4 oj-sm-align-items-center " id="table-item">
-            <div class="oj-flex border-problem">
-              <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 layout-problem" id="problem-details-name">
-                <oj-bind-text value="[[item.observableIndex]]"></oj-bind-text> : <oj-bind-text value="[[item.data.name]]"></oj-bind-text>
-              </div>
-
-              <div class="oj-flex layout-problem" id="problem-element">
-                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
-                  Frequency:
+        <oj-bind-for-each data="[[dataProvider()]]">
+          <template data-oj-as="item">
+            <div class="oj-sm-6 oj-md-6 oj-lg-4 oj-xl-4 oj-sm-align-items-center " id="table-item">
+              <div class="oj-flex border-problem">
+                <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 layout-problem" id="problem-details-name">
+                  <oj-bind-text value="[[item.observableIndex]]"></oj-bind-text> : <oj-bind-text
+                    value="[[item.data.name]]"></oj-bind-text>
                 </div>
-                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
-                  <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
-                </div>
-              </div>
-              <div class="oj-flex layout-problem" id="problem-element">
-                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
-                  Category:
-                </div>
-                <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
-                  <!-- Medium probability -->
-                  <oj-bind-if test="[[(item.data.avgBelief>57.926693) && (item.data.avgBelief<63.926693)]]">
-                    <div id ="medium-prob">
-                      MEDIUM
-                    </div>
-                    
-                  </oj-bind-if>
 
-                  <!-- Low probability -->
-                  <oj-bind-if test="[[(item.data.avgBelief>=50.348686) && (item.data.avgBelief < 57.926693) ]]">
-                    <div id ="low-prob">
-                      LOW
-                    </div>
-                  
-                  </oj-bind-if>
-
-
-                  <!-- High probability -->
-                  <oj-bind-if test="[[(item.data.avgBelief<=71.504700) && (item.data.avgBelief > 63.926693) ]]">
-                    <div id="high-prob">
-                      HIGH
-                    </div>
-                  </oj-bind-if>
+                <div class="oj-flex layout-problem" id="problem-element">
+                  <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                    Frequency:
+                  </div>
+                  <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                    <oj-bind-text value="[[item.data.count]]"></oj-bind-text>
+                  </div>
                 </div>
+                <div class="oj-flex layout-problem" id="problem-element">
+                  <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                    Category:
+                  </div>
+                  <div class="oj-sm-12 oj-md-12 oj-lg-6 oj-xl-6">
+                    <!-- Medium probability -->
+                    <oj-bind-if test="[[(item.data.avgBelief>med()-3) && (item.data.avgBelief<med()+3)]]">
+                      <div id="medium-prob">
+                        MEDIUM
+                      </div>
+
+                    </oj-bind-if>
+
+                    <!-- Low probability -->
+                    <oj-bind-if test="[[(item.data.avgBelief>=low()) && (item.data.avgBelief < med()-3) ]]">
+                      <div id="low-prob">
+                        LOW
+                      </div>
+
+                    </oj-bind-if>
+
+
+                    <!-- High probability -->
+                    <oj-bind-if test="[[(item.data.avgBelief<=high()) && (item.data.avgBelief > med()+3) ]]">
+                      <div id="high-prob">
+                        HIGH
+                      </div>
+                    </oj-bind-if>
+                  </div>
                 </div>
 
                 <!-- <div class="oj-flex">
@@ -285,22 +330,26 @@
                   <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
                     
                   </div> -->
-                  <div class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 oj-flex-align-items-center oj-flex-justify-content-center" id ="callToActionProblem">
-                    
-                    <oj-button class="oj-helper-overflow-wrap-anywhere oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center" id="chroming_button4" chroming="callToAction" on-oj-action="[[accessProblem]]">
-                      <div id="helper-button">Click here to see full details</div>
+                <div
+                  class="oj-sm-12 oj-md-12 oj-lg-12 oj-xl-12 oj-flex-align-items-center oj-flex-justify-content-center"
+                  id="callToActionProblem">
+
+                  <oj-button
+                    class="oj-helper-overflow-wrap-anywhere oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center"
+                    id="chroming_button4" chroming="callToAction" on-oj-action="[[accessProblem]]">
+                    <div id="helper-button">Click here to see full details</div>
                   </oj-button>
                 </div>
-                  </div>
-                  
-                  
+              </div>
+
+
             </div>
-            
-          </div>
-        </template>
-        <template slot="noData">
-          <div class="oj-typography-body-md oj-typography-bold oj-sm-padding-2x-top">No Problems to display</div>
-        </template>
+
+      </div>
+      </template>
+      <template slot="noData">
+        <div class="oj-typography-body-md oj-typography-bold oj-sm-padding-2x-top">No Problems to display</div>
+      </template>
       </oj-bind-for-each>
     </oj-bind-if>
   </div>

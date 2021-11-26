@@ -25,6 +25,10 @@
   background-color: rgba(251, 251, 122, 0.774);
 }
 
+#low-prob{
+  background-color: rgba(125, 240, 102, 0.774);
+}
+
 #high-prob {
   background-color: rgb(216, 84, 84);
 }
