@@ -70,6 +70,8 @@ class DashboardViewModel {
   maxCluster = "N/A";
   mediumProbProblems = 0;
   highProbProblems = 0;
+  lowProbProblems = 0;
+ 
 
   
   
@@ -87,6 +89,8 @@ class DashboardViewModel {
 
 
   }
+
+
 
   public calculateInfo() {
     if (jsonFilex.jsonFile != null) {
@@ -107,7 +111,40 @@ class DashboardViewModel {
       let hourMap = new Map();
       let dates = [];
       let maxHourCount = 0
+      var higher=0;
+      var lower=0;
+      var medium=0;
 
+      higher=this.jsonFile[0].belief
+      lower=higher
+      for (var i = 0; i < this.jsonFile.length; i++) {
+
+        if(this.jsonFile[i].belief<lower){
+          lower=this.jsonFile[i].belief
+        }
+
+        if(this.jsonFile[i].belief>higher){
+          higher=this.jsonFile[i].belief
+        }
+
+      }
+      if(!isNaN(Number(higher))){
+        var higherValue = Number(higher);
+      } else{
+        higherValue = higher
+      }
+      if(!isNaN(Number(lower))){
+        var lowerValue = Number(lower);
+      } else{
+        lowerValue = lower
+      }
+
+      medium=(lowerValue+higherValue)/2
+      console.log("numero menor "+ lower)
+      console.log("numero medio "+ medium)
+      console.log("numero mayor "+ higher)
+
+      
       for (var i = 0; i < this.jsonFile.length; i++) {
 
 
@@ -148,10 +185,12 @@ class DashboardViewModel {
 
         //GET QUANTITY OF PROBLEMS OF A CERTAIN PROBABILITY
 
-        if(this.jsonFile[i].belief<75.0){
-          this.mediumProbProblems++;
-        } else{
+        if(this.jsonFile[i].belief<=higher && this.jsonFile[i].belief>medium+3){
           this.highProbProblems++;
+        } else if(this.jsonFile[i].belief>= lower && this.jsonFile[i].belief<medium-3){
+          this.lowProbProblems++;
+        }else{
+          this.mediumProbProblems++;
         }
 
         //GET MOST FREQUENT PROBLEM
@@ -291,6 +330,8 @@ class DashboardViewModel {
       this.mostFrequentProblem = ko.observable(this.maxProblem);
       this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
       this.highProbQuantity = ko.observable(this.highProbProblems);
+      this.lowProbQuantity = ko.observable(this.lowProbProblems);
+
 
       
       this.dataBaseMostProblems = ko.observable(this.maxDataBase);
@@ -300,6 +341,7 @@ class DashboardViewModel {
       this.mostFrequentProblem = ko.observable(this.maxProblem);
       this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
       this.highProbQuantity = ko.observable(this.highProbProblems);
+      this.lowProbQuantity = ko.observable(this.lowProbProblems);
 
     this.jsonUploaded(true);
   }
@@ -315,6 +357,9 @@ class DashboardViewModel {
   mostFrequentProblem: ko.Observable<string> = ko.observable("N/A");
   mediumProbQuantity: ko.Observable<number> = ko.observable(0);
   highProbQuantity: ko.Observable<number> = ko.observable(0);
+  lowProbQuantity: ko.Observable<number> = ko.observable(0);
+
+  
 
 
   multiple: ko.ObservableArray<string> = ko.observableArray(["single"]);
