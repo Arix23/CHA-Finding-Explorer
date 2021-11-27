@@ -16,7 +16,7 @@ import "ojs/ojtoolbar";
 import * as Bootstrap from "ojs/ojbootstrap";
 import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
-import { ojDatePicker } from "ojs/ojdatetimepicker";
+import { ojDatePicker, ojInputDateTime } from "ojs/ojdatetimepicker";
 import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
@@ -26,6 +26,7 @@ import "ojs/ojtimezonedata";
 import { ojSelectMany } from "ojs/ojselectcombobox";
 import ArrayTreeDataProvider = require("ojs/ojarraytreedataprovider");
 import { AvailableTimeZoneType } from "@oracle/oraclejet/dist/types/ojtimezoneutils";
+import { ojButtonEventMap } from "@oracle/oraclejet/dist/types/ojbutton";
 type TreeNode = { value: string; children: Array<{ value: String }> };
 
 class DetailsViewModel {
@@ -179,6 +180,18 @@ class DetailsViewModel {
     this.dataProvider3 = new ArrayDataProvider(JSON.parse(jsonx), { keyAttributes: 'hour' });
     this.dataObservableProvider3(this.dataProvider3);
   }
+
+  applyFromFilter = (
+    
+  ) => {
+    console.log("filtro")
+  }
+
+  applyToFilter = (
+    
+    ) => {
+      console.log("filtro")
+    }
 
   applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
@@ -387,6 +400,17 @@ class DetailsViewModel {
   }
 
 
+
+  resetFilters = (event: Event,
+    bindingContext: ko.BindingContext) => {
+    this.selectProblemValue([]);
+    this.fromDate(""); 
+    this.toDate(""); 
+    this.selectTargetValue([]);
+    
+  };
+
+
   startDate :ko.Observable<string>= ko.observable("N/A");
   endDate: ko.Observable<string> = ko.observable("N/A");
   problemFilterMap = new Map();
@@ -419,6 +443,8 @@ class DetailsViewModel {
   dataObservableProvider3 : ko.Observable<ArrayDataProvider<any, any>> = ko.observable();
   problemsDataProvider : ArrayDataProvider<any,any>;
   readonly selectProblemValue = ko.observableArray([]);
+  readonly fromDate : ko.Observable<string> = ko.observable("");
+  readonly toDate : ko.Observable<string> = ko.observable("");
   readonly selectTargetValue = ko.observableArray([]);
   problemFilters = new Map();
 

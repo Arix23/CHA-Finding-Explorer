@@ -577,6 +577,15 @@ class TargetDetailsViewModel {
     //this.selectionGraph1(temGraphData);
 
   }
+  readonly fromDate : ko.Observable<string> = ko.observable("");
+  readonly toDate : ko.Observable<string> = ko.observable("");
+  resetFilters = (event: Event,
+    bindingContext: ko.BindingContext) => {
+    this.selectProblemValue([]);
+    this.fromDate(""); 
+    this.toDate(""); 
+    
+  };
 
   constructor() {
 

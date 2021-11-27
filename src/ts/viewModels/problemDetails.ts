@@ -469,6 +469,16 @@ filterCategory = (
     this.problemAccessed.valueHasMutated();
   };
 
+  resetFilters = (event: Event,
+    bindingContext: ko.BindingContext) => {
+    console.log("AAA");
+    this.selectProblemValue([]);
+    this.fromDate(""); 
+    this.toDate(""); 
+    this.selectTargetValue([]);
+    
+  };
+
 
   //Prev
   prev = (
@@ -507,6 +517,8 @@ filterCategory = (
   problemTargetSet = new Set();
   readonly selectProblemValue = ko.observableArray([]);
   readonly selectTargetValue = ko.observableArray([]);
+  readonly fromDate : ko.Observable<string> = ko.observable("");
+  readonly toDate : ko.Observable<string> = ko.observable("");
   readonly selectDetailsTargetValue = ko.observableArray([]);
   
 
@@ -542,6 +554,7 @@ filterCategory = (
     
     currentCategory : ko.ObservableArray<string> = ko.observableArray(["Medium","High"]);
 
+    
 
 
   constructor() {

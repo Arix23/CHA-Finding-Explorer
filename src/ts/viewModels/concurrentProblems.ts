@@ -156,6 +156,15 @@ class ConcurrentProblemCountViewModel {
     //console.log("lista de datos: "+ this.arrayInfo[2].value);
   }
 
+  resetFilters = (event: Event,
+    bindingContext: ko.BindingContext) => {
+    this.selectProblemValue([]);
+    this.fromDate(""); 
+    this.toDate(""); 
+    this.selectTargetValue([]);
+    
+  };
+
 
   public fillData() {
     let dates = [];
@@ -249,6 +258,8 @@ class ConcurrentProblemCountViewModel {
     dataProvider : ArrayDataProvider<any, any>;
     dataObservableProvider: ko.Observable<ArrayDataProvider<any,any>> = ko.observable();
     problemsDataProvider : ArrayDataProvider<any,any>;
+    readonly fromDate : ko.Observable<string> = ko.observable("");
+  readonly toDate : ko.Observable<string> = ko.observable("");
 
   constructor() {
     this.fillData();

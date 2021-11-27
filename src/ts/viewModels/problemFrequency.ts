@@ -246,6 +246,16 @@ class ProblemFrequencyViewModel {
     this.dataObservableProvider(this.dataProvider);
   }
 
+  resetFilters = (event: Event,
+    bindingContext: ko.BindingContext) => {
+    console.log("AAA");
+    this.selectProblemValue([]);
+    this.fromDate(""); 
+    this.toDate(""); 
+    this.selectTargetValue([]);
+    
+  };
+
   readonly selectProblemValue = ko.observableArray();
   readonly selectTargetValue = ko.observableArray();
   
@@ -269,6 +279,8 @@ class ProblemFrequencyViewModel {
 
   selectedProblemsFiltersMap = new Map();
   selectedTargetsFilterMap = new Map();
+  readonly fromDate : ko.Observable<string> = ko.observable("");
+  readonly toDate : ko.Observable<string> = ko.observable("");
 
   dataProvider : ArrayDataProvider<any, any>;
 
