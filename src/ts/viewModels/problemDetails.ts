@@ -158,18 +158,32 @@ class ProblemDetailsViewModel {
     this.dataProvider(tmpDataProvider);
     
   }
+
+  problemDetailsTargetSet = new Set();
   applyDetailsTargetFilter = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
     this.selectDetailsTargetValue(event.detail.value);
-    let problemDetailsTargetSet = new Set();
+    this.problemDetailsTargetSet = new Set();
     for(let i =0;i<this.selectDetailsTargetValue().length;i++){
-      problemDetailsTargetSet.add(this.selectDetailsTargetValue()[i]);
+      this.problemDetailsTargetSet.add(this.selectDetailsTargetValue()[i]);
     }
+    if(this.toDateDetails()==="" || this.toDateDetails()===undefined){
+      this.toDateDetails(this.fullEndDate);
+
+    } 
+
+    if(this.fromDateDetails()==="" || this.fromDateDetails()===undefined){
+      this.fromDateDetails(this.fullStartDate);
+    }
+
+    let testToDate = new Date(this.toDateDetails());
+    let testFromDate = new Date(this.fromDateDetails());
     let tmpJSON = this.problemArray[this.selectedProblemID()].allTargets;
     let tmpArray: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
     for(let item of tmpJSON){
-      if(problemDetailsTargetSet.size===0 || (problemDetailsTargetSet.has(item.db) ||problemDetailsTargetSet.has(item.cluster) || problemDetailsTargetSet.has(item.host) || problemDetailsTargetSet.has(item.instance))){
+      let tempt1 = new Date(item.from);
+      if((tempt1>=testFromDate && tempt1<=testToDate)&&(this.problemDetailsTargetSet.size===0 || (this.problemDetailsTargetSet.has(item.db) ||this.problemDetailsTargetSet.has(item.cluster) || this.problemDetailsTargetSet.has(item.host) || this.problemDetailsTargetSet.has(item.instance)))){
         tmpArray.push(item);
       }
     }
@@ -428,6 +442,63 @@ class ProblemDetailsViewModel {
     this.dataProvider(tmpDataProvider);
     
   }
+
+  fromDateDetails = ko.observable("");
+  toDateDetails = ko.observable("");
+
+
+  applyFromFilterDetails = (
+    event: ojDateTimePicker.valueChanged,
+  ) => {
+    this.fromDateDetails(event.detail.value);
+    if(this.toDateDetails()==="" || this.toDateDetails()===undefined){
+      this.toDateDetails(this.fullEndDate);
+    }
+
+
+
+    let testToDate = new Date(this.toDateDetails());
+    let testFromDate = new Date(this.fromDateDetails());
+    let tmpJSON = this.problemArray[this.selectedProblemID()].allTargets;
+    let tmpArray: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+    for(let item of tmpJSON){
+      let tempt1 = new Date(item.from);
+      if((tempt1>=testFromDate && tempt1<=testToDate)&&(this.problemDetailsTargetSet.size===0 || (this.problemDetailsTargetSet.has(item.db) ||this.problemDetailsTargetSet.has(item.cluster) || this.problemDetailsTargetSet.has(item.host) || this.problemDetailsTargetSet.has(item.instance)))){
+        tmpArray.push(item);
+      }
+    }
+    let tmp = JSON.stringify(tmpArray);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+
+
+    }
+  applyToFilterDetails = (
+    event: ojDateTimePicker.valueChanged,
+  ) => {
+    this.toDateDetails(event.detail.value);
+    if(this.fromDateDetails()==="" || this.fromDateDetails()===undefined){
+      this.fromDateDetails(this.fullStartDate);
+    }
+
+
+
+    let testToDate = new Date(this.toDateDetails());
+    let testFromDate = new Date(this.fromDateDetails());
+    let tmpJSON = this.problemArray[this.selectedProblemID()].allTargets;
+    let tmpArray: Array<{db:string,cluster:string,host:string,from:string,to:string,instance:string,belief:number,hash:string}> = [];
+    for(let item of tmpJSON){
+      let tempt1 = new Date(item.from);
+      if((tempt1>=testFromDate && tempt1<=testToDate)&&(this.problemDetailsTargetSet.size===0 || (this.problemDetailsTargetSet.has(item.db) ||this.problemDetailsTargetSet.has(item.cluster) || this.problemDetailsTargetSet.has(item.host) || this.problemDetailsTargetSet.has(item.instance)))){
+        tmpArray.push(item);
+      }
+    }
+    let tmp = JSON.stringify(tmpArray);
+    let tmpDetails = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'cluster' });
+    this.detailsDataProvider(tmpDetails);
+
+
+    }
 
   applyToFilter = (
     event: ojDateTimePicker.valueChanged,
