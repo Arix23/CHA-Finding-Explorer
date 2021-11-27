@@ -38,7 +38,6 @@ class TargetDetailsViewModel {
     event: ojDateTimePicker.valueChanged,
   ) => {
     this.problemCount = new Map();
-    this.selectedProblemsFiltersMap = new Set();
     this.toDate(event.detail.value)
 
     if(this.fromDate()==="" || this.fromDate()===undefined){
@@ -144,6 +143,7 @@ class TargetDetailsViewModel {
 
     let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
     this.selectionGraph1(temGraphData);
+    this.problemArrayTB1.forEach(val => this.problemArrayTB.push(Object.assign({}, val)));
     temGraphData = new ArrayDataProvider(this.problemArrayTB);
     this.selectionGraph2(temGraphData);
 
@@ -306,6 +306,7 @@ class TargetDetailsViewModel {
 
     let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
     this.selectionGraph1(temGraphData);
+    this.problemArrayTB1.forEach(val => this.problemArrayTB.push(Object.assign({}, val)));
     temGraphData = new ArrayDataProvider(this.problemArrayTB);
     this.selectionGraph2(temGraphData);
 
@@ -362,6 +363,7 @@ class TargetDetailsViewModel {
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
     this.problemCount = new Map();
+    this.selectedProblemsFiltersMap = new Set();
     if(this.toDate()==="" || this.toDate()===undefined){
       this.toDate(this.fullEndDate);
 
@@ -472,6 +474,7 @@ class TargetDetailsViewModel {
 
     let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
     this.selectionGraph1(temGraphData);
+    this.problemArrayTB1.forEach(val => this.problemArrayTB.push(Object.assign({}, val)));
     temGraphData = new ArrayDataProvider(this.problemArrayTB);
     this.selectionGraph2(temGraphData);
 
@@ -533,6 +536,9 @@ class TargetDetailsViewModel {
   readonly categoryDP = new ArrayDataProvider(this.category, {
     keyAttributes: "value",
   });
+
+  categoryValue = "";
+  selectionValue = "";
 
   setDB = new Set();
   setIns = new Set();
@@ -618,11 +624,10 @@ class TargetDetailsViewModel {
       this.selectionDP2(tempSelect);
       this.selectedType2 = "Cluster";
     } else {
-      // let tempSelect = new ArrayDataProvider(this.setAll);
-      // this.selectionDP(tempSelect);
+      
 
     }
-    console.log(event.detail.value)
+
   }
 
   selectType = (
@@ -655,11 +660,9 @@ class TargetDetailsViewModel {
       this.selectionDP(tempSelect);
       this.selectedType = "Cluster";
     } else {
-      // let tempSelect = new ArrayDataProvider(this.setAll);
-      // this.selectionDP(tempSelect);
+      
 
     }
-    console.log(event.detail.value)
   }
 
   fillSelected = (
@@ -667,36 +670,67 @@ class TargetDetailsViewModel {
   ) => {
     this.tableData = [];
     this.selectedTarget = event.detail.value;
+    this.problemCount = new Map();
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let i = 0;
+
+
+    this.tableData = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === event.detail.value && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
     }
-    //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
-    //console.log(this.tableData);
     let temTableData = new ArrayDataProvider(this.tableData);
     this.selectionTableDP(temTableData);
 
+
+
+
+
+    //GRAPHS
     this.problemCountTB1 = new Map();
 
     for (let i in this.tableData){
-      if (this.problemCountTB1.has(this.tableData[i].from)){
-        let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
-        this.problemCountTB1.set(this.tableData[i].from, count);
+      if(this.selectedProblemsFiltersMap.has(this.tableData[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (this.problemCountTB1.has(this.tableData[i].from)){
+          let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
+          this.problemCountTB1.set(this.tableData[i].from, count);
+        }
+        else {
+          this.problemCountTB1.set(this.tableData[i].from, 1);
+        }
       }
-      else {
-        this.problemCountTB1.set(this.tableData[i].from, 1);
-      }
+      
     }
+
+
 
     this.problemArrayTB1 = [];
     this.problemArrayTB = [];
@@ -706,30 +740,31 @@ class TargetDetailsViewModel {
       //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
     });
 
+
+
     let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
     this.selectionGraph1(temGraphData);
-    temGraphData = new ArrayDataProvider(this.problemArrayTB);
-    this.selectionGraph2(temGraphData);
 
 
-    this.problemFrequency1 = new Map();
-    for (let i in this.tableData){
-      if (this.problemFrequency1.has(this.tableData[i].name)){
-        let count = this.problemFrequency1.get(this.tableData[i].name) + 1;
-        this.problemFrequency1.set(this.tableData[i].name, count);
-      }
-      else {
-        this.problemFrequency1.set(this.tableData[i].name, 1);
-      }
-    }
 
     this.frequencyArray1 = [];
     this.problemFrequency1.forEach((value: number, key: string) => {
-      this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+      }
+      
     });
 
     let temPieData = new ArrayDataProvider(this.frequencyArray1);
     this.selectionPie1(temPieData);
+
+
+    //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
+
+
+
+
+
 
     //let jsonCountTB1 = JSON.stringify(this.problemArrayTB1);
     //this.dataProviderTB1 = new ArrayDataProvider(JSON.parse(jsonCountTB1), { keyAttributes: 'hour' });
@@ -740,53 +775,84 @@ class TargetDetailsViewModel {
   ) => {
     this.tableData2 = [];
     this.selectedTarget2 = event.detail.value;
+    this.problemCount = new Map();
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let i = 0;
+
+
+    
+
+
+    //SECOND TABLE
+    this.tableData2 = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == event.detail.value&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
     }
-    //Array <{name : string, database : string, instance : string, host : string, from : string, to : string}>;
-    //console.log(this.tableData2);
-    let temTableData = new ArrayDataProvider(this.tableData2);
-    this.selectionTableDP2(temTableData);
+    let temTableData2 = new ArrayDataProvider(this.tableData2);
+    this.selectionTableDP2(temTableData2);
 
-    this.problemCountTB2 = new Map();
-    //let problemArrayTB2: Array<{hour: string, count: number, series: string}> = [];
+
+
+
+    let problemCountTB = new Map();
+
     for (let i in this.tableData2){
-      if (this.problemCountTB2.has(this.tableData2[i].from)){
-        let count = this.problemCountTB2.get(this.tableData2[i].from) + 1;
-        this.problemCountTB2.set(this.tableData2[i].from, count);
+      if(this.selectedProblemsFiltersMap.has(this.tableData2[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (problemCountTB.has(this.tableData2[i].from)){
+          let count = problemCountTB.get(this.tableData2[i].from) + 1;
+          problemCountTB.set(this.tableData2[i].from, count);
+        }
+        else {
+          problemCountTB.set(this.tableData2[i].from, 1);
+        }
       }
-      else {
-        this.problemCountTB2.set(this.tableData2[i].from, 1);
-      }
+      
     }
+
 
     this.problemArrayTB = [];
-    //this.problemArrayTB = this.problemArrayTB1;
-    //console.log(this.problemCountTB2);
-
+    //console.log(this.problemCountTB1);
     this.problemArrayTB1.forEach(val => this.problemArrayTB.push(Object.assign({}, val)));
 
-    this.problemCountTB2.forEach((value: number, key: string) => {
+    problemCountTB.forEach((value: number, key: string) => {
       this.problemArrayTB.push({ hour: key, count: value , series: "Target 2"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
     });
 
-    console.log("Array2");
-    console.log(this.problemArrayTB);
+
     let temGraphData = new ArrayDataProvider(this.problemArrayTB);
     this.selectionGraph2(temGraphData);
 
 
+    
     this.problemFrequency2 = new Map();
     for (let i in this.tableData2){
       if (this.problemFrequency2.has(this.tableData2[i].name)){
@@ -802,13 +868,17 @@ class TargetDetailsViewModel {
     //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
 
     this.problemFrequency2.forEach((value: number, key: string) => {
-      this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+      }
+      
     });
 
-    console.log(this.frequencyArray2);
 
     let temPieData = new ArrayDataProvider(this.frequencyArray2);
     this.selectionPie2(temPieData);
+
+    this.loadedGraphs2(true);
 
     //let jsonCountTB2 = JSON.stringify(this.problemArrayTB);
     //console.log(jsonCountTB2);
@@ -890,7 +960,8 @@ class TargetDetailsViewModel {
 
   }
 
-
+  selectedCategory2 = "";
+  selectedValue2 = "";
 
   selectedProblemsFiltersMap = new Set();
   // Date picker
@@ -908,16 +979,24 @@ class TargetDetailsViewModel {
   addTarget: ko.Observable<boolean>;
 
   public addTargetButton = (event: ojButtonEventMap['ojAction']) => {
-    console.log("Click en boton add");
     this.addTarget(false);
 
   }
   public removeTargetButton = (event: ojButtonEventMap['ojAction']) => {
+    this.loadedGraphs2(false);
     this.addTarget(true);
+    this.selectionTableDP2(new ArrayDataProvider([]));
+    this.selectionGraph2(new ArrayDataProvider([]));
+    this.selectionPie2(new ArrayDataProvider([]));
+    this.selectedCategory2="";
+    this.selectedValue2="";
+    
     //let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
     //this.selectionGraph1(temGraphData);
 
   }
+
+  loadedGraphs2 = ko.observable(false);
   readonly fromDate : ko.Observable<string> = ko.observable("");
   readonly toDate : ko.Observable<string> = ko.observable("");
   fullStartDate = "";

@@ -64,14 +64,14 @@
         <div
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Type:
-          <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
+          <oj-select-single data="[[categoryDP]]" value={{categoryValue}} label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
           </oj-select-single>
           Active problems in selected target:
         </div>
         <div
           class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
           Select:
-          <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
+          <oj-select-single data="[[selectionDP]]" value={{selectionValue}} label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
 
           </oj-select-single>
 
@@ -118,14 +118,14 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Type:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
+            <oj-select-single data="[[categoryDP]]" value={{categoryValue}} label-hint="enabled" label-edge="inside" on-value-changed="[[selectType]]">
             </oj-select-single>
             Active problems in selected target:
           </div>
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
-            <oj-select-single data="[[selectionDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
+            <oj-select-single data="[[selectionDP]]" value={{selectionValue}} label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected]]">
             </oj-select-single>
 
           </div>
@@ -165,14 +165,14 @@
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Type:
-            <oj-select-single data="[[categoryDP]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[selectType2]]">
+            <oj-select-single data="[[categoryDP]]" value={{selectedCategory2}} label-hint="enabled" label-edge="inside" on-value-changed="[[selectType2]]">
             </oj-select-single>
             Active problems in selected target:
           </div>
           <div
             class="oj-flex-item oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6 oj-bg-neutral-30 oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center ">
             Select:
-            <oj-select-single data="[[selectionDP2]]" value="CH" label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected2]]">
+            <oj-select-single data="[[selectionDP2]]" value={{selectedValue2}} label-hint="enabled" label-edge="inside" on-value-changed="[[fillSelected2]]">
             </oj-select-single>
 
           </div>
@@ -245,7 +245,7 @@
   </oj-bind-if>
 
 
-  <oj-bind-if test="[[addTarget()===false]]">
+  <oj-bind-if test="[[loadedGraphs2()===true]]">
     <div id='chart-container'>
           <oj-chart id="lineChart"
                   type="line"
@@ -299,7 +299,7 @@
   </oj-bind-if>
 
 
-  <oj-bind-if test="[[addTarget()===false]]">
+  <oj-bind-if test="[[loadedGraphs2()===true]]">
     <div id='chart-container'>
       <oj-chart id="pieChart"
         type="pie"

@@ -249,21 +249,22 @@
         </div>
       </div>
       <h1>Problem Details</h1>
-      <div
+      <!-- <div
         class="oj-flex oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
         <div class="oj-sm-3 oj-md-3 oj-lg-3 oj-xl-3">
           <oj-checkboxset id="rowDirectionEnabledCheckboxset" value='{{currentCategory}}'
             class='oj-choice-direction-row' label-hint="Filter by category">
+            <oj-option value="Low">Low (<oj-bind-text value='[[lowCount]]'></oj-bind-text>)</oj-option>
             <oj-option value="Medium">Medium (<oj-bind-text value='[[mediumCount]]'></oj-bind-text>)</oj-option>
             <oj-option value="High">High (<oj-bind-text value='[[highCount]]'></oj-bind-text>)</oj-option>
-            <oj-option value="Low">Low (<oj-bind-text value='[[lowCount]]'></oj-bind-text>)</oj-option>
+            
           </oj-checkboxset>
 
 
         </div>
 
         <div class="oj-sm-6 oj-md-6 oj-lg-6 oj-xl-6">
-          <oj-input-number id="st1ena" value=1 label-hint="min Frequency" min=1 step=1></oj-input-number>
+          <oj-input-number id="st1ena" value={{currentFrequency}} label-hint="min Frequency" min=1 step=1></oj-input-number>
         </div>
         <div class="oj-sm-1 oj-md-1 oj-xl-1 oj-lg-1">
 
@@ -273,7 +274,7 @@
             Filter
           </oj-button>
         </div>
-      </div>
+      </div> -->
       <div class="oj-flex">
         <oj-bind-for-each data="[[dataProvider()]]">
           <template data-oj-as="item">

@@ -306,6 +306,8 @@ class ProblemDetailsViewModel {
     
   }
 
+  currentFrequency = 1;
+
   applyFromFilter = (
     event: ojDateTimePicker.valueChanged,
   ) => {
@@ -317,8 +319,8 @@ class ProblemDetailsViewModel {
     this.problemNameToID = new Map();
     this.IDSet = new Set();
 
-    if(this.fromDate()==="" || this.fromDate()===undefined){
-      this.fromDate(this.fullStartDate);
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
     }
 
 
@@ -499,6 +501,14 @@ class ProblemDetailsViewModel {
         }
     }
 
+    let tmpArrayFilter = [];
+    for(var j = 0;j<this.problemArray.length;j++){
+      
+    }
+
+    this.problemArray = tmpArrayFilter;
+
+    
 
     for(var j = 0;j<this.problemArray.length;j++){
       this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
@@ -521,6 +531,10 @@ class ProblemDetailsViewModel {
 
 
     }
+
+    
+
+    
 
     this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
     this.highProbQuantity = ko.observable(this.highProbProblems);
@@ -710,29 +724,7 @@ filterCategory = (
   event: Event,
   bindingContext: ko.BindingContext
 ) => {
-  if(this.currentCategory().length==0){
-    let tmpDataProvider = new ArrayDataProvider([])
-      this.dataProvider(tmpDataProvider);
-
-  } else if (this.currentCategory().length==2){
-    let tmp = JSON.stringify(this.problemArray);
-    let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
-      this.dataProvider(tmpDataProvider);
-  } else{
-    if(this.currentCategory()[0]=="High"){
-      let tmp = JSON.stringify(this.highArray);
-      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
-      this.dataProvider(tmpDataProvider);
-    } else if(this.currentCategory()[0]=="Medium"){
-      let tmp = JSON.stringify(this.mediumArray);
-      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
-      this.dataProvider(tmpDataProvider);
-    }else{
-      let tmp = JSON.stringify(this.lowArray);
-      let tmpDataProvider = new ArrayDataProvider(JSON.parse(tmp), { keyAttributes: 'name' })
-      this.dataProvider(tmpDataProvider);
-    }
-  }
+  
 
   this.problemAccessed("null");
   this.problemAccessed.valueHasMutated();
@@ -835,7 +827,7 @@ filterCategory = (
     highProbProblems = 0;
     lowProbProblems = 0;
     
-    currentCategory : ko.ObservableArray<string> = ko.observableArray(["Medium","High"]);
+    currentCategory : ko.ObservableArray<string> = ko.observableArray(["Low","Medium","High"]);
 
     
 
