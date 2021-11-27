@@ -20,7 +20,7 @@ import "ojs/ojselectsingle";
 
 import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
-import { ojDatePicker } from "ojs/ojdatetimepicker";
+import { ojDatePicker, ojDateTimePicker } from "ojs/ojdatetimepicker";
 import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
@@ -34,31 +34,41 @@ import "ojs/ojbutton";
 
 
 class TargetDetailsViewModel {
-
-  applyProblemFilters = (
-    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  applyToFilter = (
+    event: ojDateTimePicker.valueChanged,
   ) => {
     this.problemCount = new Map();
     this.selectedProblemsFiltersMap = new Set();
-    
-    let i = 0;
-    this.selectProblemValue(event.detail.value);
-    for(i;i<this.selectProblemValue().length;i++){
-      this.selectedProblemsFiltersMap.add(this.selectProblemValue()[i]);
+    this.toDate(event.detail.value)
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
     }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let i = 0;
+
+
 
     this.tableData = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-
-      if (this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
@@ -70,15 +80,344 @@ class TargetDetailsViewModel {
     //SECOND TABLE
     this.tableData2 = [];
     for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
-      if (this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
-      }else if (this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }
+
+    }
+    let temTableData2 = new ArrayDataProvider(this.tableData2);
+    this.selectionTableDP2(temTableData2);
+
+
+    //GRAPHS
+    this.problemCountTB1 = new Map();
+
+    for (let i in this.tableData){
+      if(this.selectedProblemsFiltersMap.has(this.tableData[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (this.problemCountTB1.has(this.tableData[i].from)){
+          let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
+          this.problemCountTB1.set(this.tableData[i].from, count);
+        }
+        else {
+          this.problemCountTB1.set(this.tableData[i].from, 1);
+        }
+      }
+      
+    }
+
+    let problemCountTB = new Map();
+
+    for (let i in this.tableData2){
+      if(this.selectedProblemsFiltersMap.has(this.tableData2[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (problemCountTB.has(this.tableData2[i].from)){
+          let count = this.problemCountTB1.get(this.tableData2[i].from) + 1;
+          problemCountTB.set(this.tableData2[i].from, count);
+        }
+        else {
+          problemCountTB.set(this.tableData2[i].from, 1);
+        }
+      }
+      
+    }
+
+    this.problemArrayTB1 = [];
+    this.problemArrayTB = [];
+    //console.log(this.problemCountTB1);
+    this.problemCountTB1.forEach((value: number, key: string) => {
+      this.problemArrayTB1.push({ hour: key, count: value , series: "Target 1"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    problemCountTB.forEach((value: number, key: string) => {
+      this.problemArrayTB.push({ hour: key, count: value , series: "Target 2"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
+    this.selectionGraph1(temGraphData);
+    temGraphData = new ArrayDataProvider(this.problemArrayTB);
+    this.selectionGraph2(temGraphData);
+
+
+    this.frequencyArray1 = [];
+    this.problemFrequency1 = new Map();
+    for (let i in this.tableData){
+      if (this.problemFrequency1.has(this.tableData[i].name)){
+        let count = this.problemFrequency1.get(this.tableData[i].name) + 1;
+        this.problemFrequency1.set(this.tableData[i].name, count);
+      }
+      else {
+        this.problemFrequency1.set(this.tableData[i].name, 1);
+      }
+    }
+    this.problemFrequency1.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+      }
+      
+    });
+
+    let temPieData = new ArrayDataProvider(this.frequencyArray1);
+    this.selectionPie1(temPieData);
+
+
+    this.frequencyArray2 = [];
+    //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
+    this.problemFrequency2 = new Map();
+    for (let i in this.tableData2){
+      if (this.problemFrequency2.has(this.tableData2[i].name)){
+        let count = this.problemFrequency2.get(this.tableData2[i].name) + 1;
+        this.problemFrequency2.set(this.tableData2[i].name, count);
+      }
+      else {
+        this.problemFrequency2.set(this.tableData2[i].name, 1);
+      }
+    }
+    this.problemFrequency2.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+      }
+      
+    });
+
+
+    temPieData = new ArrayDataProvider(this.frequencyArray2);
+    this.selectionPie2(temPieData);
+    
+
+    
+  }
+
+  applyFromFilter = (
+    event: ojDateTimePicker.valueChanged,
+  ) => {
+    this.problemCount = new Map();
+    this.fromDate(event.detail.value)
+
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let i = 0;
+
+
+
+    this.tableData = [];
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }
+
+    }
+    let temTableData = new ArrayDataProvider(this.tableData);
+    this.selectionTableDP(temTableData);
+
+
+    //SECOND TABLE
+    this.tableData2 = [];
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }
+
+    }
+    let temTableData2 = new ArrayDataProvider(this.tableData2);
+    this.selectionTableDP2(temTableData2);
+
+
+    //GRAPHS
+    this.problemCountTB1 = new Map();
+
+    for (let i in this.tableData){
+      if(this.selectedProblemsFiltersMap.has(this.tableData[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (this.problemCountTB1.has(this.tableData[i].from)){
+          let count = this.problemCountTB1.get(this.tableData[i].from) + 1;
+          this.problemCountTB1.set(this.tableData[i].from, count);
+        }
+        else {
+          this.problemCountTB1.set(this.tableData[i].from, 1);
+        }
+      }
+      
+    }
+
+    let problemCountTB = new Map();
+
+    for (let i in this.tableData2){
+      if(this.selectedProblemsFiltersMap.has(this.tableData2[i].name) || this.selectedProblemsFiltersMap.size===0 ){
+        if (problemCountTB.has(this.tableData2[i].from)){
+          let count = this.problemCountTB1.get(this.tableData2[i].from) + 1;
+          problemCountTB.set(this.tableData2[i].from, count);
+        }
+        else {
+          problemCountTB.set(this.tableData2[i].from, 1);
+        }
+      }
+      
+    }
+
+    this.problemArrayTB1 = [];
+    this.problemArrayTB = [];
+    //console.log(this.problemCountTB1);
+    this.problemCountTB1.forEach((value: number, key: string) => {
+      this.problemArrayTB1.push({ hour: key, count: value , series: "Target 1"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    problemCountTB.forEach((value: number, key: string) => {
+      this.problemArrayTB.push({ hour: key, count: value , series: "Target 2"});
+      //this.problemArrayTB.push({ hour: key, count: value , series: "Target 1"});
+    });
+
+    let temGraphData = new ArrayDataProvider(this.problemArrayTB1);
+    this.selectionGraph1(temGraphData);
+    temGraphData = new ArrayDataProvider(this.problemArrayTB);
+    this.selectionGraph2(temGraphData);
+
+
+    this.frequencyArray1 = [];
+    this.problemFrequency1 = new Map();
+    for (let i in this.tableData){
+      if (this.problemFrequency1.has(this.tableData[i].name)){
+        let count = this.problemFrequency1.get(this.tableData[i].name) + 1;
+        this.problemFrequency1.set(this.tableData[i].name, count);
+      }
+      else {
+        this.problemFrequency1.set(this.tableData[i].name, 1);
+      }
+    }
+    this.problemFrequency1.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray1.push({name: key, count:value, group: "Target 1"});
+      }
+      
+    });
+
+    let temPieData = new ArrayDataProvider(this.frequencyArray1);
+    this.selectionPie1(temPieData);
+
+    this.problemFrequency2 = new Map();
+    for (let i in this.tableData2){
+      if (this.problemFrequency2.has(this.tableData2[i].name)){
+        let count = this.problemFrequency2.get(this.tableData2[i].name) + 1;
+        this.problemFrequency2.set(this.tableData2[i].name, count);
+      }
+      else {
+        this.problemFrequency2.set(this.tableData2[i].name, 1);
+      }
+    }
+    this.frequencyArray2 = [];
+    //this.frequencyArray1.forEach(val => this.frequencyArray2.push(Object.assign({}, val)));
+
+    this.problemFrequency2.forEach((value: number, key: string) => {
+      if(this.selectedProblemsFiltersMap.size===0 || this.selectedProblemsFiltersMap.has(key)){
+        this.frequencyArray2.push({name: key, count:value, group: "Target 2"});
+      }
+      
+    });
+
+
+    temPieData = new ArrayDataProvider(this.frequencyArray2);
+    this.selectionPie2(temPieData);
+    
+
+    
+  }
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.problemCount = new Map();
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let i = 0;
+    this.selectProblemValue(event.detail.value);
+    for(i;i<this.selectProblemValue().length;i++){
+      this.selectedProblemsFiltersMap.add(this.selectProblemValue()[i]);
+    }
+
+    this.tableData = [];
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }
+
+    }
+    let temTableData = new ArrayDataProvider(this.tableData);
+    this.selectionTableDP(temTableData);
+
+
+    //SECOND TABLE
+    this.tableData2 = [];
+    for (var j = 0; j < jsonFilex.jsonFile.length; j++) {
+      let testt1 = new Date(jsonFilex.jsonFile[j].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Database" && jsonFilex.jsonFile[j].db === this.selectedTarget2 && (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Instance" && jsonFilex.jsonFile[j].instance == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].host == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "OnHost" && jsonFilex.jsonFile[j].onhost == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
+        this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].onhost, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
+      }else if ((testt1>=testFromDate && testt1<=testToDate)&&this.selectedType2 === "Cluster" && jsonFilex.jsonFile[j].cluster == this.selectedTarget2&& (this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[j].name)||this.selectedProblemsFiltersMap.size==0)) {
         this.tableData2.push({ name: jsonFilex.jsonFile[j].name, database : jsonFilex.jsonFile[j].db, instance : jsonFilex.jsonFile[j].instance, host : jsonFilex.jsonFile[j].host, from  : jsonFilex.jsonFile[j].t1, to : jsonFilex.jsonFile[j].t2});
       }
 
@@ -544,6 +883,8 @@ class TargetDetailsViewModel {
 
     this.startDate(startDate);
     this.endDate(endDate);
+    this.fullStartDate = startDate + "T" + dates[0].split(" ")[1];
+    this.fullEndDate = endDate + "T" + dates[dates.length-1].split(" ")[1];
     //console.log(jsonFilterProblems);
     this.problemsDataProvider = new ArrayDataProvider(JSON.parse(jsonFilterProblems),{keyAttributes:'value'});
 
@@ -579,11 +920,13 @@ class TargetDetailsViewModel {
   }
   readonly fromDate : ko.Observable<string> = ko.observable("");
   readonly toDate : ko.Observable<string> = ko.observable("");
+  fullStartDate = "";
+  fullEndDate = "";
   resetFilters = (event: Event,
     bindingContext: ko.BindingContext) => {
     this.selectProblemValue([]);
-    this.fromDate(""); 
-    this.toDate(""); 
+    this.fromDate(this.fullStartDate); 
+    this.toDate(this.fullEndDate); 
     
   };
 

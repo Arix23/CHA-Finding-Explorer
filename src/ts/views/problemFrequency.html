@@ -13,11 +13,11 @@
     </oj-button>
 
     <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time min="[[startDate()]]" value="{{fromDate}}"max="[[endDate()]]"label-hint="From:" autocomplete="off"></oj-input-date-time>
+      <oj-input-date-time min="[[startDate()]]" on-value-changed="[[applyFromFilter]]"value="{{fromDate}}"max="[[endDate()]]"label-hint="From:" autocomplete="off"></oj-input-date-time>
 
     </div>
     <div class="oj-md-2 oj-lg-2 oj-xl-2 oj-lg-margin-4x-start oj-xl-margin-4x-start oj-flex-item">
-      <oj-input-date-time min="[[startDate()]]" value="{{toDate}}"max="[[endDate()]]"label-hint="To:" autocomplete="off"></oj-input-date-time>
+      <oj-input-date-time min="[[startDate()]]" on-value-changed="[[applyToFilter]]"value="{{toDate}}"max="[[endDate()]]"label-hint="To:" autocomplete="off"></oj-input-date-time>
 
     </div>
 

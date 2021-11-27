@@ -19,7 +19,7 @@ import "ojs/ojtoolbar";
 import * as Bootstrap from "ojs/ojbootstrap";
 import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
-import { ojDatePicker } from "ojs/ojdatetimepicker";
+import { ojDatePicker, ojDateTimePicker } from "ojs/ojdatetimepicker";
 import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
@@ -127,6 +127,8 @@ class ProblemFrequencyViewModel {
 
     this.startDate(startDate);
     this.endDate(endDate);
+    this.fullStartDate = startDate + "T" + dates[0].split(" ")[1];
+    this.fullEndDate = endDate + "T" + dates[dates.length-1].split(" ")[1];
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
     this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
     this.arrayInfo.push({ value: "Hosts", children: this.arrayHost });
@@ -134,23 +136,141 @@ class ProblemFrequencyViewModel {
 
 
   }
+  applyToFilter = (
+    event: ojDateTimePicker.valueChanged,
+  ) => {
+    this.problemCount = new Map();
+    this.toDate(event.detail.value);
 
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+    
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    for (let item in jsonFilex.jsonFile){
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+        let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
+        this.problemCount.set(jsonFilex.jsonFile[item].name, count);
+      }
+      else {
+        if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
+          this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+        } else{
+          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
+          ){
+            this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+          } else{
+            //Do Nothing
+          }
+        }
+        
+        
+      }
+
+
+
+      
+    }
+    let problemArray: Array<{name: string, count: number, group: string}> = [];
+    let i = 0;
+    this.problemCount.forEach((value: number, key: string) => {
+      problemArray.push({ name: key, count: value , group: "A"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    this.dataObservableProvider(this.dataProvider);
+  }
+  applyFromFilter = (
+    event: ojDateTimePicker.valueChanged,
+  ) => {
+    this.problemCount = new Map();
+    this.fromDate(event.detail.value);
+
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+    }
+
+    
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    for (let item in jsonFilex.jsonFile){
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+        jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+        this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+          || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
+        let count = this.problemCount.get(jsonFilex.jsonFile[item].name) + 1;
+        this.problemCount.set(jsonFilex.jsonFile[item].name, count);
+      }
+      else {
+        if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
+          this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+        } else{
+          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+            jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
+            this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
+              || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
+          ){
+            this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
+          } else{
+            //Do Nothing
+          }
+        }
+        
+        
+      }
+
+
+
+      
+    }
+    let problemArray: Array<{name: string, count: number, group: string}> = [];
+    let i = 0;
+    this.problemCount.forEach((value: number, key: string) => {
+      problemArray.push({ name: key, count: value , group: "A"});
+      i = i + 1;
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'name' });
+    this.dataObservableProvider(this.dataProvider);
+  }
 
   applyProblemFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
     this.problemCount = new Map();
     this.selectedProblemsFiltersMap = new Map();
-    
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
     let i = 0;
     this.selectProblemValue(event.detail.value);
     for(i;i<this.selectProblemValue().length;i++){
       this.selectedProblemsFiltersMap.set(this.selectProblemValue()[i],1);
     }
     
-
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
     for (let item in jsonFilex.jsonFile){
-      if (this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
         jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
         this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
           || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
@@ -199,13 +319,24 @@ class ProblemFrequencyViewModel {
     
     let i = 0;
     this.selectTargetValue(event.detail.value);
+
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
     for(i;i<this.selectTargetValue().length;i++){
       this.selectedTargetsFilterMap.set(this.selectTargetValue()[i],1);
     }
     
-
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
     for (let item in jsonFilex.jsonFile){
-      if (this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+      if ((testt1>=testFromDate && testt1<=testToDate)&&this.problemCount.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
         jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
         this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
           || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
@@ -248,13 +379,15 @@ class ProblemFrequencyViewModel {
 
   resetFilters = (event: Event,
     bindingContext: ko.BindingContext) => {
-    console.log("AAA");
     this.selectProblemValue([]);
-    this.fromDate(""); 
-    this.toDate(""); 
+    this.fromDate(this.fullStartDate); 
+    this.toDate(this.fullEndDate); 
     this.selectTargetValue([]);
     
   };
+
+  fullStartDate = "";
+  fullEndDate = "";
 
   readonly selectProblemValue = ko.observableArray();
   readonly selectTargetValue = ko.observableArray();

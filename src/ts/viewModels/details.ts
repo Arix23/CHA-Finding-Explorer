@@ -16,7 +16,7 @@ import "ojs/ojtoolbar";
 import * as Bootstrap from "ojs/ojbootstrap";
 import { IntlDateTimeConverter } from "ojs/ojconverter-datetime";
 import * as ResponsiveUtils from "ojs/ojresponsiveutils";
-import { ojDatePicker, ojInputDateTime } from "ojs/ojdatetimepicker";
+import { ojDatePicker, ojDateTimePicker, ojInputDateTime } from "ojs/ojdatetimepicker";
 import "ojs/ojdatetimepicker";
 import "ojs/ojlabel";
 import "ojs/ojformlayout";
@@ -63,7 +63,23 @@ class DetailsViewModel {
     let targetArray: Array<{ hour: string, count: number, series: string }> = [];
     let dbArray: Array<{ hour: string, count: number, series: string }> = [];
     this.selectTargetValue(event.detail.value);
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
 
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
 
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
     for(let i = 0;i<this.selectTargetValue().length;i++){
@@ -72,9 +88,9 @@ class DetailsViewModel {
     
 
     for (let item in jsonFilex.jsonFile) {
-
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
       //FIRST GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -100,7 +116,7 @@ class DetailsViewModel {
       }
 
       //SECOND GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -123,7 +139,7 @@ class DetailsViewModel {
       }
 
       //THIRD GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -182,39 +198,40 @@ class DetailsViewModel {
   }
 
   applyFromFilter = (
-    
+    event: ojDateTimePicker.valueChanged,
   ) => {
-    console.log("filtro")
-  }
-
-  applyToFilter = (
-    
-    ) => {
-      console.log("filtro")
-    }
-
-  applyProblemFilters = (
-    event: ojSelectMany.valueChanged<string,Record<string,string>>,
-  ) => {
-    this.problemFilterMap = new Map();
     this.hourMap= new Map();
     this.targetMap = new Map();
     this.dbMap = new Map();
     let targetArray: Array<{ hour: string, count: number, series: string }> = [];
     let dbArray: Array<{ hour: string, count: number, series: string }> = [];
-    this.selectProblemValue(event.detail.value);
-
-
     let problemArray: Array<{ hour: string, count: number, series: string }> = [];
-    for(let i = 0;i<this.selectProblemValue().length;i++){
-      this.problemFilterMap.set(this.selectProblemValue()[i],1);
+    this.fromDate(event.detail.value);
+    
+
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
     }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
     
 
     for (let item in jsonFilex.jsonFile) {
 
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+
+    
+
       //FIRST GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -240,7 +257,7 @@ class DetailsViewModel {
       }
 
       //SECOND GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -263,7 +280,292 @@ class DetailsViewModel {
       }
 
       //THIRD GRAPH
-      if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+        if (this.dbMap.has(jsonFilex.jsonFile[item].db)) {
+          let count2 = this.dbMap.get(jsonFilex.jsonFile[item].db) + 1;
+          this.dbMap.set(jsonFilex.jsonFile[item].db, count2);
+        }
+        else {
+        
+          this.dbMap.set(jsonFilex.jsonFile[item].db, 1);
+        
+        }
+
+      }
+    }
+
+    //FIRST GRAPH
+    this.hourMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        problemArray.push({ hour: key, count: value, series: key2 });
+      });
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataObservableProvider(this.dataProvider);
+
+    //SECOND GRAPH
+    this.targetMap.delete(undefined)
+
+
+    this.targetMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        targetArray.push({ hour: "Instance: " + key, count: value, series: "Host: " + key2 });
+      });
+    });
+
+    let json = JSON.stringify(targetArray);
+
+    this.dataProvider2 = new ArrayDataProvider(JSON.parse(json), { keyAttributes: 'hour' });
+    this.dataObservableProvider2(this.dataProvider2);
+
+    //THIRD GRAPH
+    this.dbMap.delete(undefined)
+
+    this.dbMap.forEach((value: number, key: string) => {
+      dbArray.push({ hour: key, count: value, series: "Database: " + key });
+    });
+
+    let jsonx = JSON.stringify(dbArray);
+
+    this.dataProvider3 = new ArrayDataProvider(JSON.parse(jsonx), { keyAttributes: 'hour' });
+    this.dataObservableProvider3(this.dataProvider3);
+  }
+
+  applyToFilter = (
+    event: ojDateTimePicker.valueChanged,
+    ) => {
+      this.hourMap= new Map();
+    this.targetMap = new Map();
+    this.dbMap = new Map();
+    let targetArray: Array<{ hour: string, count: number, series: string }> = [];
+    let dbArray: Array<{ hour: string, count: number, series: string }> = [];
+    let problemArray: Array<{ hour: string, count: number, series: string }> = [];
+    this.toDate(event.detail.value);
+    
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    
+
+    for (let item in jsonFilex.jsonFile) {
+
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+
+    
+
+      //FIRST GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+
+        if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+          if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
+            let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
+
+            this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, count);
+
+          }
+          else {
+            this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, 1);
+          }
+        }
+        else { //crea t1
+
+          let nameMap = new Map();
+          nameMap.set(jsonFilex.jsonFile[item].name, 1);
+          this.hourMap.set(jsonFilex.jsonFile[item].t1, nameMap);
+        }
+      }
+
+      //SECOND GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+        if (this.targetMap.has(jsonFilex.jsonFile[item].instance)) {
+          if (this.targetMap.get(jsonFilex.jsonFile[item].instance).has(jsonFilex.jsonFile[item].onhost)) {
+            let count = this.targetMap.get(jsonFilex.jsonFile[item].instance).get(jsonFilex.jsonFile[item].onhost) + 1;
+            this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, count);
+          }
+          else {
+            this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, 1);
+          }
+        }
+        else {
+
+          let nameMap = new Map();
+          nameMap.set(jsonFilex.jsonFile[item].onhost, 1);
+          this.targetMap.set(jsonFilex.jsonFile[item].instance, nameMap);
+        }
+      }
+
+      //THIRD GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+        if (this.dbMap.has(jsonFilex.jsonFile[item].db)) {
+          let count2 = this.dbMap.get(jsonFilex.jsonFile[item].db) + 1;
+          this.dbMap.set(jsonFilex.jsonFile[item].db, count2);
+        }
+        else {
+        
+          this.dbMap.set(jsonFilex.jsonFile[item].db, 1);
+        
+        }
+
+      }
+    }
+
+    //FIRST GRAPH
+    this.hourMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        problemArray.push({ hour: key, count: value, series: key2 });
+      });
+    });
+
+    let jsonCount = JSON.stringify(problemArray);
+
+    this.dataProvider = new ArrayDataProvider(JSON.parse(jsonCount), { keyAttributes: 'hour' });
+    this.dataObservableProvider(this.dataProvider);
+
+    //SECOND GRAPH
+    this.targetMap.delete(undefined)
+
+
+    this.targetMap.forEach((map: Map<any, any>, key: string) => {
+      map.forEach((value: number, key2: string) => {
+        targetArray.push({ hour: "Instance: " + key, count: value, series: "Host: " + key2 });
+      });
+    });
+
+    let json = JSON.stringify(targetArray);
+
+    this.dataProvider2 = new ArrayDataProvider(JSON.parse(json), { keyAttributes: 'hour' });
+    this.dataObservableProvider2(this.dataProvider2);
+
+    //THIRD GRAPH
+    this.dbMap.delete(undefined)
+
+    this.dbMap.forEach((value: number, key: string) => {
+      dbArray.push({ hour: key, count: value, series: "Database: " + key });
+    });
+
+    let jsonx = JSON.stringify(dbArray);
+
+    this.dataProvider3 = new ArrayDataProvider(JSON.parse(jsonx), { keyAttributes: 'hour' });
+    this.dataObservableProvider3(this.dataProvider3);
+    }
+
+  applyProblemFilters = (
+    event: ojSelectMany.valueChanged<string,Record<string,string>>,
+  ) => {
+    this.problemFilterMap = new Map();
+    this.hourMap= new Map();
+    this.targetMap = new Map();
+    this.dbMap = new Map();
+    let targetArray: Array<{ hour: string, count: number, series: string }> = [];
+    let dbArray: Array<{ hour: string, count: number, series: string }> = [];
+    this.selectProblemValue(event.detail.value);
+
+    if(this.toDate()==="" || this.toDate()===undefined){
+      this.toDate(this.fullEndDate);
+
+    } 
+
+    if(this.fromDate()==="" || this.fromDate()===undefined){
+      this.fromDate(this.fullStartDate);
+    }
+
+
+
+
+    
+
+
+    let testToDate = new Date(this.toDate());
+    let testFromDate = new Date(this.fromDate());
+    let problemArray: Array<{ hour: string, count: number, series: string }> = [];
+    for(let i = 0;i<this.selectProblemValue().length;i++){
+      this.problemFilterMap.set(this.selectProblemValue()[i],1);
+    }
+    
+
+    for (let item in jsonFilex.jsonFile) {
+      let testt1 = new Date(jsonFilex.jsonFile[item].t1);
+      //FIRST GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+
+        if (this.hourMap.has(jsonFilex.jsonFile[item].t1)) {
+          if (this.hourMap.get(jsonFilex.jsonFile[item].t1).has(jsonFilex.jsonFile[item].name)) {
+            let count = this.hourMap.get(jsonFilex.jsonFile[item].t1).get(jsonFilex.jsonFile[item].name) + 1;
+
+            this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, count);
+
+          }
+          else {
+            this.hourMap.get(jsonFilex.jsonFile[item].t1).set(jsonFilex.jsonFile[item].name, 1);
+          }
+        }
+        else { //crea t1
+
+          let nameMap = new Map();
+          nameMap.set(jsonFilex.jsonFile[item].name, 1);
+          this.hourMap.set(jsonFilex.jsonFile[item].t1, nameMap);
+        }
+      }
+
+      //SECOND GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
+        this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
+      )){
+        if (this.targetMap.has(jsonFilex.jsonFile[item].instance)) {
+          if (this.targetMap.get(jsonFilex.jsonFile[item].instance).has(jsonFilex.jsonFile[item].onhost)) {
+            let count = this.targetMap.get(jsonFilex.jsonFile[item].instance).get(jsonFilex.jsonFile[item].onhost) + 1;
+            this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, count);
+          }
+          else {
+            this.targetMap.get(jsonFilex.jsonFile[item].instance).set(jsonFilex.jsonFile[item].onhost, 1);
+          }
+        }
+        else {
+
+          let nameMap = new Map();
+          nameMap.set(jsonFilex.jsonFile[item].onhost, 1);
+          this.targetMap.set(jsonFilex.jsonFile[item].instance, nameMap);
+        }
+      }
+
+      //THIRD GRAPH
+      if((testt1>=testFromDate && testt1<=testToDate)&&(this.problemFilterMap.has(jsonFilex.jsonFile[item].name) || this.problemFilterMap.size==0) && (
         this.problemTargetMap.has(jsonFilex.jsonFile[item].db) || this.problemTargetMap.has(jsonFilex.jsonFile[item].cluster) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].instance) || this.problemTargetMap.has(jsonFilex.jsonFile[item].host) ||
         this.problemTargetMap.has(jsonFilex.jsonFile[item].onhost) || this.problemTargetMap.size==0
@@ -390,6 +692,8 @@ class DetailsViewModel {
     let endDate = dates[dates.length-1].split(" ")[0];
 
     this.startDate(startDate);
+    this.fullStartDate = startDate + "T" + dates[0].split(" ")[1];
+    this.fullEndDate = endDate + "T" + dates[dates.length-1].split(" ")[1];
     this.endDate(endDate);
     this.arrayInfo.push({ value: "Databases", children: this.arrayDB });
     this.arrayInfo.push({ value: "Instances", children: this.arrayInstance });
@@ -399,13 +703,16 @@ class DetailsViewModel {
 
   }
 
+  fullStartDate = "";
+  fullEndDate = "";
+
 
 
   resetFilters = (event: Event,
     bindingContext: ko.BindingContext) => {
     this.selectProblemValue([]);
-    this.fromDate(""); 
-    this.toDate(""); 
+    this.fromDate(this.fullStartDate); 
+    this.toDate(this.fullEndDate); 
     this.selectTargetValue([]);
     
   };
