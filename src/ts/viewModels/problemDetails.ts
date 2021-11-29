@@ -572,14 +572,6 @@ class ProblemDetailsViewModel {
         }
     }
 
-    let tmpArrayFilter = [];
-    for(var j = 0;j<this.problemArray.length;j++){
-      
-    }
-
-    this.problemArray = tmpArrayFilter;
-
-    
 
     for(var j = 0;j<this.problemArray.length;j++){
       this.problemArray[j].avgBelief = this.problemArray[j].avgBelief/this.problemArray[j].count;
@@ -602,10 +594,6 @@ class ProblemDetailsViewModel {
 
 
     }
-
-    
-
-    
 
     this.mediumProbQuantity = ko.observable(this.mediumProbProblems);
     this.highProbQuantity = ko.observable(this.highProbProblems);
