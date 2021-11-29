@@ -10,8 +10,9 @@
     <!-- IF PROBLEM SELECTED -->
     <oj-bind-if test="[[problemAccessed() !== 'null']]">
 
-      <div id="problem-header"
-        class="oj-flex oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between">
+      <div
+        class="oj-flex oj-sm-align-items-center oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center
+         oj-sm-justify-content-space-between oj-md-justify-content-space-between oj-lg-justify-content-space-between oj-xl-justify-content-space-between oj-panel oj-panel-border-radius-1 oj-bg-neutral-30 ">
         <div class="oj-md-1 oj-lg-1 oj-xl-1 oj-sm-1 ">
           <oj-button id="problem-buttons" chroming="callToAction" on-oj-action="[[goBack]]">
             ← Go back
@@ -46,26 +47,29 @@
           </oj-bind-if>
         </div>
       </div>
-      <div class="oj-flex" id="problem-header">
-        <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4">
-          <h3>
+      <br>
+      <div class="oj-flex oj-panel oj-panel-border-radius-1" >
+        <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" style="text-align: center;">
+          <div class=" oj-typography-subheading-sm ">
             ID:
-          </h3>
-          <oj-bind-text value="[[selectedProblem().id]]"></oj-bind-text>
+          </div>
+          <div lass=" oj-typography-body-md"> 
+            <oj-bind-text value="[[selectedProblem().id]]"></oj-bind-text>
+          </div>
         </div>
-        <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4">
-          <h3>
+        <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" style="text-align: center;">
+          <div class=" oj-typography-subheading-sm ">
             Total repetitions:
-          </h3>
+          </div>
           <oj-bind-text value="[[selectedProblem().count]]"></oj-bind-text>
         </div>
 
         <!-- Medium probability -->
         <oj-bind-if test="[[(selectedProblem().avgBelief>med()-3) && (selectedProblem().avgBelief<med()+3)]]">
-          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="medium-prob">
-            <h3>
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4 oj-panel oj-panel-border-radius-1 " id="medium-prob" style="text-align: center;">
+            <div class=" oj-typography-subheading-sm ">
               Average Belief:
-            </h3>
+            </div>
             <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
             [Medium probability]
           </div>
@@ -74,10 +78,10 @@
 
         <!-- Low probability -->
         <oj-bind-if test="[[(selectedProblem().avgBelief>=low()) && (selectedProblem().avgBelief < med()-3) ]]">
-          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="low-prob">
-            <h3>
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4 oj-panel oj-panel-border-radius-1" id="low-prob" style="text-align: center;">
+            <div class=" oj-typography-subheading-sm ">
               Average Belief:
-            </h3>
+            </div>
             <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
             [Low probability]
           </div>
@@ -86,10 +90,10 @@
 
         <!-- High probability -->
         <oj-bind-if test="[[(selectedProblem().avgBelief<=high()) && (selectedProblem().avgBelief > med()+3) ]]">
-          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4" id="high-prob">
-            <h3>
+          <div class="oj-md-4 oj-lg-4 oj-xl-4 oj-sm-4 oj-panel oj-panel-border-radius-1" id="high-prob" style="text-align: center;">
+            <div class=" oj-typography-subheading-sm ">
               Average Belief:
-            </h3>
+            </div>
             <oj-bind-text value="[[Math.round((selectedProblem().avgBelief) * 100) / 100]]"></oj-bind-text>
             [High probability]
           </div>

@@ -22,15 +22,15 @@
 }
 
 #medium-prob{
-  background-color: rgba(251, 251, 122, 0.774);
+  background-color: #fceddc;
 }
 
 #low-prob{
-  background-color: rgba(125, 240, 102, 0.774);
+  background-color: #e4f5d3;
 }
 
 #high-prob {
-  background-color: rgb(216, 84, 84);
+  background-color: #ffebe8;
 }
 
 #table-item{
