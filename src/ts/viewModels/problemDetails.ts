@@ -23,7 +23,9 @@ import "ojs/ojtimezonedata";
 
 import "ojs/ojlistview";
 import { ojListView } from "ojs/ojlistview";
-
+import "ojs/ojactioncard";
+import { ActionCardElement } from "ojs/ojactioncard";
+import "ojs/ojlabel";
 import jsonFilex from "../appController";
 
 //targetfilters
