@@ -3,7 +3,7 @@
  Licensed under The Universal Permissive License (UPL), Version 1.0
  as shown at https://oss.oracle.com/licenses/upl/
  -->
- <div id="if-statement">
+<div id="if-statement">
   <oj-bind-if test="[[jsonUploaded()===true]]">
 
     <h2
@@ -41,18 +41,18 @@
 
     <div class=" oj-bg-neutral oj-panel oj-panel-border-radius-1  
      oj-sm-margin-3x oj-md-margin-3x oj-lg-margin-3x oj-xl-margin-3x">
-     <div class="oj-flex">
-        <div class="oj-flex-item"  style="text-align:center;">
+      <div class="oj-flex">
+        <div class="oj-flex-item" style="text-align:center;">
           <h6 oj-sm-margin-3x>Start Date</h6>
           <oj-bind-text value="[[startDate]]"></oj-bind-text>
 
         </div>
-        <div class="oj-flex-item"  style="text-align:center;">
+        <div class="oj-flex-item" style="text-align:center;">
           <h6 oj-sm-margin-3x>End Date</h6>
           <oj-bind-text value="[[endDate]]"></oj-bind-text>
 
         </div>
-     </div>
+      </div>
     </div>
 
     <div class=" oj-bg-neutral oj-panel oj-panel-border-radius-1  
@@ -72,8 +72,7 @@
             </oj-badge>
           </div>
           <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
-          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top" 
-            style="text-align:center;">
+          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top" style="text-align:center;">
             <oj-badge class=" ">Instance with most errors: </oj-badge>
             <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
               <oj-bind-text value="[[instanceMostProblems]]"></oj-bind-text>
@@ -81,17 +80,18 @@
           </div>
 
         </div>
-        <div class=" oj-flex-item oj-sm-margin-1x-start oj-md-margin-1x-start oj-lg-margin-1x-start oj-xl-margin-1x-start">
-          <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center"
-          style="text-align:center;">
+        <div
+          class=" oj-flex-item oj-sm-margin-1x-start oj-md-margin-1x-start oj-lg-margin-1x-start oj-xl-margin-1x-start">
+          <div id="table-item"
+            class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center"
+            style="text-align:center;">
             <oj-badge class=" "> Cluster with most errors: </oj-badge>
             <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
               <oj-bind-text value="[[clusterMostProblems]]"></oj-bind-text>
             </oj-badge>
           </div>
           <div id="table-item" class="oj-flex-item oj-bg-neutral-10 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
-          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top"
-          style="text-align:center;">
+          oj-sm-margin-2x-top oj-md-margin-2x-top oj-md-margin-2x-top oj-xl-margin-2x-top" style="text-align:center;">
             <oj-badge class=" "> Host with most errors: </oj-badge>
             <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
               <oj-bind-text value="[[onHostMostProblems]]"></oj-bind-text>
@@ -99,8 +99,8 @@
           </div>
         </div>
 
-        
-        
+
+
 
       </div>
 
@@ -112,7 +112,6 @@
 
       <div class="oj-flex">
 
-        <div class="oj-flex-item ">
           <div id="table-item" class="oj-flex-item  oj-bg-brand-30  oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
           
           " style="text-align:center;">
@@ -120,10 +119,12 @@
             <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
               <oj-bind-text value="[[lowProbQuantity]]"></oj-bind-text>
             </oj-badge>
+            <span id="chikito">The reported event may be an error</span>
           </div>
-        </div>
+        
 
-        <div class="oj-flex-item oj-sm-margin-2x-horizontal oj-md-margin-2x-horizontal oj-lg-margin-2x-horizontal oj-xl-margin-2x-horizontal">
+        <div
+          class="oj-flex-item oj-sm-margin-2x-horizontal oj-md-margin-2x-horizontal oj-lg-margin-2x-horizontal oj-xl-margin-2x-horizontal">
           <div id="table-item" class="oj-flex-item oj-bg-warning-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
           
           " style="text-align:center;">
@@ -131,34 +132,19 @@
             <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
               <oj-bind-text value="[[mediumProbQuantity]]"></oj-bind-text>
             </oj-badge>
+            <span id="chikito">Highly posible that the event is an error</span>
           </div>
         </div>
 
-        <div class="oj-flex-item ">
 
-          <div id="table-item" class="oj-flex-item oj-bg-danger-30 oj-panel oj-panel-border-radius-1 oj-md-align-items-center oj-lg-align-items-center oj-xl-align-items-center 
-          
-          " style="text-align:center;">
-            <oj-badge class=" "> High Probability Problems: </oj-badge>
-            <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
-              <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
-            </oj-badge>
-          </div>
-
-
-          <!-- <h3 id="medium-prob">
-            Medium Probability Problems:
-            <oj-bind-text value="[[mediumProbQuantity]]"></oj-bind-text>
-          </h3>
-          <h3 id="high-prob">
-            High Probability Problems:
+        <div id="table-item" class="oj-flex-item oj-bg-danger-30 oj-panel oj-panel-border-radius-1"
+          style="text-align:center;">
+          <oj-badge class=" "> High Probability Problems: </oj-badge>
+          <oj-badge class="  oj-line-clamp-2 oj-typography-heading-sm">
             <oj-bind-text value="[[highProbQuantity]]"></oj-bind-text>
-          </h3> -->
-
-
+          </oj-badge>
+          <span id="chikito">The reported event certainly is an error</span>
         </div>
-
-
       </div>
 
     </div>

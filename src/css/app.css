@@ -21,6 +21,17 @@
   margin-right: 2%;
 }
 
+#beliefInfo{
+  padding: 1em;
+}
+
+#range{
+  margin-left: 3.7em;
+}
+#rangeH{
+  margin-left: 4em;
+}
+
 #medium-prob{
   background-color: #fceddc;
 }
@@ -36,6 +47,9 @@
 #table-item{
   padding: 1em;
   box-sizing:border-box;
+}
+#chikito{
+  font-size: x-small;
 }
 
 #table-item>div {
