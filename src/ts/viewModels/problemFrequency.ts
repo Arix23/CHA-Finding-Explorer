@@ -162,7 +162,7 @@ class ProblemFrequencyViewModel {
         if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
           this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
         } else{
-          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+          if((this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name)||this.selectedProblemsFiltersMap.size===0) && (this.selectedTargetsFilterMap.has(
             jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
             this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
               || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
@@ -217,7 +217,7 @@ class ProblemFrequencyViewModel {
         if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
           this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
         } else{
-          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+          if((this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name)|| this.selectedProblemsFiltersMap) && (this.selectedTargetsFilterMap.has(
             jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
             this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
               || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)
@@ -281,7 +281,7 @@ class ProblemFrequencyViewModel {
         if(this.selectedProblemsFiltersMap.size==0 && this.selectedTargetsFilterMap.size==0){
           this.problemCount.set(jsonFilex.jsonFile[item].name, 1);
         } else{
-          if(this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name) && (this.selectedTargetsFilterMap.has(
+          if((this.selectedProblemsFiltersMap.has(jsonFilex.jsonFile[item].name)|| this.selectedProblemsFiltersMap.size===0) && (this.selectedTargetsFilterMap.has(
             jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
             this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
               || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)

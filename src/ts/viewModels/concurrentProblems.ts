@@ -63,7 +63,7 @@ class ConcurrentProblemCountViewModel {
           if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
             this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
           } else{
-            if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) ||this.problemFilterMap.size===0)&& (this.selectedTargetsFilterMap.has(
               jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
               this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
                 || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
@@ -117,7 +117,7 @@ class ConcurrentProblemCountViewModel {
           if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
             this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
           } else{
-            if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name) ||this.problemFilterMap.size===0)&& (this.selectedTargetsFilterMap.has(
               jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
               this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
                 || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
@@ -177,7 +177,7 @@ class ConcurrentProblemCountViewModel {
           if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
             this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
           } else{
-            if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name)|| this.problemFilterMap.size===0)&& (this.selectedTargetsFilterMap.has(
               jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
               this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
                 || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
@@ -204,7 +204,7 @@ class ConcurrentProblemCountViewModel {
   applyTargetFilters = (
     event: ojSelectMany.valueChanged<string,Record<string,string>>,
   ) => {
-
+    this.selectTargetValue(event.detail.value);
     if(this.toDate()==="" || this.toDate()===undefined){
       this.toDate(this.fullEndDate);
 
@@ -213,16 +213,20 @@ class ConcurrentProblemCountViewModel {
     if(this.fromDate()==="" || this.fromDate()===undefined){
       this.fromDate(this.fullStartDate);
     }
+
+    
     let testToDate = new Date(this.toDate());
     let testFromDate = new Date(this.fromDate());
     let problemArray: Array<{hour: string, count: number, series: string}> = [];
     this.selectedTargetsFilterMap = new Map();
     this.hourCount = new Map();
-    this.selectTargetValue(event.detail.value);
+    
 
     for(let i = 0;i<this.selectTargetValue().length;i++){
       this.selectedTargetsFilterMap.set(this.selectTargetValue()[i],1);
     }
+
+
 
     for (let item in jsonFilex.jsonFile){
       let testt1 = new Date(jsonFilex.jsonFile[item].t1);
@@ -231,14 +235,14 @@ class ConcurrentProblemCountViewModel {
           jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
           this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
             || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
-          let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
+              let count = this.hourCount.get(jsonFilex.jsonFile[item].t1) + 1;
           this.hourCount.set(jsonFilex.jsonFile[item].t1, count);
         }
         else {
           if(this.problemFilterMap.size===0 && this.selectedTargetsFilterMap.size===0){
             this.hourCount.set(jsonFilex.jsonFile[item].t1, 1);
           } else{
-            if(this.problemFilterMap.has(jsonFilex.jsonFile[item].name)&& (this.selectedTargetsFilterMap.has(
+            if((this.problemFilterMap.has(jsonFilex.jsonFile[item].name )|| this.problemFilterMap.size===0)&& (this.selectedTargetsFilterMap.has(
               jsonFilex.jsonFile[item].db) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].host) ||
               this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].onhost) || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].instance)
                 || this.selectedTargetsFilterMap.has(jsonFilex.jsonFile[item].cluster) || this.selectedTargetsFilterMap.size===0)){
